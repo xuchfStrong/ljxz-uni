@@ -1,0 +1,14 @@
+{
+  "name": "ljzx-uni",
+  "version": "1.4.0",
+  "description": "武道神尊Helper的uni版本",
+  "author": "xuchangfan",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "moment": "^2.24.0",
+    "js-rsa": "^1.0.2"
+  },
+  "devDependencies": {
+
+  }
+}

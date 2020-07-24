@@ -50,9 +50,10 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 import { getUtils } from '@/api/game'
-import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
-import { genRandomNumber, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
+import { acclogin, addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
+import { genRandomNumber, getRamNumberHex, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import {mapState,mapMutations} from 'vuex'
+import pako from 'pako'
 import mInput from '../../components/m-input.vue'
 
 export default {
@@ -61,6 +62,7 @@ export default {
 	},
 	data() {
 		return {
+			socketTask: null,
 			loginDescription: loginDescription,
 			platformIndex: 0,
 			platformName: '',
@@ -79,25 +81,21 @@ export default {
 			userInfo: {
 			  usernamePlatForm: '', // 平台的用户名
 			  passwordPlatForm: '', // 平台的密码
-			  platform: 1, // 这个platform用在像辅助添加用户的时候
+			  platform: 1, // 这个platform用在向辅助添加用户的时候
 			  server: '',
 			  endTime: '', // 辅助到期时间
 			  deviceType: 'vivo+x5s+l',
 			  site: 'jqcm_android',
-			  mac: '',
-			  uid: '',
+				mac: '',
+				auth: '752693a5ebeef1427199985e6c605b51',
+				imei: '',
+				imsi: '',
 			  sessionid: '',
-			  adid: '',
-			  udid: '',
-			  aid: '',
-			  openuidi: '',
-			  nickname: '',
-			  loginType: 1 // 官方平台：1，taptap：2
+			  loginType: '' // 官方平台：1，taptap：2
 			},
 			loginInfo: { // 登录过程中需要的数据
 				sessionid: '',
 				userId: '',
-				uid: '', // 渠道登录的时候uid和userId不同
 				token: '',
 				channelId: '',
 				pfId: '',
@@ -142,24 +140,21 @@ export default {
 				this.$toast("请选择平台")
 				return
 			}
+			let login_type = 1
+			if (this.userInfo.loginType !== 1) {
+				login_type = 2
+			}
 			const param = {
 				uname_md5: CryptoJS.MD5(this.userInfo.usernamePlatForm).toString(), // 用户名
 				pwd_md5: CryptoJS.MD5(this.userInfo.passwordPlatForm).toString(), // 密码
-				login_type: this.userInfo.loginType
+				login_type: login_type
 			}
 			checkUserStatus(param).then(res => {
 				if (res.code === 200) {
 					// 获取用户信息
-					// this.loginInfo.userId = res.userid
 					this.loginInfo.userId = this.userInfo.usernamePlatForm
 					this.flag.showServer = true
-					this.saveLoginInfo()
-					this.toMain()
-					uni.showToast({
-						title: '登录成功，请选择服务器后，点击开始挂机。',
-						duration: 2000,
-						icon: 'none'
-					})
+					this.handleGerServer()
 				} else {
 					this.flag.newUserFlag = true
 					uni.showToast({
@@ -169,6 +164,172 @@ export default {
 					})
 				}
 			})
+		},
+
+		// 获取服务器
+		handleGerServer() {
+			let wsUrl = ''
+			if (this.userInfo.loginType === 1) {
+				wsUrl = 'ws://121.37.203.19:36001/'
+			} else {
+				wsUrl = 'ws://121.37.253.198:36001/'
+			}
+			this.socketTask = uni.connectSocket({
+				url: wsUrl,
+				success: ()=> {
+					console.log('WebSocket连接成功！')
+				}
+			})
+			this.socketTask.onOpen(() => {
+				this.websocketOnOpen()
+			})
+			this.socketTask.onMessage((res) => {
+				this.websocketonmessage(res.data)
+			})
+			this.socketTask.onClose(() => {
+				console.log('WebSocket被关闭！')
+			})
+			this.socketTask.onError(() => {
+				console.log('WebSocket连接错误！')
+			})
+		},
+
+		/**
+		 * 
+		 */
+		websocketSend(optCode, contentObj) {
+			// console.log('发送消息',this.userInfo.Uin, optCode, JSON.stringify(contentObj))
+			const contentArrayBuffer = pako.deflate(JSON.stringify(contentObj))
+			const contentLength = contentArrayBuffer.byteLength
+			const len = 16 + contentLength
+			let buffer = new ArrayBuffer(len)
+			let view = new DataView(buffer)
+			view.setUint32(0, len);
+			view.setUint32(4, 0);
+			view.setUint16(8, 0);
+			view.setUint32(10, optCode);
+			view.setUint16(14, 2);
+			let v2 = new Uint8Array(buffer, 16);
+			v2.set(contentArrayBuffer)
+			this.socketTask.send({
+				data: buffer,
+				success:()=> {
+					console.log('消息发送成功')
+				},
+				fail:()=> {
+					console.log('消息发送失败')
+				}
+			})
+		},
+
+		websocketOnOpen() {
+			let Agent = 'agame'
+			if (this.userInfo.loginType !== 1) {
+				Agent = 'agame_channels'
+			}
+			const getMyServerPackage = {
+				Agent: Agent,
+				UserName: this.userInfo.usernamePlatForm,
+				sessionid: '',
+				Page: 0
+			}
+			this.websocketSend(16001,getMyServerPackage)
+		},
+
+		websocketonmessage(resArrayBuffer) {
+			const content = resArrayBuffer.slice(16)
+			let dv = new DataView(resArrayBuffer)
+			const optCode = dv.getUint32(10)
+			// console.log('optCode', optCode)
+			// console.log('dv.getUint32(4)', dv.getUint32(4))
+			const contentObj = JSON.parse(pako.inflate(content, { to: 'string' }))
+			// console.log(contentObj)
+			if (optCode === 16002) {
+				this.serverInfo.last_server_list = this.formatServerList(contentObj.SvrList)
+				this.saveLoginInfo()
+				this.toMain()
+				uni.showToast({
+					title: '登录成功，请选择服务器后，点击开始挂机。',
+					duration: 2000,
+					icon: 'none'
+				})
+				this.socketTask.close()
+			}
+		},
+
+		formatServerList(SvrList) {
+			let formatSrvList = []
+			SvrList.forEach(item => {
+				const oneServer = {
+					url: 'ws://' + item.LoginIp + ':' + item.LoginPort + '/',
+					text: item.SvrName,
+					server_id: item.SvrId
+				}
+				formatSrvList.push(oneServer)
+			})
+			return formatSrvList
+		},
+
+		// 登录第一步
+		handleLoginFirstStep() {
+			const params = {
+				username: this.userInfo.usernamePlatForm,
+				userpassword: this.userInfo.passwordPlatForm
+			}
+			const header= {
+				//moby_auth: this.userInfo.auth || getRamNumberHex(32),
+				moby_auth: '752693a5ebeef1427199985e6c605b51',
+				moby_imei: '865166022590965',
+				moby_sdk: 'android',
+				moby_op: '0',
+				moby_ua: 'm2|meizu',
+				moby_pn: '0',
+				moby_imsi: '460006922036790',
+				moby_mac: this.userInfo.mac || genMac(),
+				moby_gameid: '100079100925',
+				moby_bv: '20200602',
+				moby_sv: '12007',
+				moby_pb: 'asdk_ljxz_lwjqq_001',
+				moby_accid: this.loginInfo.userId || '',
+				moby_sessid: this.loginInfo.sessionid || ''
+			}
+			const secretKey = '23aa164ad29bba78'
+			const encryptParams = this.encryptData(params, secretKey)
+			acclogin(encryptParams, header).then(resEncrypt => {
+				const res = this.decryptData(resEncrypt, secretKey)
+				if (res.code == 0) {
+					this.loginInfo.userId = res.data.account.accountid,
+					this.loginInfo.sessionid = res.data.account.sessionid
+				} else {
+					uni.showToast({
+						title: res.msg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 加密
+		encryptData(reqObj, secretKey) {
+			const JsonData = JSON.stringify(reqObj)
+			const encryptData = CryptoJS.AES.encrypt(JsonData, CryptoJS.enc.Utf8.parse(secretKey), {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+			}).toString()
+			// const Base64Data = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encryptData))
+			return encryptData
+		},
+
+		// 解密
+		decryptData(resEncrypt, secretKey) {
+			// const encryptData = CryptoJS.enc.Base64.parse(resEncrypt).toString(CryptoJS.enc.Utf8)
+			const decryptData = CryptoJS.AES.decrypt(resEncrypt, CryptoJS.enc.Utf8.parse(secretKey), {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+			}).toString(CryptoJS.enc.Utf8)
+			const resObj = JSON.parse(decryptData)
+			return resObj
 		},
 		
 		// 读取记住的登录信息
@@ -180,11 +341,15 @@ export default {
         this.userInfo.usernamePlatForm = gameLoginInfo.usernamePlatForm
         this.userInfo.passwordPlatForm = gameLoginInfo.passwordPlatForm
         this.userInfo.sessionid = gameLoginInfo.sessionid
-        this.userInfo.loginType = gameLoginInfo.loginType
+				this.userInfo.loginType = gameLoginInfo.loginType
+				this.userInfo.mac = gameLoginInfo.mac
+				this.userInfo.auth = gameLoginInfo.auth
+				this.userInfo.imei = gameLoginInfo.imei
+				this.userInfo.imsi = gameLoginInfo.imsi
         this.loginInfo.userId = gameLoginInfo.userId
 				this.flag.showServer = gameLoginInfo.showServer
 				this.platformName = gameLoginInfo.platformName
-				this.serverInfo = gameLoginInfo.serverInfo
+				// this.serverInfo = gameLoginInfo.serverInfo
 				this.initSaveData()
         // this.serverInfo = JSON.parse(gameLoginInfo.serverInfo)
         // this.handleGuajiStatus()
@@ -199,7 +364,11 @@ export default {
         usernamePlatForm: this.userInfo.usernamePlatForm,
         passwordPlatForm: this.userInfo.passwordPlatForm,
         sessionid: this.userInfo.sessionid,
-        loginType: this.userInfo.loginType,
+				loginType: this.userInfo.loginType,
+				mac: this.userInfo.mac,
+				auth: this.userInfo.auth,
+				imei: this.userInfo.imei,
+				imsi: this.userInfo.imsi,
         userId: this.loginInfo.userId,
 				showServer: this.flag.showServer,
 				platformName: this.platformName,

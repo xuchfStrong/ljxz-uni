@@ -5,10 +5,9 @@
   "author": "xuchangfan",
   "dependencies": {
     "crypto-js": "^3.1.9-1",
+    "js-rsa": "^1.0.2",
     "moment": "^2.24.0",
-    "js-rsa": "^1.0.2"
+    "pako": "^1.0.11"
   },
-  "devDependencies": {
-
-  }
+  "devDependencies": {}
 }

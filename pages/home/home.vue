@@ -31,7 +31,7 @@
 				<text style="width: 10upx; display: inline-block;"></text> -->
 				<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
 				<text style="width: 10upx; display: inline-block;"></text>
-				<button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button>
+				<button type="primary" plain="true" size="mini" @tap="handleGerServer">更新服务器</button>
 			</view>
 		</view>
 
@@ -432,6 +432,7 @@ import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConf
 import options from '@/utils/options.json'
 import { jingjieMap, weimianMap, vipMap } from './mapData.js'
 import mInput from '../../components/m-input.vue'
+import pako from 'pako'
 
 const configInfoDefault = {
 	youlisifang_id: 0,
@@ -511,6 +512,7 @@ export default {
   },
 	data() {
 		return {
+			socketTask: null,
 			platformName: '',
 			serverName: '',
 			lastServerIndex: 0,
@@ -586,7 +588,7 @@ export default {
 			  platform: 1, // 这个platform用在像辅助添加用户的时候
 			  server_id: '',
 			  endTime: '', // 辅助到期时间
-			  loginType: 1 // 九游平台：1
+			  loginType: 1 // 官服：1
 			},
 			loginInfo: { // 登录过程中需要的数据
 				userId: ''
@@ -648,7 +650,7 @@ export default {
 	},
 	onLoad() {
 		this.loadLoginInfo()
-		this.handleGetServerList()
+		// this.handleGetServerList()
 		this.handleGetUtils()
 		this.handleGetRemoteOptions()
 	},
@@ -776,6 +778,107 @@ export default {
 			this.allServerindex = e.target.value
 			this.lastServerIndex = getIndexByValue(this.serverInfo.last_server_list, this.userInfo.server_id)
 			this.saveLoginInfo()
+		},
+
+		// 获取服务器
+		handleGerServer() {
+			let wsUrl = ''
+			if (this.userInfo.loginType === 1) {
+				wsUrl = 'ws://121.37.203.19:36001/'
+			} else {
+				wsUrl = 'ws://121.37.253.198:36001/'
+			}
+			this.socketTask = uni.connectSocket({
+				url: wsUrl,
+				success: ()=> {
+					console.log('WebSocket连接成功！')
+				}
+			})
+			this.socketTask.onOpen(() => {
+				this.websocketOnOpen()
+			})
+			this.socketTask.onMessage((res) => {
+				this.websocketonmessage(res.data)
+			})
+			this.socketTask.onClose(() => {
+				console.log('WebSocket被关闭！')
+			})
+			this.socketTask.onError(() => {
+				console.log('WebSocket连接错误！')
+			})
+		},
+
+		/**
+		 * 
+		 */
+		websocketSend(optCode, contentObj) {
+			// console.log('发送消息',this.userInfo.Uin, optCode, JSON.stringify(contentObj))
+			const contentArrayBuffer = pako.deflate(JSON.stringify(contentObj))
+			const contentLength = contentArrayBuffer.byteLength
+			const len = 16 + contentLength
+			let buffer = new ArrayBuffer(len)
+			let view = new DataView(buffer)
+			view.setUint32(0, len);
+			view.setUint32(4, 0);
+			view.setUint16(8, 0);
+			view.setUint32(10, optCode);
+			view.setUint16(14, 2);
+			let v2 = new Uint8Array(buffer, 16);
+			v2.set(contentArrayBuffer)
+			this.socketTask.send({
+				data: buffer,
+				success:()=> {
+					console.log('消息发送成功')
+				},
+				fail:()=> {
+					console.log('消息发送失败')
+				}
+			})
+		},
+
+		websocketOnOpen() {
+			let Agent = 'agame'
+			if (this.userInfo.loginType !== 1) {
+				Agent = 'agame_channels'
+			}
+			const getMyServerPackage = {
+				Agent: Agent,
+				UserName: this.userInfo.usernamePlatForm,
+				sessionid: '',
+				Page: 0
+			}
+			this.websocketSend(16001,getMyServerPackage)
+		},
+
+		websocketonmessage(resArrayBuffer) {
+			const content = resArrayBuffer.slice(16)
+			let dv = new DataView(resArrayBuffer)
+			const optCode = dv.getUint32(10)
+			const contentObj = JSON.parse(pako.inflate(content, { to: 'string' }))
+			// console.log(contentObj)
+			if (optCode === 16002) {
+				this.serverInfo.last_server_list = this.formatServerList(contentObj.SvrList)
+				this.saveLoginInfo()
+				uni.showToast({
+					title: '更新服务器成功。',
+					duration: 2000,
+					icon: 'none'
+				})
+				this.socketTask.close()
+			}
+		},
+
+		formatServerList(SvrList) {
+			let formatSrvList = []
+			SvrList.forEach(item => {
+				const oneServer = {
+					url: 'ws://' + item.LoginIp + ':' + item.LoginPort + '/',
+					text: item.SvrName,
+					server_id: item.SvrId
+				}
+				formatSrvList.push(oneServer)
+			})
+			return formatSrvList
 		},
 
 		// 更新服务器列表

@@ -118,6 +118,19 @@ export function genRandomNumber(num) {
 }
 
 /**
+ * 生成指定位数的16进制随机数
+ * @param {Number} num
+ */
+export function getRamNumberHex(length){
+	var result='';
+	for(var i=0; i<length; i++){
+		result += Math.floor(Math.random()*16).toString(16) // 这里如果将16改成10，就是生成的10进制的
+	}
+
+	return result //toLowerCase()转小写，toUpperCase转大写
+}
+
+/**
  * 生成UUID
  * @param {*}
  */

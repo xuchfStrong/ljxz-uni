@@ -11,7 +11,7 @@
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">原区服ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.oldServerId" placeholder="请输入原区服ID,如481,60019"></m-input>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.oldServerId" placeholder="请输入原区服ID,如2,17"></m-input>
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">新辅助ID：</text>
@@ -19,7 +19,7 @@
 		    </view>
 				<view class="input-row border">
 		        <text class="title-lang">新区服ID：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newServerId" placeholder="请输入新区服ID,如801,70010"></m-input>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable v-model="transferInfo.newServerId" placeholder="请输入新区服ID,如5,21"></m-input>
 		    </view>
 		</view>
 
@@ -83,7 +83,7 @@ export default {
 			const params = {
 				from_id: this.transferInfo.oldUserId,
 				from_server: this.transferInfo.oldServerId,
-				from_pwd_md5: CryptoJS.MD5(this.transferInfo.oldPassword),
+				from_pwd_md5: CryptoJS.MD5(this.transferInfo.oldPassword).toString(),
 				to_id: this.transferInfo.newUserId,
 				to_server: this.transferInfo.newServerId
 			}

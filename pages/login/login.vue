@@ -154,7 +154,17 @@ export default {
 					// 获取用户信息
 					this.loginInfo.userId = this.userInfo.usernamePlatForm
 					this.flag.showServer = true
-					this.handleGerServer()
+					if (this.userInfo.loginType === 1) {
+						this.saveLoginInfo()
+						this.toMain()
+						uni.showToast({
+							title: '登录成功，请选择服务器后，点击开始挂机。',
+							duration: 2000,
+							icon: 'none'
+						})
+					} else {
+						this.handleGerServer()
+					}
 				} else {
 					this.flag.newUserFlag = true
 					uni.showToast({
@@ -230,7 +240,7 @@ export default {
 			const getMyServerPackage = {
 				Agent: Agent,
 				UserName: this.userInfo.usernamePlatForm,
-				sessionid: '',
+				sessionid: '88ffe736-0759-8c15-ab26-2d72e0f00c9d',
 				Page: 0
 			}
 			this.websocketSend(16001,getMyServerPackage)
@@ -297,6 +307,7 @@ export default {
 			const encryptParams = this.encryptData(params, secretKey)
 			acclogin(encryptParams, header).then(resEncrypt => {
 				const res = this.decryptData(resEncrypt, secretKey)
+				console.log(res)
 				if (res.code == 0) {
 					this.loginInfo.userId = res.data.account.accountid,
 					this.loginInfo.sessionid = res.data.account.sessionid

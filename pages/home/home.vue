@@ -27,8 +27,8 @@
 		</view>
 		<view v-else class="btn-center">
 			<view>
-				<!-- <button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
-				<text style="width: 10upx; display: inline-block;"></text> -->
+				<button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
+				<text style="width: 10upx; display: inline-block;"></text>
 				<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
 				<text style="width: 10upx; display: inline-block;"></text>
 				<button type="primary" plain="true" size="mini" @tap="handleGerServer">更新服务器</button>
@@ -118,6 +118,16 @@
 				<text>仙液：</text>
 				<text>{{ roleInfo.huoneng | valueFormatFilter }}</text>
 			</view>
+			<view class="attr-flex-item">
+				<text>炎帝征途：</text>
+				<text>{{ roleInfo.zhuzai_level }}</text>
+			</view>
+			<view class="attr-flex-item">
+				<text>主宰层数：</text>
+				<text>{{ roleInfo.bazhu_cengshu }}</text>
+			</view>
+			<view class="attr-flex-item">
+			</view>
 			<!-- <view>
 				<text>VIP经验：</text>
 				<text>{{ notGetChargeValue ? '未获取到':roleInfo.charge_value }}，</text>
@@ -204,16 +214,20 @@
 		        <switch :checked="!!configInfo.is_hundi" @change="changeSwitchBoolean('is_hundi')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动关卡(关闭则增加试炼次数)</view>
+		        <view class="uni-list-cell-db">自动关卡(关闭则增加炎帝次数)</view>
 		        <switch :checked="!!configInfo.is_guanqia" @change="changeSwitchBoolean('is_guanqia')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动炎帝(关闭则增加关卡次数)</view>
+		        <switch :checked="!!configInfo.is_yandi" @change="changeSwitchBoolean('is_yandi')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动试炼副本(关闭炎帝和关卡才增加次数)</view>
+		        <switch :checked="!!configInfo.is_tianmu" @change="changeSwitchBoolean('is_tianmu')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动领邮件</view>
 		        <switch :checked="!!configInfo.is_mail" @change="changeSwitchBoolean('is_mail')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动试炼副本</view>
-		        <switch :checked="!!configInfo.is_tianmu" @change="changeSwitchBoolean('is_tianmu')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">试炼副本购买-金币</view>
@@ -438,7 +452,8 @@ const configInfoDefault = {
 	youlisifang_id: 0,
 	is_youlisifang_tiaozan: 0,
 	douji_goumai: 10,
-  is_tianmu: 0,
+	is_tianmu: 0,
+	is_yandi: 1,
   is_shenghuojing: 0,
 	is_hundi: 1,
 	is_guanqia: 1,
@@ -650,7 +665,7 @@ export default {
 	},
 	onLoad() {
 		this.loadLoginInfo()
-		// this.handleGetServerList()
+		this.handleGetServerList()
 		this.handleGetUtils()
 		this.handleGetRemoteOptions()
 	},
@@ -784,7 +799,9 @@ export default {
 		handleGerServer() {
 			let wsUrl = ''
 			if (this.userInfo.loginType === 1) {
-				wsUrl = 'ws://121.37.203.19:36001/'
+				// wsUrl = 'ws://121.37.203.19:36001/'
+				this.handleGetServerList()
+				return
 			} else {
 				wsUrl = 'ws://121.37.253.198:36001/'
 			}
@@ -883,6 +900,7 @@ export default {
 
 		// 更新服务器列表
     handleGetServerList() {
+			if (this.userInfo.loginType !== 1) return
 			getServerInfo().then(res => {
         this.serverInfo.last_server_list = res.server.guanfu
       }).catch(err => {

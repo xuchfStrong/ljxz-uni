@@ -14,14 +14,14 @@ httpForm.setConfig((config) => { /* 设置全局配置 */
   config.baseUrl = 'http://49.232.96.20:11658'
   config.header = {
     ...config.header,
-    "Content-Type":"application/x-www-form-urlencoded",
   }
   return config
 })
 
 httpForm.interceptor.request((config, cancel) => { /* 请求之前拦截器 */
   config.header = {
-    ...config.header
+    ...config.header,
+    "Content-Type":"application/x-www-form-urlencoded",
   }
   /*
   if (!token) { // 如果token不存在，调用cancel 会取消本次请求，但是该函数的catch() 仍会执行
@@ -54,8 +54,7 @@ const http = new Request()
 http.setConfig((config) => { /* 设置全局配置 */
   config.baseUrl = 'http://49.232.96.20:11658' /* 根域名不同 */
   config.header = {
-    ...config.header,
-    "Content-Type":"application/json",
+    ...config.header
   }
   return config
 })
@@ -72,7 +71,8 @@ http.validateStatus = (statusCode) => {
 
 http.interceptor.request((config, cancel) => { /* 请求之前拦截器 */
   config.header = {
-    ...config.header
+    ...config.header,
+    "Content-Type":"application/json",
   }
   /*
   if (!token) { // 如果token不存在，调用cancel 会取消本次请求，但是该函数的catch() 仍会执行

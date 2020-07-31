@@ -150,11 +150,12 @@ export default {
 				login_type: login_type
 			}
 			checkUserStatus(param).then(res => {
+				const guanfuServerLoginTypeList = [1,2]
 				if (res.code === 200) {
 					// 获取用户信息
-					this.loginInfo.userId = this.userInfo.usernamePlatForm
+					this.loginInfo.userId = res.userid
 					this.flag.showServer = true
-					if (this.userInfo.loginType === 1) {
+					if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
 						this.saveLoginInfo()
 						this.toMain()
 						uni.showToast({
@@ -167,11 +168,15 @@ export default {
 					}
 				} else {
 					this.flag.newUserFlag = true
-					uni.showToast({
-						title: '登录失败，请使用登陆助手提取账号密码后再登录。',
-						duration: 2000,
-						icon: 'none'
-					})
+					if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) { // 苹果
+						this.handleLoginFirstStep()
+					} else { // 渠道服
+						uni.showToast({
+							title: '登录失败，请使用登陆助手提取账号密码后再登录。',
+							duration: 2000,
+							icon: 'none'
+						})
+					}
 				}
 			})
 		},
@@ -286,22 +291,42 @@ export default {
 				username: this.userInfo.usernamePlatForm,
 				userpassword: this.userInfo.passwordPlatForm
 			}
-			const header= {
-				//moby_auth: this.userInfo.auth || getRamNumberHex(32),
-				moby_auth: '752693a5ebeef1427199985e6c605b51',
-				moby_imei: '865166022590965',
-				moby_sdk: 'android',
-				moby_op: '0',
-				moby_ua: 'm2|meizu',
-				moby_pn: '0',
-				moby_imsi: '460006922036790',
-				moby_mac: this.userInfo.mac || genMac(),
-				moby_gameid: '100079100925',
-				moby_bv: '20200602',
-				moby_sv: '12007',
-				moby_pb: 'asdk_ljxz_lwjqq_001',
-				moby_accid: this.loginInfo.userId || '',
-				moby_sessid: this.loginInfo.sessionid || ''
+			let header = {}
+			if (this.userInfo.loginType === 1) {
+				header= {
+					//moby_auth: this.userInfo.auth || getRamNumberHex(32),
+					moby_auth: '752693a5ebeef1427199985e6c605b51',
+					moby_imei: '865166022590965',
+					moby_sdk: 'android',
+					moby_op: '0',
+					moby_ua: 'm2|meizu',
+					moby_pn: '0',
+					moby_imsi: '460006922036790',
+					moby_mac: this.userInfo.mac || genMac(),
+					moby_gameid: '100079100925',
+					moby_bv: '20200602',
+					moby_sv: '12007',
+					moby_pb: 'asdk_ljxz_lwjqq_001',
+					moby_accid: this.loginInfo.userId || '',
+					moby_sessid: this.loginInfo.sessionid || ''
+				}
+			}
+			if (this.userInfo.loginType === 2) { // 苹果用户
+				header= {
+					//moby_auth: this.userInfo.auth || getRamNumberHex(32),
+					moby_auth: '22986535d04058b002e6888e6210baab',
+					moby_imei: 'A860DEB0-CC45-8A7F-9AC7-AFE2F0E2CAFD',
+					moby_sdk: 'iphone',
+					moby_op: '0',
+					moby_ua: 'iPhone|14.0',
+					moby_pn: '(0, 0)',
+					moby_gameid: '100079100925',
+					moby_bv: '20200513',
+					moby_sv: '400003',
+					moby_pb: 'appstore_ljxz_101',
+					moby_accid: this.loginInfo.userId || '',
+					moby_sessid: this.loginInfo.sessionid || ''
+				}
 			}
 			const secretKey = '23aa164ad29bba78'
 			const encryptParams = this.encryptData(params, secretKey)
@@ -311,6 +336,7 @@ export default {
 				if (res.code == 0) {
 					this.loginInfo.userId = res.data.account.accountid,
 					this.loginInfo.sessionid = res.data.account.sessionid
+					this.handleAddUser()
 				} else {
 					uni.showToast({
 						title: res.msg,
@@ -341,6 +367,33 @@ export default {
 			}).toString(CryptoJS.enc.Utf8)
 			const resObj = JSON.parse(decryptData)
 			return resObj
+		},
+
+		// 登录游戏辅助，添加新用户
+    handleAddUser() {
+      const param = {
+        userid: this.loginInfo.userId,
+        last_server_id: 0,
+        login_type: this.userInfo.loginType,
+        username: this.userInfo.usernamePlatForm,
+        password: this.userInfo.passwordPlatForm,
+        uname_md5: CryptoJS.MD5(this.userInfo.usernamePlatForm).toString(),
+        pwd_md5: CryptoJS.MD5(this.userInfo.passwordPlatForm).toString()
+      }
+      addUser(param).then(res => {
+        if (res.code === 200) {
+					this.flag.showServer = true
+          this.saveLoginInfo()
+          uni.showToast({
+						title: '登录成功，请选择服务器，然后开始挂机',
+						duration: 2000,
+						icon: 'none'
+					})
+					this.toMain()
+        }
+      }).catch(err => {
+        console.log(err)
+      })
 		},
 		
 		// 读取记住的登录信息

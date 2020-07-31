@@ -900,12 +900,14 @@ export default {
 
 		// 更新服务器列表
     handleGetServerList() {
-			if (this.userInfo.loginType !== 1) return
-			getServerInfo().then(res => {
-        this.serverInfo.last_server_list = res.server.guanfu
-      }).catch(err => {
-        console.log(err)
-      })
+			const guanfuServerLoginTypeList = [1,2]
+			if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
+				getServerInfo().then(res => {
+					this.serverInfo.last_server_list = res.server.guanfu
+				}).catch(err => {
+					console.log(err)
+				})
+			}
 		},
 		
 		// 获取挂机状态

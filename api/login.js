@@ -21,6 +21,15 @@ export function checkidcard(data, header) {
   )
 }
 
+// 抖音login
+export function douyinUserLogin(data) {
+  return http.post(
+    // 'http://game.cross2.cn/sdk.php/User/user_login',
+    'http://106.54.36.248:9080/ljxz_douyin/sdk.php/User/user_login',
+    data
+  )
+}
+
 // 新用户登录，添加到辅助后台
 export function addUser(data) {
   return httpForm.post(

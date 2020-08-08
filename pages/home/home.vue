@@ -210,7 +210,7 @@
 		        <switch :checked="!!configInfo.is_shenghuojing" @change="changeSwitchBoolean('is_shenghuojing')"/>
 		    </view>
 		    <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动冥帝</view>
+		        <view class="uni-list-cell-db">自动冥帝(普通版是遇到了才会打一下)</view>
 		        <switch :checked="!!configInfo.is_hundi" @change="changeSwitchBoolean('is_hundi')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
@@ -900,7 +900,7 @@ export default {
 
 		// 更新服务器列表
     handleGetServerList() {
-			const guanfuServerLoginTypeList = [1,2]
+			const guanfuServerLoginTypeList = [1,2,3]
 			if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
 				getServerInfo().then(res => {
 					this.serverInfo.last_server_list = res.server.guanfu

@@ -50,7 +50,7 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 import { getUtils } from '@/api/game'
-import { acclogin, addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
+import { acclogin, addUser, checkUserStatus, getRemoteOptions, douyinUserLogin } from '@/api/login'
 import { genRandomNumber, getRamNumberHex, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import {mapState,mapMutations} from 'vuex'
 import pako from 'pako'
@@ -140,17 +140,17 @@ export default {
 				this.$toast("请选择平台")
 				return
 			}
-			let login_type = 1
-			if (this.userInfo.loginType !== 1) {
-				login_type = 2
-			}
+			// let login_type = 1
+			// if (this.userInfo.loginType !== 1) {
+			// 	login_type = 2
+			// }
 			const param = {
 				uname_md5: CryptoJS.MD5(this.userInfo.usernamePlatForm).toString(), // 用户名
 				pwd_md5: CryptoJS.MD5(this.userInfo.passwordPlatForm).toString(), // 密码
-				login_type: login_type
+				login_type: this.userInfo.loginType
 			}
 			checkUserStatus(param).then(res => {
-				const guanfuServerLoginTypeList = [1,2]
+				const guanfuServerLoginTypeList = [1,2,3]
 				if (res.code === 200) {
 					// 获取用户信息
 					this.loginInfo.userId = res.userid
@@ -168,8 +168,12 @@ export default {
 					}
 				} else {
 					this.flag.newUserFlag = true
-					if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) { // 苹果
+					const guanfangPlatform = [1, 2]
+					const douyinPlatform = [3]
+					if (guanfangPlatform.includes(this.userInfo.loginType)) { // 苹果
 						this.handleLoginFirstStep()
+					} else if (douyinPlatform.includes(this.userInfo.loginType)) { // 抖音
+						this.handleLoginFirstStepDouyin()
 					} else { // 渠道服
 						uni.showToast({
 							title: '登录失败，请使用登陆助手提取账号密码后再登录。',
@@ -367,6 +371,57 @@ export default {
 			}).toString(CryptoJS.enc.Utf8)
 			const resObj = JSON.parse(decryptData)
 			return resObj
+		},
+
+		// 抖音登录第一步
+		handleLoginFirstStepDouyin() {
+			const params = {
+				account: this.userInfo.usernamePlatForm,
+				cat1: "136",
+				cat2: "1680",
+				ct_version: "6.2.0",
+				device_id: "3783354ea4f5ed0ad96a1d31a7b8b026",
+				extend1: "",
+				extend2: "",
+				game_appid: "5D2E20708BE1E3EC0",
+				game_id: "107",
+				game_name: "武道神尊(安卓版)",
+				password: this.userInfo.passwordPlatForm,
+				phoneType: "vivo v3max a",
+				sdk_version: "1",
+				system_version: "5.1.1",
+			}
+			const md5Sign = this.getDouyinLoginMd5(params)
+			params.md5_sign = md5Sign
+			const paramsStr = JSON.stringify(params)
+			const paramsBase64 = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(paramsStr))
+			douyinUserLogin(paramsBase64).then(res => {
+				const resPlain = CryptoJS.enc.Base64.parse(res).toString(CryptoJS.enc.Utf8)
+				const resObj = JSON.parse(resPlain)
+				if (resObj.status === 200) {
+					this.loginInfo.userId = resObj.user_id,
+					this.loginInfo.sessionid = resObj.token
+					this.handleAddUser()
+				} else {
+					uni.showToast({
+						title: resObj.return_msg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 计算抖音登录的md5
+		getDouyinLoginMd5(params) {
+			let str = ''
+			for (let i in params) {
+				str = str + params[i]
+			}
+			const md5Key = 'C006BBDD939C99C78209'
+			const plainStr = str + md5Key
+			const md5Sign = CryptoJS.MD5(plainStr).toString()
+			return md5Sign
 		},
 
 		// 登录游戏辅助，添加新用户

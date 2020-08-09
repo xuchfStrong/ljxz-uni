@@ -35,10 +35,12 @@
 			</view>
 		</view>
 
-		<text v-if="utils.showContact&&$global.ljxzSaleChannel===1" class="waring-wrap">{{ utils.contact }}</text>
+		<text v-if="utils.showCommon" class="waring-wrap">{{ utils.common }}</text>
+		<text v-if="utils.showContact&&$global.ljxzSaleChannel===1" class="waring-wrap">{{ utils.contact1 }}</text>
 		<text v-if="utils.showContact2&&$global.ljxzSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.ljxzSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&$global.ljxzSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
+		<text v-if="utils.showContact4&&$global.ljxzSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
 		
 		
 		<view class="uni-divider">

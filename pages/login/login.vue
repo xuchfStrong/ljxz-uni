@@ -150,7 +150,7 @@ export default {
 				login_type: this.userInfo.loginType
 			}
 			checkUserStatus(param).then(res => {
-				const guanfuServerLoginTypeList = [1,2,3]
+				const guanfuServerLoginTypeList = [1,2,3,4]
 				if (res.code === 200) {
 					// 获取用户信息
 					this.loginInfo.userId = res.userid
@@ -168,9 +168,9 @@ export default {
 					}
 				} else {
 					this.flag.newUserFlag = true
-					const guanfangPlatform = [1, 2]
+					const guanfangPlatform = [1, 2, 4]
 					const douyinPlatform = [3]
-					if (guanfangPlatform.includes(this.userInfo.loginType)) { // 苹果
+					if (guanfangPlatform.includes(this.userInfo.loginType)) { // 官方，苹果，斗破乾坤
 						this.handleLoginFirstStep()
 					} else if (douyinPlatform.includes(this.userInfo.loginType)) { // 抖音
 						this.handleLoginFirstStepDouyin()
@@ -296,7 +296,8 @@ export default {
 				userpassword: this.userInfo.passwordPlatForm
 			}
 			let header = {}
-			if (this.userInfo.loginType === 1) {
+			const arrGuanfangLogin = [1, 4] // 官方,斗破乾坤
+			if (arrGuanfangLogin.includes(this.userInfo.loginType)) {
 				header= {
 					//moby_auth: this.userInfo.auth || getRamNumberHex(32),
 					moby_auth: '752693a5ebeef1427199985e6c605b51',

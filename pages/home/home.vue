@@ -169,29 +169,29 @@
 			</view>
 		</view>
 
-		<!-- <view class="uni-divider">
+		<view class="uni-divider">
 			<view class="uni-divider__content">势力信息</view>
 			<view class="uni-divider__line"></view>
 		</view>
 
 		<view class="attr-flex">
 			<view class="attr-flex-item">
-				<text>兵力：</text>
-				<text>{{ roleInfo.weimian_bingli }}</text>
+				<text>体力：</text>
+				<text>{{ roleInfo.shili_tili }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>攻击令：</text>
-				<text>{{ roleInfo.weimian_gongjiling }}</text>
+				<text>倍数：</text>
+				<text>{{ roleInfo.shili_beishu }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>食物：</text>
-				<text>{{ roleInfo.weimian_shiwu }}</text>
+				<text>钻石每天：</text>
+				<text>{{ roleInfo.shili_zuanshi }}</text>
 			</view>
 		</view>
 		<view>
 			<text>位置：</text>
-			<text :class="{danger: isNoWeimian}">{{ roleInfo.weimian_weizhi | weimianFilter }}</text>
-		</view> -->
+			<text :class="{danger: isNoShili}">{{ roleInfo.shili_weizhi | shiliFilter }}</text>
+		</view>
 		
 		<view class="uni-divider">
 			<view class="uni-divider__content">挂机设置</view>
@@ -259,10 +259,10 @@
 		        <view class="uni-list-cell-db">自动一次一次买燚火次数</view>
 		        <switch :checked="!!configInfo.is_buy_yihuo" @change="changeSwitchBoolean('is_buy_yihuo')"/>
 		    </view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
+				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动换高收入势力</view>
-		        <switch :checked="!!configInfo.is_change_weimian" @change="changeSwitchBoolean('is_change_weimian')"/>
-		    </view> -->
+		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchBoolean('is_change_shili')"/>
+		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动炼丹</view>
 		        <switch :checked="!!configInfo.is_liandan" @change="changeSwitchBoolean('is_liandan')"/>
@@ -446,7 +446,7 @@ import { startGuaji, stopGuaji, getServerInfo } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
 import options from '@/utils/options.json'
-import { jingjieMap, weimianMap, vipMap } from './mapData.js'
+import { jingjieMap, shiliMap, vipMap } from './mapData.js'
 import mInput from '../../components/m-input.vue'
 import pako from 'pako'
 
@@ -462,9 +462,9 @@ const configInfoDefault = {
 	is_mail: 0,
 	is_liandan: 0,
 	is_hundianlaixi: 1,
-	is_change_weimian: 1,
+	is_change_shili: 0,
   is_lianmengmijing: 1,
-  is_doupoqiangbang: 0,
+	is_doupoqiangbang: 0,
   lixianbeishu: 0,
   youlisifang_id: 0,
   lianmengjianshe_type: 0,
@@ -505,8 +505,8 @@ export default {
     jingjieFilter(jingjie) {
       return jingjieMap[jingjie]
     },
-    weimianFilter(weimian) {
-      return weimianMap[weimian] || '未获取到位面信息'
+    shiliFilter(shili_weizhi) {
+      return shiliMap[shili_weizhi] || '未获取到位面信息'
     },
     vipStatus(isVip) {
       const map = {
@@ -597,7 +597,11 @@ export default {
 				charge_value: '',
 				douqi: '',
 				huoneng: '',
-        jinbi: ''
+				jinbi: '',
+				shili_tili: '',
+				shili_beishu: '',
+				shili_zuanshi: '',
+				shili_tili: '',
       },
 			userInfo: {
 			  usernamePlatForm: '', // 平台的用户名
@@ -639,8 +643,8 @@ export default {
       return duration > 2 * 3600 * 1000
     },
     // 计算位面位置是否未占有
-    isNoWeimian() {
-      return this.roleInfo.weimian_weizhi === 0
+    isNoShili() {
+      return this.roleInfo.shili_weizhi === 0
     },
 
     // 是否获取到充值额度

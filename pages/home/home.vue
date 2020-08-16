@@ -260,8 +260,12 @@
 		        <switch :checked="!!configInfo.is_buy_yihuo" @change="changeSwitchBoolean('is_buy_yihuo')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动换高收入势力</view>
+		        <view class="uni-list-cell-db">自动换高收入势力(VIP有效)</view>
 		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchBoolean('is_change_shili')"/>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动清理势力外盟人员(VIP有效)</view>
+		        <switch :checked="!!configInfo.is_beat_shili" @change="changeSwitchBoolean('is_beat_shili')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动炼丹</view>
@@ -463,6 +467,7 @@ const configInfoDefault = {
 	is_liandan: 0,
 	is_hundianlaixi: 1,
 	is_change_shili: 0,
+	is_beat_shili: 0,
   is_lianmengmijing: 1,
 	is_doupoqiangbang: 0,
   lixianbeishu: 0,

@@ -17,6 +17,14 @@ export function getServerInfo(params) {
   )
 }
 
+// 获取服务器信息-渠道
+export function getServerInfoChannel(params) {
+  return http.get(
+    '/ljxz/server_channel.php',
+    {params}
+  )
+}
+
 // 获取角色信息
 export function getRoleInfo(params) {
   return http.get(

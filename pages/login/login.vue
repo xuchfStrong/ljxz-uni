@@ -155,17 +155,24 @@ export default {
 					// 获取用户信息
 					this.loginInfo.userId = res.userid
 					this.flag.showServer = true
-					if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
-						this.saveLoginInfo()
-						this.toMain()
-						uni.showToast({
-							title: '登录成功，请选择服务器后，点击开始挂机。',
-							duration: 2000,
-							icon: 'none'
-						})
-					} else {
-						this.handleGerServer()
-					}
+					this.saveLoginInfo()
+					this.toMain()
+					uni.showToast({
+						title: '登录成功，请选择服务器后，点击开始挂机。',
+						duration: 2000,
+						icon: 'none'
+					})
+					// if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
+					// 	this.saveLoginInfo()
+					// 	this.toMain()
+					// 	uni.showToast({
+					// 		title: '登录成功，请选择服务器后，点击开始挂机。',
+					// 		duration: 2000,
+					// 		icon: 'none'
+					// 	})
+					// } else {
+					// 	this.handleGerServer()
+					// }
 				} else {
 					this.flag.newUserFlag = true
 					const guanfangPlatform = [1, 2, 4]
@@ -249,7 +256,7 @@ export default {
 			const getMyServerPackage = {
 				Agent: Agent,
 				UserName: this.userInfo.usernamePlatForm,
-				sessionid: '88ffe736-0759-8c15-ab26-2d72e0f00c9d',
+				sessionid: '',
 				Page: 0
 			}
 			this.websocketSend(16001,getMyServerPackage)
@@ -262,7 +269,7 @@ export default {
 			// console.log('optCode', optCode)
 			// console.log('dv.getUint32(4)', dv.getUint32(4))
 			const contentObj = JSON.parse(pako.inflate(content, { to: 'string' }))
-			// console.log(contentObj)
+			console.log(contentObj)
 			if (optCode === 16002) {
 				this.serverInfo.last_server_list = this.formatServerList(contentObj.SvrList)
 				this.saveLoginInfo()

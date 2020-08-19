@@ -19,14 +19,26 @@
 		        <text class="title">账号：</text>
 		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.usernamePlatForm" placeholder="请输入账号"></m-input>
 		    </view>
-		    <view class="input-row">
+				<view v-if="isVerifycode" class="input-row border">
+		        <text class="title">验证码：</text>
+		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.verifycode" placeholder="请输入验证码"></m-input>
+		    </view>
+		    <view v-else class="input-row">
 		        <text class="title">密码：</text>
 		        <m-input type="password" displayable v-model="userInfo.passwordPlatForm" placeholder="请输入密码"></m-input>
 		    </view>
 		</view>
 
+		<view v-show="showVerifycode" style="margin-top: 10rpx;">
+        <checkbox-group @change="changeVerifycodeLogin">
+            <label>
+                <checkbox value="useVerifycode"/>验证码登录
+            </label>
+        </checkbox-group>
+    </view>
+
 		<view class="btn-row">
-		    <button type="primary" class="primary" @tap="handleCheckUserStatus">登录</button>
+		    <button type="primary" class="primary" @tap="handleLogin">登录</button>
 		</view>
 
 		<view style="margin-top:10px; color:#1989fa; text-align: center;">
@@ -50,7 +62,7 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 import { getUtils } from '@/api/game'
-import { acclogin, addUser, checkUserStatus, getRemoteOptions, douyinUserLogin } from '@/api/login'
+import { acclogin, regbyphone, addUser, checkUserStatus, getRemoteOptions, douyinUserLogin } from '@/api/login'
 import { genRandomNumber, getRamNumberHex, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import {mapState,mapMutations} from 'vuex'
 import pako from 'pako'
@@ -63,6 +75,8 @@ export default {
 	data() {
 		return {
 			socketTask: null,
+			showVerifycode: false,
+			isVerifycode: false,
 			loginDescription: loginDescription,
 			platformIndex: 0,
 			platformName: '',
@@ -76,11 +90,12 @@ export default {
 			    loginFlag: false,
 			    logoutFlag: false,
 			    newUserFlag: false,
-			    showServer: false
+					showServer: false
 			},
 			userInfo: {
 			  usernamePlatForm: '', // 平台的用户名
-			  passwordPlatForm: '', // 平台的密码
+				passwordPlatForm: '', // 平台的密码
+				verifycode: '', // 验证码
 			  platform: 1, // 这个platform用在向辅助添加用户的时候
 			  server: '',
 			  endTime: '', // 辅助到期时间
@@ -132,14 +147,30 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-    },
+		},
 		
-		// 在辅助服务端检查用户状态
-		handleCheckUserStatus() {
+		// 切换是否验证码登录
+		changeVerifycodeLogin(e) {
+			console.log(e.detail.value)
+			const length = e.detail.value.length
+			this.isVerifycode = !!length
+		},
+
+		// 登录按钮
+		handleLogin() {
 			if (!this.userInfo.loginType) {
 				this.$toast("请选择平台")
 				return
 			}
+			if (this.isVerifycode) {
+				this.loginByVerifycode()
+			} else {
+				this.handleCheckUserStatus()
+			}
+		},
+		
+		// 在辅助服务端检查用户状态
+		handleCheckUserStatus() {
 			// let login_type = 1
 			// if (this.userInfo.loginType !== 1) {
 			// 	login_type = 2
@@ -296,6 +327,46 @@ export default {
 			return formatSrvList
 		},
 
+		// 验证码登录
+		loginByVerifycode() {
+			const params = {
+				phone: this.userInfo.usernamePlatForm,
+				verifycode: this.userInfo.verifycode
+			}
+			let header = {
+				//moby_auth: this.userInfo.auth || getRamNumberHex(32),
+				moby_auth: '5a6eb45eb7b2a630617fa86fbf88bce7',
+				moby_imei: 'DC7EADC1-82FA-4708-8A2A-53D853B4F8E0',
+				moby_sdk: 'iphone',
+				moby_op: '2',
+				moby_ua: 'iPhone|14.0',
+				moby_pn: '(0, 0)',
+				moby_gameid: '100079100925',
+				moby_bv: '20200513',
+				moby_sv: '400003',
+				moby_pb: 'appstore_ljxz_101',
+				moby_accid: this.loginInfo.userId || '',
+				moby_sessid: this.loginInfo.sessionid || ''
+			}
+			const secretKey = '23aa164ad29bba78'
+			const encryptParams = this.encryptData(params, secretKey)
+			regbyphone(encryptParams, header).then(resEncrypt => {
+				const res = this.decryptData(resEncrypt, secretKey)
+				if (res.code == 0) {
+					this.loginInfo.userId = res.data.account.accountid,
+					this.loginInfo.sessionid = res.data.account.sessionid
+					this.userInfo.passwordPlatForm = res.data.account.password
+					this.handleAddUser()
+				} else {
+					uni.showToast({
+						title: res.msg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			})
+		},
+
 		// 登录第一步
 		handleLoginFirstStep() {
 			const params = {
@@ -344,7 +415,7 @@ export default {
 			const encryptParams = this.encryptData(params, secretKey)
 			acclogin(encryptParams, header).then(resEncrypt => {
 				const res = this.decryptData(resEncrypt, secretKey)
-				console.log(res)
+				// console.log(res)
 				if (res.code == 0) {
 					this.loginInfo.userId = res.data.account.accountid,
 					this.loginInfo.sessionid = res.data.account.sessionid
@@ -521,6 +592,7 @@ export default {
 			}
 			this.platformName = this.remoteOptions.platform[this.platformIndex].text
 			this.userInfo.loginType = getValueByIndex(this.remoteOptions.platform, this.platformIndex)
+			this.showVerifycode = this.userInfo.loginType === 2
 		},
 
 		// 加载后将存储的数据显示出来

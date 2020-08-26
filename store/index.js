@@ -8,7 +8,8 @@ const store = new Vuex.Store({
 		hasLogin: false,
 		loginProvider: "",
 		openid: null,
-		testvuex:false
+		testvuex:false,
+		verifyCodePassowrd: ""
 	},
 	mutations: {
 		login(state, provider) {
@@ -27,6 +28,9 @@ const store = new Vuex.Store({
 		},
 		setTestFalse(state){
 			state.testvuex = false
+		},
+		setVerifyCodePassword(state, verifyCodePassowrd){
+			state.verifyCodePassowrd = verifyCodePassowrd
 		}
 	},
 	actions: {

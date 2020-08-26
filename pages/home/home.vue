@@ -276,7 +276,7 @@
 		        <switch :checked="!!configInfo.is_lianmengmijing" @change="changeSwitchBoolean('is_lianmengmijing')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">21:30之后自动斗破强榜剩余次数</view>
+		        <view class="uni-list-cell-db">21:30之后自动竞技排行剩余次数</view>
 		        <switch :checked="!!configInfo.is_doupoqiangbang" @change="changeSwitchBoolean('is_doupoqiangbang')"/>
 		    </view>
 
@@ -938,9 +938,14 @@ export default {
         return
 			}
 			if (!this.userInfo.server_id) {
+				const verifyCodePassowrd = this.$store.state.verifyCodePassowrd
+				let content = '请选择服务器'
+				if (verifyCodePassowrd) {
+					content = `请选择服务器,请妥善保管您的辅助密码：${verifyCodePassowrd}，后面可以用该密码登录辅助，转移辅助。`
+				}
 				uni.showModal({
 					title: '提示',
-					content: '请选择服务器',
+					content: content,
 					showCancel: false,
 					confirmText: '好的',
 					success: function (res) {

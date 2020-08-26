@@ -523,6 +523,7 @@ export default {
 						duration: 2000,
 						icon: 'none'
 					})
+					if (this.isVerifycode) this.$store.commit("setVerifyCodePassword", this.userInfo.passwordPlatForm)
 					this.toMain()
         }
       }).catch(err => {

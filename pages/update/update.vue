@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="summary-wrap">
-        <!-- <view v-if="hasNewVersion" class="highlight">有新版本，请下载新的版本安装，当前版本为V{{ $global.jqcmVersionName }}</view> -->
+        <!-- <view v-if="hasNewVersion" class="highlight">有新版本，请下载新的版本安装，当前版本为V{{ $global.WdszVersionName }}</view> -->
         <view v-if="showUpdate">
           <button type="primary" plain="true" size="mini" @tap="handleUpdate">更新</button>
 				  <text style="width: 10upx; display: inline-block;"></text>
@@ -14,16 +14,22 @@
         </view>
 
        <view style="margin-top:10px; color:#1989fa;">
-          <a v-if="$global.jqcmSaleChannel===1" :href="utils.apkDownloadUrlNew">
+         <a v-if="$global.wdszSaleChannel===0" :href="utils.apkDownloadUrl">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===2" :href="utils.apkDownloadUrlNew2">
+          <a v-if="$global.wdszSaleChannel===1" :href="utils.apkDownloadUrl1">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===3" :href="utils.apkDownloadUrlNew3">
+          <a v-if="$global.wdszSaleChannel===2" :href="utils.apkDownloadUrl2">
             <text>点击下载辅助APP</text>
           </a>
-          <a v-if="$global.jqcmSaleChannel===4" :href="utils.apkDownloadUrlNew4">
+          <a v-if="$global.wdszSaleChannel===3" :href="utils.apkDownloadUrl3">
+            <text>点击下载辅助APP</text>
+          </a>
+          <a v-if="$global.wdszSaleChannel===4" :href="utils.apkDownloadUrl4">
+            <text>点击下载辅助APP</text>
+          </a>
+          <a v-if="$global.wdszSaleChannel===5" :href="utils.apkDownloadUrl5">
             <text>点击下载辅助APP</text>
           </a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
@@ -55,9 +61,9 @@ export default {
 
   computed: {
     hasNewVersion() {
-      // const newVersion = this.$store.getters.newJqcmVersion
+      // const newVersion = this.$store.getters.newWdszVersion
       const newVersion = this.utils.version
-      const currentVersion = this.$global.jqcmVersion
+      const currentVersion = this.$global.wdszVersion
       return newVersion > currentVersion
     }
   },
@@ -66,7 +72,7 @@ export default {
     handleGetUtils() {
       getUtils().then(res => {
         this.utils = res
-        // this.$store.dispatch('game/changeNewJqcmVersion', res.version)
+        // this.$store.dispatch('game/changeNewWdszVersion', res.version)
       }).catch(err => {
         console.log(err)
       })
@@ -104,7 +110,7 @@ export default {
 			          var data = result.data;
                 var wgtUrl = data.test.wgtUrl
                 var pkgUrl = data.test.pkgUrl
-			          if (data.test.version > that.$global.jqcmVersion && wgtUrl && data.test.updateType === 1) { // 热更新
+			          if (data.test.version > that.$global.wdszVersion && wgtUrl && data.test.updateType === 1) { // 热更新
 			              uni.downloadFile({  
 			                  url: wgtUrl,  
 			                  success: (downloadResult) => {  
@@ -133,7 +139,7 @@ export default {
 			                  }  
 			              }); 
                 }
-                if (data.test.version > that.$global.jqcmVersion && pkgUrl && data.tesst.updateType === 2 ) { //整包更新
+                if (data.test.version > that.$global.wdszVersion && pkgUrl && data.tesst.updateType === 2 ) { //整包更新
 									uni.showModal({ //提醒用户更新  
 										title: "更新提示",  
 										content: data.test.note,  

@@ -52,10 +52,10 @@
 			<text>平台：</text>
 			<text>{{ this.platformName }}</text>
 		</view>
-		<!-- <view>
-			<text>账号：</text>
-			<text>{{ userInfo.usernamePlatForm }}</text>
-		</view> -->
+		<view>
+			<text>区服：</text>
+			<text>{{ serverName }}</text>
+		</view>
 		<view>
 			<text>角色名：</text>
 			<text>{{ roleInfo.role_name }}</text>
@@ -201,9 +201,17 @@
 		<view class="uni-list-no-border">
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		      <view class="uni-list-cell-db">领取离线倍数</view>
-		      <radio-group @change="radioChange" class="flex-lixian-item radio-flex">
+		      <radio-group @change="radioChangeLixian" class="flex-lixian-item radio-flex">
 			      <label class="radio-flex-item" v-for="(item, index) in lixianbeishuList" :key="item.value">
-			        <radio :value="item.value" :checked="index === currentLilianebishu" />{{item.name}}
+			        <radio :value="item.value" :checked="index === currentLilianBeishu" />{{item.name}}
+			      </label>
+			    </radio-group>
+		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		      <view class="uni-list-cell-db">领取游历倍数</view>
+		      <radio-group @change="radioChangeYouli" class="flex-lixian-item radio-flex">
+			      <label class="radio-flex-item" v-for="(item, index) in youlibeishuList" :key="item.value">
+			        <radio :value="item.value" :checked="index === currentYouliBeishu" />{{item.name}}
 			      </label>
 			    </radio-group>
 		    </view>
@@ -470,7 +478,8 @@ const configInfoDefault = {
 	is_beat_shili: 0,
   is_lianmengmijing: 1,
 	is_doupoqiangbang: 0,
-  lixianbeishu: 0,
+	lixianbeishu: 0,
+	youlisifang_beishu: 0,
   youlisifang_id: 0,
   lianmengjianshe_type: 0,
   yiji_kaicai_type: 0,
@@ -628,6 +637,10 @@ export default {
 				{value: '0', name: '一倍'},
 				{value: '1', name: '两倍'},
 				{value: '2', name: '五倍'}
+			],
+			youlibeishuList: [
+				{value: '0', name: '一倍'},
+				{value: '1', name: '两倍'}
 			]
 			
 		}
@@ -664,12 +677,20 @@ export default {
       return netxtVipValue - this.roleInfo.charge_value
 		},
 		
-		// 当前选中的倍数index
-		currentLilianebishu() {
+		// 当前选中的离线倍数index
+		currentLilianBeishu() {
 			return this.lixianbeishuList.findIndex(item => {
 				return Number(item.value) === this.configInfo.lixianbeishu
 			})
 		},
+
+		// 当前选中的游历倍数index
+		currentYouliBeishu() {
+			return this.youlibeishuList.findIndex(item => {
+				return Number(item.value) === this.configInfo.youlisifang_beishu
+			})
+		},
+
 		yijiJingongText() {
 			return options.yiji_jingong_type[this.configInfo.yiji_jingong_type].text
 		}
@@ -773,7 +794,7 @@ export default {
 				const index = option.findIndex(item => {
 					return item.server_id === server_id
 				})
-				console.log('lastServerIndex', index, 'server_id', server_id)
+				// console.log('lastServerIndex', index, 'server_id', server_id)
 				return index
 			}
 		},
@@ -1344,7 +1365,7 @@ export default {
       })
     },
 
-		radioChange: function(evt) {
+		radioChangeLixian(evt) {
 			this.configInfo.lixianbeishu = Number(evt.target.value)
 			switch (Number(evt.target.value)) {
 				case 0:
@@ -1356,25 +1377,39 @@ export default {
 					break
 				case 1:
 					uni.showToast({
-						title: '选择两倍，要仙缘',
+						title: '选择两倍，要钻石',
 						duration: 2000,
 						icon: 'none'
 					})
 					break
 				case 2:
 					uni.showToast({
-						title: '选择五倍，要仙缘',
+						title: '选择五倍，要钻石',
 						duration: 2000,
 						icon: 'none'
 					})
           break
 			}
-		  // for (let i = 0; i < this.lixianbeishuList.length; i++) {
-		  //     if (this.lixianbeishuList[i].value === evt.target.value) {
-		  //         this.current = i;
-		  //         break;
-		  //     }
-		  // }
+		},
+
+		radioChangeYouli(evt) {
+			this.configInfo.youlisifang_beishu = Number(evt.target.value)
+			switch (Number(evt.target.value)) {
+				case 0:
+					uni.showToast({
+						title: '选择一倍，免费',
+						duration: 2000,
+						icon: 'none'
+					})
+					break
+				case 1:
+					uni.showToast({
+						title: '选择两倍，要钻石',
+						duration: 2000,
+						icon: 'none'
+					})
+					break
+			}
 		}
 	}
 }

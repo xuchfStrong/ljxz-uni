@@ -10,10 +10,13 @@
 			            var data = result.data;
 									var wgtUrl = ''
 									var pkgUrl = ''
-									if (that.$global.wdszSaleChannel === 1) {
+									if (that.$global.wdszSaleChannel === 0) {
+										wgtUrl = data.wgtUrl
+										pkgUrl = data.pkgUrl
+									} else if (that.$global.wdszSaleChannel === 1) {
 										wgtUrl = data.wgtUrl1
 										pkgUrl = data.pkgUrl1
-									} else if (that.$global.wdszSaleChannel === 2) {
+									}  else if (that.$global.wdszSaleChannel === 2) {
 										wgtUrl = data.wgtUrl2
 										pkgUrl = data.pkgUrl2
 									} else if (that.$global.wdszSaleChannel === 3) {

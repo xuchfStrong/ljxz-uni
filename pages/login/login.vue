@@ -62,7 +62,7 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 import { getUtils } from '@/api/game'
-import { acclogin, regbyphone, addUser, checkUserStatus, getRemoteOptions, douyinUserLogin } from '@/api/login'
+import { acclogin, othersdkloginvalid, regbyphone, addUser, checkUserStatus, getRemoteOptions, douyinUserLogin } from '@/api/login'
 import { genRandomNumber, getRamNumberHex, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import {mapState,mapMutations} from 'vuex'
 import pako from 'pako'
@@ -181,7 +181,7 @@ export default {
 				login_type: this.userInfo.loginType
 			}
 			checkUserStatus(param).then(res => {
-				const guanfuServerLoginTypeList = [1,2,3,4]
+				const guanfuServerLoginTypeList = [1,2,3,4,12]
 				if (res.code === 200) {
 					// 获取用户信息
 					this.loginInfo.userId = res.userid
@@ -207,7 +207,7 @@ export default {
 				} else {
 					this.flag.newUserFlag = true
 					const guanfangPlatform = [1, 2, 4]
-					const douyinPlatform = [3]
+					const douyinPlatform = [3, 12]
 					if (guanfangPlatform.includes(this.userInfo.loginType)) { // 官方，苹果，斗破乾坤
 						this.handleLoginFirstStep()
 					} else if (douyinPlatform.includes(this.userInfo.loginType)) { // 抖音
@@ -452,7 +452,55 @@ export default {
 			return resObj
 		},
 
-		// 抖音登录第一步
+		// 大仙宗登录第二步
+		handleLoginSecondStepDXZ(username, sessionid) {
+			if (!username || !sessionid) {
+				this.$toast("大仙宗登录失败，没获取到id和token")
+				return
+			}
+			const params = {
+				username: username,
+				sessionid: sessionid,
+				extend: ''
+			}
+			let header = {}
+			header= {
+				//moby_auth: this.userInfo.auth || getRamNumberHex(32),
+				moby_auth: '752693a5ebeef1427199985e6c605b51',
+				moby_imei: '865166022590965',
+				moby_sdk: 'android',
+				moby_op: '0',
+				moby_ua: 'm2|meizu',
+				moby_pn: '0',
+				moby_imsi: '460007861618166',
+				moby_mac: this.userInfo.mac || genMac(),
+				moby_gameid: '100079100925',
+				moby_bv: '20200602',
+				moby_sv: '12007',
+				moby_pb: 'chaotusdk2_ljxz_001',
+				moby_accid: '',
+				moby_sessid: ''
+			}
+			const secretKey = '23aa164ad29bba78'
+			const encryptParams = this.encryptData(params, secretKey)
+			othersdkloginvalid(encryptParams, header).then(resEncrypt => {
+				const res = this.decryptData(resEncrypt, secretKey)
+				// console.log(res)
+				if (res.code == 0) {
+					this.loginInfo.userId = res.data.account.accountid,
+					this.loginInfo.sessionid = res.data.account.sessionid
+					this.handleAddUser()
+				} else {
+					uni.showToast({
+						title: res.msg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			})
+		},
+
+		// 抖音登录第一步,大仙宗登录第一步。实际上大仙宗登录第一步和这个不一样，但是用这个也能获取到userid和token
 		handleLoginFirstStepDouyin() {
 			const params = {
 				account: this.userInfo.usernamePlatForm,
@@ -478,9 +526,13 @@ export default {
 				const resPlain = CryptoJS.enc.Base64.parse(res).toString(CryptoJS.enc.Utf8)
 				const resObj = JSON.parse(resPlain)
 				if (resObj.status === 200) {
-					this.loginInfo.userId = resObj.user_id,
-					this.loginInfo.sessionid = resObj.token
-					this.handleAddUser()
+					if (this.userInfo.loginType === 12) {
+						this.handleLoginSecondStepDXZ(resObj.user_id, resObj.token)
+					} else {
+						this.loginInfo.userId = resObj.user_id,
+						this.loginInfo.sessionid = resObj.token
+						this.handleAddUser()
+					}
 				} else {
 					uni.showToast({
 						title: resObj.return_msg,

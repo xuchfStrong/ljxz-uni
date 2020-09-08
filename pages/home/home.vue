@@ -932,7 +932,7 @@ export default {
 
 		// 更新服务器列表
     handleGetServerList() {
-			const guanfuServerLoginTypeList = [1,2,3,4]
+			const guanfuServerLoginTypeList = [1,2,3,4,12]
 			if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
 				getServerInfo().then(res => {
 					this.serverInfo.last_server_list = res.server.guanfu

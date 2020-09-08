@@ -12,6 +12,16 @@ export function acclogin(data, header) {
   )
 }
 
+// 大仙宗新用户登录获取sessionid
+export function othersdkloginvalid(data, header) {
+  return http.post(
+    // 'http://sdk.xxhd-tech.com:8081/client.php?gameparam=othersdkloginvalid',
+    'http://120.53.14.241:9080/ljxz/client.php?gameparam=othersdkloginvalid',
+    data,
+    {header}
+  )
+}
+
 // 通过验证码登录
 export function regbyphone(data, header) {
   return http.post(

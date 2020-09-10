@@ -210,7 +210,7 @@ export default {
 					const douyinPlatform = [3, 12]
 					if (guanfangPlatform.includes(this.userInfo.loginType)) { // 官方，苹果，斗破乾坤
 						this.handleLoginFirstStep()
-					} else if (douyinPlatform.includes(this.userInfo.loginType)) { // 抖音
+					} else if (douyinPlatform.includes(this.userInfo.loginType)) { // 抖音, 大仙宗
 						this.handleLoginFirstStepDouyin()
 					} else { // 渠道服
 						uni.showToast({

@@ -32,6 +32,9 @@
           <a v-if="$global.wdszSaleChannel===5" :href="utils.apkDownloadUrl5">
             <text>点击下载辅助APP</text>
           </a>
+           <a v-if="$global.wdszSaleChannel===7" :href="utils.apkDownloadUrl7">
+            <text>点击下载辅助APP</text>
+          </a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
         </view>
       </view>

@@ -36,11 +36,13 @@
 		</view>
 
 		<text v-if="utils.showCommon" class="waring-wrap">{{ utils.common }}</text>
-		<text v-if="utils.showContact&&$global.ljxzSaleChannel===1" class="waring-wrap">{{ utils.contact1 }}</text>
+		<text v-if="utils.showContact&&$global.ljxzSaleChannel===0" class="waring-wrap">{{ utils.contact }}</text>
+		<text v-if="utils.showContact1&&$global.ljxzSaleChannel===1" class="waring-wrap">{{ utils.contact1 }}</text>
 		<text v-if="utils.showContact2&&$global.ljxzSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.ljxzSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&$global.ljxzSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
-		<text v-if="utils.showContact4&&$global.ljxzSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
+		<text v-if="utils.showContact5&&$global.ljxzSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
+		<text v-if="utils.showContact7&&$global.ljxzSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
 		
 		
 		<view class="uni-divider">
@@ -358,6 +360,20 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changePickerGongxun" :value="configInfo.buy_gongxun_id" class="background-picker" range-key="text" :range="options.buy_gongxun_id">
+											<view class="uni-input">{{options.buy_gongxun_id[configInfo.buy_gongxun_id].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">功勋商店购买</view>
+		        <switch :checked="!!configInfo.buy_gongxun_id" @change="changeSwitchGongxun"/>
+					</view>
+		    </view>
+
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
@@ -491,7 +507,8 @@ const configInfoDefault = {
   is_buy_tianmu_zhuanshengdan: 0,
   is_buy_tianmu_xuanjing: 0,
   is_buy_yihuo: 0,
-  yihuo_type: 0
+  yihuo_type: 0,
+	buy_gongxun_id: 0
 }
 
 const doujiObjDefault = {
@@ -1119,6 +1136,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.douji_goumai = index
 		},
+		changePickerGongxun(e) {
+			const index = e.target.value
+			this.configInfo.buy_gongxun_id = getValueByIndex(options.buy_gongxun_id, index)
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchYouli(e) {
@@ -1165,6 +1186,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.douji_goumai = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchGongxun(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.buy_gongxun_id = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

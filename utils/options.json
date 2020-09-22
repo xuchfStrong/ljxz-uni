@@ -81,5 +81,12 @@
     {"value": 3,"text": "紫色"},
     {"value": 4,"text": "紫色及以上"},
     {"value": 5,"text": "橙色"}
+  ],
+  "buy_gongxun_id": [
+    {"value": 0,"text": "关闭功勋商店购买"},
+    {"value": 1,"text": "蓝色元气宝箱及以上"},
+    {"value": 2,"text": "紫色元气宝箱及以上"},
+    {"value": 3,"text": "橙色元气宝箱及以上"},
+    {"value": 4,"text": "红色元气宝箱"}
   ]
 }

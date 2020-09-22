@@ -25,6 +25,12 @@
 									} else if (that.$global.wdszSaleChannel === 4) {
 										wgtUrl = data.wgtUrl4
 										pkgUrl = data.pkgUrl4
+									} else if (that.$global.wdszSaleChannel === 5) {
+										wgtUrl = data.wgtUrl5
+										pkgUrl = data.pkgUrl5
+									} else if (that.$global.wdszSaleChannel === 7) {
+										wgtUrl = data.wgtUrl7
+										pkgUrl = data.pkgUrl7
 									}
 			            if (data.version > that.$global.wdszVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
 											// uni.showModal({

@@ -36,13 +36,13 @@
 		</view>
 
 		<text v-if="utils.showCommon" class="waring-wrap">{{ utils.common }}</text>
-		<text v-if="utils.showContact&&$global.ljxzSaleChannel===0" class="waring-wrap">{{ utils.contact }}</text>
-		<text v-if="utils.showContact1&&$global.ljxzSaleChannel===1" class="waring-wrap">{{ utils.contact1 }}</text>
-		<text v-if="utils.showContact2&&$global.ljxzSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
-		<text v-if="utils.showContact3&&$global.ljxzSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
-		<text v-if="utils.showContact4&&$global.ljxzSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
-		<text v-if="utils.showContact5&&$global.ljxzSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
-		<text v-if="utils.showContact7&&$global.ljxzSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
+		<text v-if="utils.showContact&&$global.wdszSaleChannel===0" class="waring-wrap">{{ utils.contact }}</text>
+		<text v-if="utils.showContact1&&$global.wdszSaleChannel===1" class="waring-wrap">{{ utils.contact1 }}</text>
+		<text v-if="utils.showContact2&&$global.wdszSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
+		<text v-if="utils.showContact3&&$global.wdszSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
+		<text v-if="utils.showContact4&&$global.wdszSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
+		<text v-if="utils.showContact5&&$global.wdszSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
+		<text v-if="utils.showContact7&&$global.wdszSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
 		
 		
 		<view class="uni-divider">
@@ -289,6 +289,10 @@
 		        <view class="uni-list-cell-db">21:30之后自动竞技排行剩余次数</view>
 		        <switch :checked="!!configInfo.is_doupoqiangbang" @change="changeSwitchBoolean('is_doupoqiangbang')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">自动霸业(VIP有效)</view>
+		        <switch :checked="!!configInfo.is_baye" @change="changeSwitchBoolean('is_baye')"/>
+		    </view>
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -489,6 +493,7 @@ const configInfoDefault = {
 	is_guanqia: 1,
 	is_mail: 0,
 	is_liandan: 0,
+	is_baye: 0,
 	is_hundianlaixi: 1,
 	is_change_shili: 0,
 	is_beat_shili: 0,

@@ -3,34 +3,30 @@
 		onLaunch: function() {
 			// #ifdef APP-PLUS  
 			const that = this
-			plus.runtime.getProperty(plus.runtime.appid, function() {  
+			plus.runtime.getProperty(plus.runtime.appid, function() { 
+					const wdszSaleChannel = plus.runtime.channel 
 			    uni.request({  
 			        url: 'http://49.232.96.20:11658/ljxz/update.php',
 			        success: (result) => {  
 			            var data = result.data;
-									var wgtUrl = ''
+									var wgtUrl = data.wgtUrl
 									var pkgUrl = ''
-									if (that.$global.wdszSaleChannel === 0) {
-										wgtUrl = data.wgtUrl
+									if (wdszSaleChannel === 'test') {
 										pkgUrl = data.pkgUrl
-									} else if (that.$global.wdszSaleChannel === 1) {
-										wgtUrl = data.wgtUrl1
+									} else if (wdszSaleChannel === '1') {
 										pkgUrl = data.pkgUrl1
-									}  else if (that.$global.wdszSaleChannel === 2) {
-										wgtUrl = data.wgtUrl2
+									}  else if (wdszSaleChannel === '2') {
 										pkgUrl = data.pkgUrl2
-									} else if (that.$global.wdszSaleChannel === 3) {
-										wgtUrl = data.wgtUrl3
+									} else if (wdszSaleChannel === '3') {
 										pkgUrl = data.pkgUrl3
-									} else if (that.$global.wdszSaleChannel === 4) {
-										wgtUrl = data.wgtUrl4
+									} else if (wdszSaleChannel === '4') {
 										pkgUrl = data.pkgUrl4
-									} else if (that.$global.wdszSaleChannel === 5) {
-										wgtUrl = data.wgtUrl5
+									} else if (wdszSaleChannel === '5') {
 										pkgUrl = data.pkgUrl5
-									} else if (that.$global.wdszSaleChannel === 7) {
-										wgtUrl = data.wgtUrl7
+									} else if (wdszSaleChannel === '7') {
 										pkgUrl = data.pkgUrl7
+									} else if (wdszSaleChannel === '8') {
+										pkgUrl = data.pkgUrl8
 									}
 			            if (data.version > that.$global.wdszVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
 											// uni.showModal({

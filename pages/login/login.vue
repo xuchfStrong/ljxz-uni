@@ -62,7 +62,13 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 import { getUtils } from '@/api/game'
-import { acclogin, othersdkloginvalid, regbyphone, addUser, checkUserStatus, getRemoteOptions, douyinUserLogin } from '@/api/login'
+// #ifdef H5
+import { acclogin, othersdkloginvalid, regbyphone, douyinUserLogin } from '@/api/login'
+// #endif
+// #ifdef APP-PLUS
+import { acclogin, othersdkloginvalid, regbyphone, douyinUserLogin } from '@/api/loginApp'
+// #endif
+import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, getRamNumberHex, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
 import {mapState,mapMutations} from 'vuex'
 import pako from 'pako'
@@ -415,7 +421,7 @@ export default {
 			const encryptParams = this.encryptData(params, secretKey)
 			acclogin(encryptParams, header).then(resEncrypt => {
 				const res = this.decryptData(resEncrypt, secretKey)
-				// console.log(res)
+				console.log(res)
 				if (res.code == 0) {
 					this.loginInfo.userId = res.data.account.accountid,
 					this.loginInfo.sessionid = res.data.account.sessionid
@@ -448,6 +454,7 @@ export default {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7
 			}).toString(CryptoJS.enc.Utf8)
+			console.log('decryptData', decryptData)
 			const resObj = JSON.parse(decryptData)
 			return resObj
 		},

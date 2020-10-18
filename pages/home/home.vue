@@ -36,13 +36,21 @@
 		</view>
 
 		<text v-if="utils.showCommon" class="waring-wrap">{{ utils.common }}</text>
-		<text v-if="utils.showContact&&$global.wdszSaleChannel===0" class="waring-wrap">{{ utils.contact }}</text>
+		<text v-if="utils.showContact&&wdszSaleChannel==='test'" class="waring-wrap">{{ utils.contact }}</text>
+		<text v-if="utils.showContact1&&wdszSaleChannel==='1'" class="waring-wrap">{{ utils.contact1 }}</text>
+		<text v-if="utils.showContact2&&wdszSaleChannel==='2'" class="waring-wrap">{{ utils.contact2 }}</text>
+		<text v-if="utils.showContact3&&wdszSaleChannel==='3'" class="waring-wrap">{{ utils.contact3 }}</text>
+		<text v-if="utils.showContact4&&wdszSaleChannel==='4'" class="waring-wrap">{{ utils.contact4 }}</text>
+		<text v-if="utils.showContact5&&wdszSaleChannel==='5'" class="waring-wrap">{{ utils.contact5 }}</text>
+		<text v-if="utils.showContact7&&wdszSaleChannel==='7'" class="waring-wrap">{{ utils.contact7 }}</text>
+		<text v-if="utils.showContact8&&wdszSaleChannel==='8'" class="waring-wrap">{{ utils.contact8 }}</text>
+		<!-- <text v-if="utils.showContact&&$global.wdszSaleChannel===0" class="waring-wrap">{{ utils.contact }}</text>
 		<text v-if="utils.showContact1&&$global.wdszSaleChannel===1" class="waring-wrap">{{ utils.contact1 }}</text>
 		<text v-if="utils.showContact2&&$global.wdszSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
 		<text v-if="utils.showContact3&&$global.wdszSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
 		<text v-if="utils.showContact4&&$global.wdszSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
 		<text v-if="utils.showContact5&&$global.wdszSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
-		<text v-if="utils.showContact7&&$global.wdszSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text>
+		<text v-if="utils.showContact7&&$global.wdszSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text> -->
 		
 		
 		<view class="uni-divider">
@@ -473,7 +481,7 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import moment from 'moment'
 import {mapState,mapMutations} from 'vuex'
-import { getValueByIndex, getIndexByValue } from '@/utils/index'
+import { getValueByIndex, getIndexByValue, getChannel } from '@/utils/index'
 import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
@@ -565,6 +573,7 @@ export default {
   },
 	data() {
 		return {
+			wdszSaleChannel: '',
 			socketTask: null,
 			platformName: '',
 			serverName: '',
@@ -718,6 +727,7 @@ export default {
 		}
 	},
 	onLoad() {
+		this.wdszSaleChannel = getChannel()
 		this.loadLoginInfo()
 		this.handleGetServerList()
 		this.handleGetUtils()

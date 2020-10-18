@@ -2,8 +2,8 @@
     "name" : "武道神尊火箭辅助",
     "appid" : "__UNI__20BAD31",
     "description" : "武道神尊火箭辅助",
-    "versionName" : "1.0.3",
-    "versionCode" : 103,
+    "versionName" : "1.1.0",
+    "versionCode" : 110,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",
@@ -71,5 +71,39 @@
         "setting" : {
             "urlCheck" : true
         }
-    }
+    },
+    "channel_list" : [
+        {
+            "id" : "test",
+            "name" : "测试"
+        },
+        {
+            "id" : "1",
+            "name" : "悟空1"
+        },
+        {
+            "id" : "2",
+            "name" : "玉清2"
+        },
+        {
+            "id" : "3",
+            "name" : "淘宝3"
+        },
+        {
+            "id" : "4",
+            "name" : "渠道4"
+        },
+        {
+            "id" : "5",
+            "name" : "键来5"
+        },
+        {
+            "id" : "7",
+            "name" : "渠道7"
+        },
+        {
+            "id" : "8",
+            "name" : "渠道8"
+        }
+    ]
 }

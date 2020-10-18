@@ -14,27 +14,14 @@
         </view>
 
        <view style="margin-top:10px; color:#1989fa;">
-         <a v-if="$global.wdszSaleChannel===0" :href="utils.apkDownloadUrl">
-            <text>点击下载辅助APP</text>
-          </a>
-          <a v-if="$global.wdszSaleChannel===1" :href="utils.apkDownloadUrl1">
-            <text>点击下载辅助APP</text>
-          </a>
-          <a v-if="$global.wdszSaleChannel===2" :href="utils.apkDownloadUrl2">
-            <text>点击下载辅助APP</text>
-          </a>
-          <a v-if="$global.wdszSaleChannel===3" :href="utils.apkDownloadUrl3">
-            <text>点击下载辅助APP</text>
-          </a>
-          <a v-if="$global.wdszSaleChannel===4" :href="utils.apkDownloadUrl4">
-            <text>点击下载辅助APP</text>
-          </a>
-          <a v-if="$global.wdszSaleChannel===5" :href="utils.apkDownloadUrl5">
-            <text>点击下载辅助APP</text>
-          </a>
-           <a v-if="$global.wdszSaleChannel===7" :href="utils.apkDownloadUrl7">
-            <text>点击下载辅助APP</text>
-          </a>
+          <a v-if="wdszSaleChannel==='test'" :href="utils.apkDownloadUrl"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='1'" :href="utils.apkDownloadUrl1"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='2'" :href="utils.apkDownloadUrl2"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='3'" :href="utils.apkDownloadUrl3"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='4'" :href="utils.apkDownloadUrl4"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='5'" :href="utils.apkDownloadUrl5"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='7'" :href="utils.apkDownloadUrl7"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='8'" :href="utils.apkDownloadUrl8"><text>点击下载辅助APP</text></a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
         </view>
       </view>
@@ -43,14 +30,17 @@
 
 <script>
 import { getUtils } from '@/api/game'
+import { getChannel } from '@/utils/index'
 export default {
   data() {
     return {
+      wdszSaleChannel: '',
       utils: '',
       showUpdate: false
     }
   },
   onLoad() {
+    this.wdszSaleChannel = getChannel()
     this.handleGetUtils()
   },
 

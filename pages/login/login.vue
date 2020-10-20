@@ -17,8 +17,16 @@
 		<view class="input-group">
 		    <view class="input-row border">
 		        <text class="title">账号：</text>
-		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.usernamePlatForm" placeholder="请输入账号"></m-input>
-		    </view>
+		        <!-- <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.usernamePlatForm" placeholder="请输入账号"></m-input> -->
+		    		<input-autocomplete
+								class="unit-item__input"
+								v-model="userInfo.usernamePlatForm"
+								placeholder="请输入账号"
+								highlightColor="#FF0000"
+								:stringList="autocompleteStringList"
+								v-on:selectItem="selectItemD"
+						></input-autocomplete>
+				</view>
 				<view v-if="isVerifycode" class="input-row border">
 		        <text class="title">验证码：</text>
 		        <m-input class="m-input" type="text" :disabled="false"  clearable focus v-model="userInfo.verifycode" placeholder="请输入验证码"></m-input>
@@ -73,10 +81,12 @@ import { genRandomNumber, getRamNumberHex, genUUID, genMac, getValueByIndex, get
 import {mapState,mapMutations} from 'vuex'
 import pako from 'pako'
 import mInput from '../../components/m-input.vue'
+import inputAutocomplete from '@/components/input-autocomplete/input-autocomplete.vue';
 
 export default {
 	components:{
-		mInput
+		mInput,
+		inputAutocomplete
 	},
 	data() {
 		return {
@@ -92,6 +102,11 @@ export default {
 			remoteOptions: {},
 			configInfo: '',
 			utils: '',
+			testObj: {
+          sname: '静',
+          dname: '动态'
+      },
+			autocompleteStringList: [],
 			flag: {
 			    loginFlag: false,
 			    logoutFlag: false,
@@ -134,6 +149,11 @@ export default {
 		this.handleGetUtils()
 	},
 	methods: {
+    //响应选择事件，接收选中的数据
+    selectItemD(data) {
+				this.userInfo.passwordPlatForm = data.password
+    },
+
 		// 获取远程选项
 		handleGetRemoteOptions() {
 			getRemoteOptions()
@@ -157,7 +177,6 @@ export default {
 		
 		// 切换是否验证码登录
 		changeVerifycodeLogin(e) {
-			console.log(e.detail.value)
 			const length = e.detail.value.length
 			this.isVerifycode = !!length
 		},
@@ -306,7 +325,7 @@ export default {
 			// console.log('optCode', optCode)
 			// console.log('dv.getUint32(4)', dv.getUint32(4))
 			const contentObj = JSON.parse(pako.inflate(content, { to: 'string' }))
-			console.log(contentObj)
+			// console.log(contentObj)
 			if (optCode === 16002) {
 				this.serverInfo.last_server_list = this.formatServerList(contentObj.SvrList)
 				this.saveLoginInfo()
@@ -421,7 +440,6 @@ export default {
 			const encryptParams = this.encryptData(params, secretKey)
 			acclogin(encryptParams, header).then(resEncrypt => {
 				const res = this.decryptData(resEncrypt, secretKey)
-				console.log(res)
 				if (res.code == 0) {
 					this.loginInfo.userId = res.data.account.accountid,
 					this.loginInfo.sessionid = res.data.account.sessionid
@@ -454,7 +472,6 @@ export default {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7
 			}).toString(CryptoJS.enc.Utf8)
-			console.log('decryptData', decryptData)
 			const resObj = JSON.parse(decryptData)
 			return resObj
 		},
@@ -492,7 +509,6 @@ export default {
 			const encryptParams = this.encryptData(params, secretKey)
 			othersdkloginvalid(encryptParams, header).then(resEncrypt => {
 				const res = this.decryptData(resEncrypt, secretKey)
-				// console.log(res)
 				if (res.code == 0) {
 					this.loginInfo.userId = res.data.account.accountid,
 					this.loginInfo.sessionid = res.data.account.sessionid
@@ -576,6 +592,7 @@ export default {
       addUser(param).then(res => {
         if (res.code === 200) {
 					this.flag.showServer = true
+					this.saveAccountList(this.userInfo.usernamePlatForm, this.userInfo.passwordPlatForm)
           this.saveLoginInfo()
           uni.showToast({
 						title: '登录成功，请选择服务器，然后开始挂机',
@@ -588,6 +605,25 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+		},
+
+		// 将登录成功的用户名密码添加到autocompleteStringList中
+		saveAccountList(username,password) {
+			const indexUsername = this.autocompleteStringList.findIndex((item) => {
+				return item.text === username
+			})
+			if (indexUsername === -1) {
+				if (this.autocompleteStringList.length >= 5) {
+					this.autocompleteStringList.pop()
+				}
+				const userObj = {
+					text: username,
+					password: password
+				}
+				this.autocompleteStringList.unshift(userObj)
+			} else {
+				this.autocompleteStringList[indexUsername].password = password
+			}
 		},
 		
 		// 读取记住的登录信息
@@ -607,6 +643,7 @@ export default {
         this.loginInfo.userId = gameLoginInfo.userId
 				this.flag.showServer = gameLoginInfo.showServer
 				this.platformName = gameLoginInfo.platformName
+				this.autocompleteStringList = JSON.parse(gameLoginInfo.autocompleteStringList)
 				// this.serverInfo = gameLoginInfo.serverInfo
 				this.initSaveData()
         // this.serverInfo = JSON.parse(gameLoginInfo.serverInfo)
@@ -630,7 +667,8 @@ export default {
         userId: this.loginInfo.userId,
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
-				serverInfo: this.serverInfo
+				serverInfo: this.serverInfo,
+				autocompleteStringList: JSON.stringify(this.autocompleteStringList)
         // serverInfo: JSON.stringify(this.serverInfo)
 			}
       save.setGameLoginInfo(gameLoginInfo)
@@ -658,7 +696,6 @@ export default {
 		// 加载后将存储的数据显示出来
 		initSaveData() {
 			this.platformIndex = getIndexByValue(this.remoteOptions.platform, this.userInfo.loginType)
-			console.log( this.platformIndex)
 			if (this.platformIndex !== -1) {
 				this.platformName = this.remoteOptions.platform[this.platformIndex].text
 			}
@@ -718,4 +755,16 @@ export default {
   color: #969799;
   padding-bottom: 20rpx;
 }
+.unit-item__input {
+		text-align: left;
+		/* width: 100%; */
+		flex:1;
+		/* font-size: 28upx; */
+		/* margin: 4upx 16upx 0 4upx; */
+		padding: 0 10upx;
+		/* border: 2upx solid #eaeaea; */
+		/* border-radius: 12upx; */
+		min-height: 50upx;
+		line-height: 50upx;
+	}
 </style>

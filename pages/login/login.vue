@@ -209,6 +209,7 @@ export default {
 				const guanfuServerLoginTypeList = [1,2,3,4,12]
 				if (res.code === 200) {
 					// 获取用户信息
+					this.saveAccountList(this.userInfo.usernamePlatForm, this.userInfo.passwordPlatForm)
 					this.loginInfo.userId = res.userid
 					this.flag.showServer = true
 					this.saveLoginInfo()
@@ -756,15 +757,15 @@ export default {
   padding-bottom: 20rpx;
 }
 .unit-item__input {
-		text-align: left;
-		/* width: 100%; */
-		flex:1;
-		/* font-size: 28upx; */
-		/* margin: 4upx 16upx 0 4upx; */
-		padding: 0 10upx;
-		/* border: 2upx solid #eaeaea; */
-		/* border-radius: 12upx; */
-		min-height: 50upx;
-		line-height: 50upx;
-	}
+	text-align: left;
+	/* width: 100%; */
+	flex:1;
+	/* font-size: 28upx; */
+	/* margin: 4upx 16upx 0 4upx; */
+	padding: 0 10upx;
+	/* border: 2upx solid #eaeaea; */
+	/* border-radius: 12upx; */
+	min-height: 50upx;
+	line-height: 50upx;
+}
 </style>

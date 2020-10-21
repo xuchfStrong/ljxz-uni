@@ -11,27 +11,48 @@
 		          </picker>
 		      </view>
 		  </view>
+			<view class="list-cell">
+		      <view class="uni-list-cell-left">
+		          收藏的角色：
+		      </view>
+		      <view class="uni-list-cell-db">
+		          <picker @change="changeSavedRoleList" :value="roleIndex" class="bg-picker-douji" range-key="roleName" :range="roleList">
+		              <view class="uni-input">{{selectRoleName}}</view>
+		          </picker>
+		      </view>
+		  </view>
 			<!-- <view class="list-cell">
 			    <view class="uni-list-cell-left">
 			        所有服务器：
 			    </view>
 			    <view class="uni-list-cell-db">
-			        <picker @change="changeAllServer" :value="allServerindex" range-key="text" :range="serverInfo.server_list">
-			            <view class="uni-input">{{serverInfo.server_list[allServerindex].text}}</view>
-			        </picker>
-			    </view>
+		          <picker @change="changeLastServer" :value="lastServerIndex" class="bg-picker-douji" range-key="text" :range="serverInfo.last_server_list">
+		              <view class="uni-input">{{serverName}}</view>
+		          </picker>
+		      </view>
 			</view> -->
 		</view>
 		<view v-if="!flag.showServer" class="btn-row">
 		    <button type="primary" @tap="handleLogin">登录</button>
 		</view>
-		<view v-else class="btn-center">
-			<view>
-				<button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
-				<text style="width: 10upx; display: inline-block;"></text>
-				<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
-				<text style="width: 10upx; display: inline-block;"></text>
-				<button type="primary" plain="true" size="mini" @tap="handleGerServer">更新服务器</button>
+		<view v-else>
+			<view class="btn-center btn-center-margin">
+				<view>
+					<button type="primary" plain="true" size="mini" @tap="transferTime">转移辅助</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="handleGerServer">更新服务器</button>
+				</view>
+			</view>
+			<view  class="btn-center">
+				<view>
+					<button type="primary" plain="true" size="mini" @tap="handleSaveRole">收藏角色</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="handleRemoveRole">移除收藏</button>
+					<text style="width: 10upx; display: inline-block;"></text>
+					<button type="primary" plain="true" size="mini" @tap="handleClearSaveRole">清空收藏</button>
+				</view>
 			</view>
 		</view>
 
@@ -481,7 +502,7 @@ import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import moment from 'moment'
 import {mapState,mapMutations} from 'vuex'
-import { getValueByIndex, getIndexByValue, getChannel } from '@/utils/index'
+import { getValueByIndex, getIndexByValue, getChannel, toast } from '@/utils/index'
 import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
@@ -600,7 +621,8 @@ export default {
 			    loginFlag: false,
 			    logoutFlag: false,
 			    newUserFlag: false,
-			    showServer: false
+					showServer: false,
+					saveRoleFlag: false
 			},
 			fuzuStatus: {
         end_time: '',
@@ -672,8 +694,14 @@ export default {
 			youlibeishuList: [
 				{value: '0', name: '一倍'},
 				{value: '1', name: '两倍'}
-			]
-			
+			],
+			roleList: [
+				// { roleName: "可爱柳玉龙",userId: 35635086, platformName: '官方平台-安卓', loginType: 1, serverId: 1, serverName: "斗气1服"},
+				// { roleName: "怯懦宰晓霜",userId: 35635086, platformName: '官方平台-安卓', loginType: 1, serverId: 4, serverName: "斗气4服"}
+			],
+			roleIndex: 0,
+			selectRoleName: '',
+			autocompleteStringList: []
 		}
 	},
 	computed: {
@@ -775,12 +803,77 @@ export default {
 			})
 		},
 
+		// 收藏角色到本地
+		handleSaveRole() {
+			if (!this.flag.saveRoleFlag) {
+				toast('角色信息错误，收藏失败！')
+				return
+			}
+			const saveRoleObj = {
+				roleName: this.roleInfo.role_name + '-' + this.serverName,
+				userId: this.loginInfo.userId,
+				platformName: this.platformName,
+				loginType: this.userInfo.loginType,
+				serverId: this.userInfo.server_id,
+				serverName: this.serverName
+			}
+			const indexRole = this.roleList.findIndex((item) => {
+				return item.roleName === saveRoleObj.roleName
+			})
+			if (indexRole === -1) {
+				this.roleList.unshift(saveRoleObj)
+			} else {
+				this.roleList[indexRole] = saveRoleObj
+			}
+			this.saveRoleInfo()
+			uni.showToast({
+				title: '收藏成功',
+				duration: 2000,
+				icon: 'none'
+			})
+		},
+
+		// 删除收藏的角色
+		handleRemoveRole() {
+			const roleName = this.roleInfo.role_name + '-' + this.serverName
+			const indexRole = this.roleList.findIndex((item) => {
+				return item.roleName === roleName
+			})
+			if (indexRole === -1) {
+				uni.showToast({
+					title: '收藏列表无该角色',
+					duration: 2000,
+					icon: 'none'
+				})
+			} else {
+				this.roleList.splice(indexRole, 1)
+				this.saveRoleInfo()
+				uni.showToast({
+					title: '移除成功',
+					duration: 2000,
+					icon: 'none'
+				})
+			}
+		},
+
+		// 清空收藏角色
+		handleClearSaveRole() {
+			this.roleList = []
+			this.saveRoleInfo()
+			uni.showToast({
+				title: '清空成功',
+				duration: 2000,
+				icon: 'none'
+			})
+		},
+
 		// 读取记住的登录信息
 		loadLoginInfo() {
 			uni.setNavigationBarTitle({
 					title: '武道神尊火箭辅助V' + this.$global.wdszVersionName
 			});
 			console.log('加载登录信息')
+			this.roleList = save.getRoleList()
 			const gameLoginInfo = save.getGameLoginInfo()
 			if (gameLoginInfo.serverInfo) {
 				this.serverInfo = gameLoginInfo.serverInfo
@@ -793,6 +886,7 @@ export default {
 			this.loginInfo.userId = gameLoginInfo.userId
 			this.platformName = gameLoginInfo.platformName
 			this.flag.showServer = gameLoginInfo.showServer
+			this.autocompleteStringList = JSON.parse(gameLoginInfo.autocompleteStringList)
 			this.initSaveData()
 			this.handleGuajiStatus()
 		},
@@ -807,9 +901,15 @@ export default {
 				userId: this.loginInfo.userId,
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
-				serverInfo: this.serverInfo
+				serverInfo: this.serverInfo,
+				autocompleteStringList: JSON.stringify(this.autocompleteStringList)
 			}
 			save.setGameLoginInfo(gameLoginInfo)
+		},
+		
+		// 存储收藏的角色
+		saveRoleInfo() {
+			save.setRoleList(this.roleList)
 		},
 
 		// 加载后将存储的数据显示出来
@@ -839,6 +939,19 @@ export default {
 			}
 		},
 
+		// 选择保存的角色
+		changeSavedRoleList(e) {
+			this.selectRoleName = this.roleList[e.target.value]['roleName']
+			this.loginInfo.userId = this.roleList[e.target.value]['userId']
+			this.userInfo.server_id = this.roleList[e.target.value]['serverId']
+			this.userInfo.loginType = this.roleList[e.target.value]['loginType']
+			this.platformName = this.roleList[e.target.value]['platformName']
+			this.handleGetServerList()
+			this.initSaveData()
+			this.handleGuajiStatus()
+			this.saveLoginInfo()
+		},
+
 		// 选择最后登录服务器
 		changeLastServer: function(e) {
 			// console.log('this.lastServerIndex', this.lastServerIndex)
@@ -858,6 +971,7 @@ export default {
 			this.lastServerIndex = getIndexByValue(this.serverInfo.last_server_list, this.userInfo.server_id)
 			this.saveLoginInfo()
 		},
+
 
 		// 获取服务器
 		handleGerServer() {
@@ -1022,7 +1136,8 @@ export default {
         switch (code) {
           case 200:
             this.roleInfo = res.data
-            this.yunguaji = true
+						this.yunguaji = true
+						this.flag.saveRoleFlag = true
 						uni.showToast({
 							title: '查询挂机状态成功',
 							duration: 2000,
@@ -1030,6 +1145,7 @@ export default {
 						})
             break
           case 403:
+						this.flag.saveRoleFlag = false
 						uni.showToast({
 							title: '参数错误',
 							duration: 2000,
@@ -1037,15 +1153,18 @@ export default {
 						})
             break
           case 404:
-            this.yunguaji = false
+						this.yunguaji = false
+						console.log('404')
+						this.flag.saveRoleFlag = false
 						uni.showToast({
-							title: '未查询到挂机信息，请开启云挂机',
+							title: '未查询到挂机信息，请开启云挂机111',
 							duration: 2000,
 							icon: 'none'
 						})
             break
         }
       }).catch(err => {
+				this.flag.saveRoleFlag = false
         console.log(err)
       })
       this.handleGetConfigInfo()
@@ -1490,6 +1609,8 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+.btn-center-margin {
 	margin-top: 20upx;
 }
 .attr-flex {
@@ -1520,6 +1641,10 @@ export default {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+}
+.content .uni-list-cell-left {
+	width: 25%;
+	text-align: right;
 }
 .flex-item-two {
 	display: flex;

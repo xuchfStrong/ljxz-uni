@@ -1215,6 +1215,7 @@ export default {
 							duration: 2000,
 							icon: 'none'
 						})
+						this.fuzuStatus.on_off = 0
             this.configInfo = Object.assign({}, configInfoDefault)
             break
         }

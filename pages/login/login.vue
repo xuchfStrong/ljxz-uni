@@ -644,7 +644,7 @@ export default {
         this.loginInfo.userId = gameLoginInfo.userId
 				this.flag.showServer = gameLoginInfo.showServer
 				this.platformName = gameLoginInfo.platformName
-				this.autocompleteStringList = JSON.parse(gameLoginInfo.autocompleteStringList)
+				if (Array.isArray(gameLoginInfo.autocompleteStringList)) this.autocompleteStringList = gameLoginInfo.autocompleteStringList
 				// this.serverInfo = gameLoginInfo.serverInfo
 				this.initSaveData()
         // this.serverInfo = JSON.parse(gameLoginInfo.serverInfo)
@@ -669,7 +669,7 @@ export default {
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
 				serverInfo: this.serverInfo,
-				autocompleteStringList: JSON.stringify(this.autocompleteStringList)
+				autocompleteStringList: this.autocompleteStringList
         // serverInfo: JSON.stringify(this.serverInfo)
 			}
       save.setGameLoginInfo(gameLoginInfo)
@@ -767,5 +767,6 @@ export default {
 	/* border-radius: 12upx; */
 	min-height: 50upx;
 	line-height: 50upx;
+	z-index: 1;
 }
 </style>

@@ -886,7 +886,7 @@ export default {
 			this.loginInfo.userId = gameLoginInfo.userId
 			this.platformName = gameLoginInfo.platformName
 			this.flag.showServer = gameLoginInfo.showServer
-			this.autocompleteStringList = JSON.parse(gameLoginInfo.autocompleteStringList)
+			if (Array.isArray(gameLoginInfo.autocompleteStringList)) this.autocompleteStringList = gameLoginInfo.autocompleteStringList
 			this.initSaveData()
 			this.handleGuajiStatus()
 		},
@@ -902,7 +902,7 @@ export default {
 				showServer: this.flag.showServer,
 				platformName: this.platformName,
 				serverInfo: this.serverInfo,
-				autocompleteStringList: JSON.stringify(this.autocompleteStringList)
+				autocompleteStringList: this.autocompleteStringList
 			}
 			save.setGameLoginInfo(gameLoginInfo)
 		},
@@ -1127,7 +1127,8 @@ export default {
 			}
       const param = {
         userid: this.loginInfo.userId,
-        server_id: this.userInfo.server_id
+				server_id: this.userInfo.server_id,
+				t: new Date().getTime()
 			}
 			this.statusLoading = true
       getRoleInfo(param).then(res => { // 查询角色信息
@@ -1182,8 +1183,9 @@ export default {
       }
       const param = {
         userid: this.loginInfo.userId,
-        server_id: this.userInfo.server_id
-      }
+				server_id: this.userInfo.server_id,
+				t: new Date().getTime()
+			}
       getConfigInfo(param).then(res => {
         const code = res.code
         switch (code) {

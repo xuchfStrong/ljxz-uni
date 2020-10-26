@@ -555,6 +555,37 @@ const doujiObjDefault = {
   teshu: '10' // 购买特殊
 }
 
+const roleInfoDefault = {
+  userid: '',
+  server_id: '',
+  role_name: '',
+  update_time: '',
+  role_level: '',
+  vip_level: '',
+  zhanli: '',
+  jingzuan: '',
+  guanqia: '',
+  zhuzai_level: '',
+  bazhu_cengshu: '',
+  hundianlaixi_times: '',
+  lilianshiwu: '',
+  yijikaicai_times: '',
+  yijijingong_times: '',
+  doupoqiangbang_times: '',
+  xiandou_times: '',
+  lianmengjuanxian_times: '',
+  lianmengmijing_times: '',
+  moyu_times: '',
+	charge_value: '',
+	douqi: '',
+	huoneng: '',
+	jinbi: '',
+	shili_tili: '',
+	shili_beishu: '',
+	shili_zuanshi: '',
+	shili_tili: '',
+}
+
 export default {
 	components:{
 		mInput
@@ -609,6 +640,7 @@ export default {
 			options:options,
 			configInfo: Object.assign({}, configInfoDefault),
 			doujiObj: Object.assign({}, doujiObjDefault), // 斗技购买相关的配置
+			roleInfo: Object.assign({}, roleInfoDefault),
 			doujiIndex: {
 				gongji: 0,
 				shengming: 0,
@@ -639,36 +671,6 @@ export default {
         boss_id1: false,
         boss_id2: false,
         douji_goumai: false
-      },
-			roleInfo: {
-        userid: '',
-        server_id: '',
-        role_name: '',
-        update_time: '',
-        role_level: '',
-        vip_level: '',
-        zhanli: '',
-        jingzuan: '',
-        guanqia: '',
-        zhuzai_level: '',
-        bazhu_cengshu: '',
-        hundianlaixi_times: '',
-        lilianshiwu: '',
-        yijikaicai_times: '',
-        yijijingong_times: '',
-        doupoqiangbang_times: '',
-        xiandou_times: '',
-        lianmengjuanxian_times: '',
-        lianmengmijing_times: '',
-        moyu_times: '',
-				charge_value: '',
-				douqi: '',
-				huoneng: '',
-				jinbi: '',
-				shili_tili: '',
-				shili_beishu: '',
-				shili_zuanshi: '',
-				shili_tili: '',
       },
 			userInfo: {
 			  usernamePlatForm: '', // 平台的用户名
@@ -1157,6 +1159,7 @@ export default {
 						this.yunguaji = false
 						console.log('404')
 						this.flag.saveRoleFlag = false
+						this.roleInfo = Object.assign({}, roleInfoDefault)
 						uni.showToast({
 							title: '未查询到挂机信息，请开启云挂机111',
 							duration: 2000,

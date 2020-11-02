@@ -6,7 +6,7 @@ import { http, httpForm } from '@/utils/request.js'
 export function acclogin(data, header) {
   return http.post(
     // 'http://sdk.xxhd-tech.com:8081/client.php?gameparam=acclogin',
-    'http://m.huojiangame.com:9080/ljxz/client.php?gameparam=acclogin',
+    'http://ceinfo.cc:20181/ljxz/client.php?gameparam=acclogin',
     data,
     {header}
   )
@@ -16,7 +16,7 @@ export function acclogin(data, header) {
 export function othersdkloginvalid(data, header) {
   return http.post(
     // 'http://sdk.xxhd-tech.com:8081/client.php?gameparam=othersdkloginvalid',
-    'http://m.huojiangame.com:9080/ljxz/client.php?gameparam=othersdkloginvalid',
+    'http://ceinfo.cc:20181/ljxz/client.php?gameparam=othersdkloginvalid',
     data,
     {header}
   )
@@ -26,7 +26,7 @@ export function othersdkloginvalid(data, header) {
 export function regbyphone(data, header) {
   return http.post(
     // 'http://sdk.xxhd-tech.com:8081/client.php?gameparam=regbyphone',
-    'http://m.huojiangame.com:9080/ljxz/client.php?gameparam=regbyphone',
+    'http://ceinfo.cc:20181/ljxz/client.php?gameparam=regbyphone',
     data,
     {header}
   )
@@ -45,7 +45,16 @@ export function checkidcard(data, header) {
 export function douyinUserLogin(data) {
   return http.post(
     // 'http://game.cross2.cn/sdk.php/User/user_login',
-    'http://m.huojiangame.com:9080/ljxz_douyin/sdk.php/User/user_login',
+    'http://ceinfo.cc:20181/ljxz_douyin/sdk.php/User/user_login',
+    data
+  )
+}
+
+// 玄幻修真login
+export function xuanhuanxiuzhenUserLogin(data) {
+  return httpForm.post(
+    // 'http://h5ym.xxhd-tech.com/acclogin.php?a_gameid=100089100189&a_gamekey=97fd54d2ced793d6&a_pub=ah5sdk_ljxz_001',
+    'http://ceinfo.cc:20181/ljxz_xuanhuanxiuzhen/acclogin.php?a_gameid=100089100189&a_gamekey=97fd54d2ced793d6&a_pub=ah5sdk_ljxz_001',
     data
   )
 }

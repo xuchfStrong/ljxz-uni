@@ -71,10 +71,10 @@ import save from '@/utils/save'
 import loginDescription from './loginDescription.json'
 import { getUtils } from '@/api/game'
 // #ifdef H5
-import { acclogin, othersdkloginvalid, regbyphone, douyinUserLogin } from '@/api/login'
+import { acclogin, othersdkloginvalid, regbyphone, douyinUserLogin, xuanhuanxiuzhenUserLogin } from '@/api/login'
 // #endif
 // #ifdef APP-PLUS
-import { acclogin, othersdkloginvalid, regbyphone, douyinUserLogin } from '@/api/loginApp'
+import { acclogin, othersdkloginvalid, regbyphone, douyinUserLogin, xuanhuanxiuzhenUserLogin } from '@/api/loginApp'
 // #endif
 import { addUser, checkUserStatus, getRemoteOptions } from '@/api/login'
 import { genRandomNumber, getRamNumberHex, genUUID, genMac, getValueByIndex, getIndexByValue } from '@/utils/index'
@@ -206,7 +206,7 @@ export default {
 				login_type: this.userInfo.loginType
 			}
 			checkUserStatus(param).then(res => {
-				const guanfuServerLoginTypeList = [1,2,3,4,12]
+				const guanfuServerLoginTypeList = [1,2,3,4,12,13]
 				if (res.code === 200) {
 					// 获取用户信息
 					this.saveAccountList(this.userInfo.usernamePlatForm, this.userInfo.passwordPlatForm)
@@ -234,11 +234,14 @@ export default {
 					this.flag.newUserFlag = true
 					const guanfangPlatform = [1, 2, 4]
 					const douyinPlatform = [3, 12]
+					const xuanhuanxiuzhen = [13]
 					if (guanfangPlatform.includes(this.userInfo.loginType)) { // 官方，苹果，斗破乾坤
 						this.handleLoginFirstStep()
 					} else if (douyinPlatform.includes(this.userInfo.loginType)) { // 抖音, 大仙宗
 						this.handleLoginFirstStepDouyin()
-					} else { // 渠道服
+					} else if (xuanhuanxiuzhen.includes(this.userInfo.loginType)) { // 玄幻修真
+						this.handleLoginFirstStepXuanhuanxiuzhen()
+					}else { // 渠道服
 						uni.showToast({
 							title: '登录失败，请使用登陆助手提取账号密码后再登录。',
 							duration: 2000,
@@ -577,6 +580,26 @@ export default {
 			const plainStr = str + md5Key
 			const md5Sign = CryptoJS.MD5(plainStr).toString()
 			return md5Sign
+		},
+
+		// 玄幻修真登录
+		handleLoginFirstStepXuanhuanxiuzhen() {
+			const params = {
+				phone: this.userInfo.usernamePlatForm,
+				password: this.userInfo.passwordPlatForm,
+			}
+			xuanhuanxiuzhenUserLogin(params).then(res => {
+				if (res.code === '0') {
+					this.loginInfo.userId = res.data.account.accountid,
+					this.handleAddUser()
+				} else {
+					uni.showToast({
+						title: res.msg,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			})
 		},
 
 		// 登录游戏辅助，添加新用户

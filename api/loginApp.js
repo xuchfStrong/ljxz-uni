@@ -37,3 +37,11 @@ export function douyinUserLogin(data) {
   )
 }
 
+// 玄幻修真login
+export function xuanhuanxiuzhenUserLogin(data) {
+  return httpForm.post(
+    'http://h5ym.xxhd-tech.com/acclogin.php?a_gameid=100089100189&a_gamekey=97fd54d2ced793d6&a_pub=ah5sdk_ljxz_001',
+    data
+  )
+}
+

@@ -6,7 +6,7 @@
 			plus.runtime.getProperty(plus.runtime.appid, function() { 
 					const wdszSaleChannel = plus.runtime.channel 
 			    uni.request({  
-			        url: 'http://49.232.96.20:11658/ljxz/update.php',
+			        url: 'http://wdsz2.huojiangame.com:11658/ljxz/update.php',
 			        success: (result) => {  
 			            var data = result.data;
 									var wgtUrl = data.wgtUrl

@@ -98,13 +98,14 @@ export default {
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {  
 			    uni.request({  
-			        url: 'http://49.232.96.20:11658/ljxz/update.php',
+			        url: 'http://wdsz2.huojiangame.com:11658/ljxz/update.php',
 			        success: (result) => {  
-			          var data = result.data;
+                var data = result.data;
+                console.log('data', data)
                 var wgtUrl = data.test.wgtUrl
                 var pkgUrl = data.test.pkgUrl
 			          if (data.test.version > that.$global.wdszVersion && wgtUrl && data.test.updateType === 1) { // 热更新
-			              uni.downloadFile({  
+                    uni.downloadFile({  
 			                  url: wgtUrl,  
 			                  success: (downloadResult) => {  
 			                      if (downloadResult.statusCode === 200) {  

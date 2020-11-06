@@ -11,7 +11,8 @@ const getTokenStorage = () => {
 	return token
 }
 httpForm.setConfig((config) => { /* 设置全局配置 */
-  config.baseUrl = 'http://49.232.96.20:11658'
+  // config.baseUrl = 'http://49.232.96.20:11658'
+  config.baseUrl = 'http://wdsz2.huojiangame.com:11658'
   config.header = {
     ...config.header,
   }
@@ -52,7 +53,8 @@ httpForm.interceptor.response((response) => { /* 请求之后拦截器 */
 
 const http = new Request()
 http.setConfig((config) => { /* 设置全局配置 */
-  config.baseUrl = 'http://49.232.96.20:11658' /* 根域名不同 */
+  //config.baseUrl = 'http://49.232.96.20:11658' /* 根域名不同 */
+  config.baseUrl = 'http://wdsz2.huojiangame.com:11658'
   config.header = {
     ...config.header
   }

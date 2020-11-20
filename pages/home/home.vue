@@ -65,13 +65,6 @@
 		<text v-if="utils.showContact5&&wdszSaleChannel==='5'" class="waring-wrap">{{ utils.contact5 }}</text>
 		<text v-if="utils.showContact7&&wdszSaleChannel==='7'" class="waring-wrap">{{ utils.contact7 }}</text>
 		<text v-if="utils.showContact8&&wdszSaleChannel==='8'" class="waring-wrap">{{ utils.contact8 }}</text>
-		<!-- <text v-if="utils.showContact&&$global.wdszSaleChannel===0" class="waring-wrap">{{ utils.contact }}</text>
-		<text v-if="utils.showContact1&&$global.wdszSaleChannel===1" class="waring-wrap">{{ utils.contact1 }}</text>
-		<text v-if="utils.showContact2&&$global.wdszSaleChannel===2" class="waring-wrap">{{ utils.contact2 }}</text>
-		<text v-if="utils.showContact3&&$global.wdszSaleChannel===3" class="waring-wrap">{{ utils.contact3 }}</text>
-		<text v-if="utils.showContact4&&$global.wdszSaleChannel===4" class="waring-wrap">{{ utils.contact4 }}</text>
-		<text v-if="utils.showContact5&&$global.wdszSaleChannel===5" class="waring-wrap">{{ utils.contact5 }}</text>
-		<text v-if="utils.showContact7&&$global.wdszSaleChannel===7" class="waring-wrap">{{ utils.contact7 }}</text> -->
 		
 		
 		<view class="uni-divider">
@@ -198,6 +191,18 @@
 				<text>联盟秘境：</text>
 				<text>{{ roleInfo.lianmengmijing_times }}</text>
 			</view>
+			<view class="attr-flex-item">
+				<text>燚火剩余：</text>
+				<text>{{ roleInfo.yihuo_times }}</text>
+			</view>
+			<view class="attr-flex-item">
+				<text>燚火购买：</text>
+				<text>{{ roleInfo.yihuo_buy_times }}</text>
+			</view>
+			<view class="attr-flex-item">
+				<text>霸业军令：</text>
+				<text>{{ roleInfo.baye_order }}</text>
+			</view>
 		</view>
 
 		<view class="uni-divider">
@@ -322,6 +327,11 @@
 		        <view class="uni-list-cell-db">自动霸业(VIP有效)</view>
 		        <switch :checked="!!configInfo.is_baye" @change="changeSwitchBoolean('is_baye')"/>
 		    </view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">21:00后自动刷新使用完燚火次数</view>
+		        <switch :checked="!!configInfo.is_refresh_yihuo" @change="changeSwitchBoolean('is_refresh_yihuo')"/>
+		    </view>
+
 
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -406,6 +416,21 @@
 		        <switch :checked="!!configInfo.buy_gongxun_id" @change="changeSwitchGongxun"/>
 					</view>
 		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changeBuyYuntie" :value="configInfo.buy_yuntie" class="background-picker" range-key="text" :range="options.buy_yuntie">
+											<view class="uni-input">{{options.buy_yuntie[configInfo.buy_yuntie].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动购买陨铁</view>
+		        <switch :checked="!!configInfo.buy_yuntie" @change="changeSwitchYuntie"/>
+					</view>
+		    </view>
+
 
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -540,9 +565,11 @@ const configInfoDefault = {
   is_buy_tianmu_jinjiedan: 0,
   is_buy_tianmu_zhuanshengdan: 0,
   is_buy_tianmu_xuanjing: 0,
-  is_buy_yihuo: 0,
+	is_buy_yihuo: 0,
+	is_refresh_yihuo: 0, // 是否自动刷新燚火
   yihuo_type: 0,
-	buy_gongxun_id: 0
+	buy_gongxun_id: 0,
+	buy_yuntie: 0
 }
 
 const doujiObjDefault = {
@@ -584,6 +611,9 @@ const roleInfoDefault = {
 	shili_beishu: '',
 	shili_zuanshi: '',
 	shili_tili: '',
+	yihuo_times: '',
+	yihuo_buy_times: '',
+	baye_order: ''
 }
 
 export default {
@@ -1278,7 +1308,11 @@ export default {
 		},
 		changePickerGongxun(e) {
 			const index = e.target.value
-			this.configInfo.buy_gongxun_id = getValueByIndex(options.buy_gongxun_id, index)
+			this.configInfo.buy_gongxun_id = index
+		},
+		changeBuyYuntie(e) {
+			const index = e.target.value
+			this.configInfo.buy_yuntie = index
 		},
 
 		// 修改下拉选项后面的开关
@@ -1334,6 +1368,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.buy_gongxun_id = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchYuntie(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.buy_yuntie = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

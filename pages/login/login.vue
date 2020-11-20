@@ -439,6 +439,7 @@ export default {
 					moby_accid: this.loginInfo.userId || '',
 					moby_sessid: this.loginInfo.sessionid || ''
 				}
+				console.log('苹果登录')
 			}
 			const secretKey = '23aa164ad29bba78'
 			const encryptParams = this.encryptData(params, secretKey)

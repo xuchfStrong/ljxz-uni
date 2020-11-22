@@ -96,9 +96,10 @@
 			<text>数据更新时间：</text>
 			<text :class="{danger: isPassedTwoHours}">{{ roleInfo.update_time }}</text>
 		</view>
-		<view>
+		<view class="fuzhu-info">
 			<text>续费请提供此ID：</text>
 			<text class="content-wrap">{{ loginInfo.userId }}</text>
+			<button class="copy-button" type="primary" plain="true" size="mini" @tap="doCopy">复制</button>
 		</view>
 		<view>
 			<text>云挂机状态：</text>
@@ -324,10 +325,6 @@
 		        <switch :checked="!!configInfo.is_doupoqiangbang" @change="changeSwitchBoolean('is_doupoqiangbang')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动霸业(VIP有效)</view>
-		        <switch :checked="!!configInfo.is_baye" @change="changeSwitchBoolean('is_baye')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">21:00后自动刷新使用完燚火次数</view>
 		        <switch :checked="!!configInfo.is_refresh_yihuo" @change="changeSwitchBoolean('is_refresh_yihuo')"/>
 		    </view>
@@ -428,6 +425,20 @@
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动购买陨铁</view>
 		        <switch :checked="!!configInfo.buy_yuntie" @change="changeSwitchYuntie"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changeBuyBaye" :value="configInfo.is_baye" class="background-picker" range-key="text" :range="options.is_baye">
+											<view class="uni-input">{{options.is_baye[configInfo.is_baye].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动霸业(VIP有效)</view>
+		        <switch :checked="!!configInfo.is_baye" @change="changeSwitchBaye"/>
 					</view>
 		    </view>
 
@@ -1314,6 +1325,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.buy_yuntie = index
 		},
+		changeBuyBaye(e) {
+			const index = e.target.value
+			this.configInfo.is_baye = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchYouli(e) {
@@ -1376,6 +1391,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.buy_yuntie = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchBaye(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.is_baye = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}
@@ -1574,7 +1597,33 @@ export default {
             break
         }
       })
-    },
+		},
+		
+		doCopy() {
+			if (!this.userInfo.server_id || !this.loginInfo.userId) {
+				toast("复制失败,没有选择服务器或者没有登录")
+				return
+			}
+			const cpText = `服务器:${this.userInfo.server_id}, 续费ID:${this.loginInfo.userId}`
+			// #ifdef APP-PLUS
+			uni.setClipboardData({
+				data: String(cpText),
+				success: function () {
+					toast("复制成功,可用于辅助续费充值")
+				}
+			})
+			// #endif
+			// #ifdef H5
+			this.$copyText(cpText).then(
+        res => {
+          toast("复制成功,可用于辅助续费充值")
+        },
+        err => {
+          toast("复制失败")
+        }
+			)
+			// #endif
+		},
 
 		radioChangeLixian(evt) {
 			this.configInfo.lixianbeishu = Number(evt.target.value)
@@ -1742,5 +1791,12 @@ export default {
 }
 .content-wrap {
 	user-select: text;
+}
+.fuzhu-info {
+	display: flex;
+	align-items: center;
+}
+.copy-button {
+	margin-left:40upx;
 }
 </style>

@@ -9,6 +9,14 @@ export function getRemoteOptions(params) {
   )
 }
 
+// 获取更新信息
+export function getUpdate(params) {
+  return http.get(
+    '/ljxz/update.php',
+    {params}
+  )
+}
+
 // 获取服务器信息
 export function getServerInfo(params) {
   return http.get(

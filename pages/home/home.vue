@@ -1604,7 +1604,7 @@ export default {
 				toast("复制失败,没有选择服务器或者没有登录")
 				return
 			}
-			const cpText = `服务器:${this.userInfo.server_id}, 续费ID:${this.loginInfo.userId}`
+			const cpText = `服务器:${this.userInfo.server_id},续费ID:${this.loginInfo.userId},游戏:wdsz`
 			// #ifdef APP-PLUS
 			uni.setClipboardData({
 				data: String(cpText),

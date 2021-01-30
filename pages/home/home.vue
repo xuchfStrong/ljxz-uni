@@ -442,6 +442,20 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changeWushenshilian" :value="configInfo.wushenshilian_id" class="background-picker" range-key="text" :range="options.wushenshilian_id">
+											<view class="uni-input">{{options.wushenshilian_id[configInfo.wushenshilian_id].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">武神试炼</view>
+		        <switch :checked="!!configInfo.wushenshilian_id" @change="changeSwitchWushenshilian"/>
+					</view>
+		    </view>
+
 
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -580,7 +594,8 @@ const configInfoDefault = {
 	is_refresh_yihuo: 0, // 是否自动刷新燚火
   yihuo_type: 0,
 	buy_gongxun_id: 0,
-	buy_yuntie: 0
+	buy_yuntie: 0,
+	wushenshilian_id: 0 // 武神试炼ID
 }
 
 const doujiObjDefault = {
@@ -1329,6 +1344,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.is_baye = index
 		},
+		changeWushenshilian(e) {
+			const index = e.target.value
+			this.configInfo.wushenshilian_id = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchYouli(e) {
@@ -1399,6 +1418,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.is_baye = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchWushenshilian(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.wushenshilian_id = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

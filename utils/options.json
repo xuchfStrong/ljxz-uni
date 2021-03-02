@@ -108,5 +108,11 @@
     {"value": 1,"text": "普通"},
     {"value": 2,"text": "高级"},
     {"value": 3,"text": "超凡"}
+  ],
+  "is_change_shili": [
+    {"value": 0,"text": "关闭自动切换势力"},
+    {"value": 1,"text": "最高收入"},
+    {"value": 2,"text": "第二收入"},
+    {"value": 3,"text": "第三收入"}
   ]
 }

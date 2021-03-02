@@ -65,6 +65,7 @@
 		<text v-if="utils.showContact5&&wdszSaleChannel==='5'" class="waring-wrap">{{ utils.contact5 }}</text>
 		<text v-if="utils.showContact7&&wdszSaleChannel==='7'" class="waring-wrap">{{ utils.contact7 }}</text>
 		<text v-if="utils.showContact8&&wdszSaleChannel==='8'" class="waring-wrap">{{ utils.contact8 }}</text>
+		<text v-if="utils.showContact31&&wdszSaleChannel==='31'" class="waring-wrap">{{ utils.contact31 }}</text>
 		
 		
 		<view class="uni-divider">
@@ -304,10 +305,10 @@
 		        <view class="uni-list-cell-db">自动一次一次买燚火次数</view>
 		        <switch :checked="!!configInfo.is_buy_yihuo" @change="changeSwitchBoolean('is_buy_yihuo')"/>
 		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
+				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动换高收入势力(VIP有效)</view>
 		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchBoolean('is_change_shili')"/>
-		    </view>
+		    </view> -->
 				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动清理势力外盟人员(VIP有效)</view>
 		        <switch :checked="!!configInfo.is_beat_shili" @change="changeSwitchBoolean('is_beat_shili')"/>
@@ -453,6 +454,20 @@
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">武神试炼</view>
 		        <switch :checked="!!configInfo.wushenshilian_id" @change="changeSwitchWushenshilian"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changeShili" :value="configInfo.is_change_shili" class="background-picker" range-key="text" :range="options.is_change_shili">
+											<view class="uni-input">{{options.is_change_shili[configInfo.is_change_shili].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动切换势力(VIP有效)</view>
+		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchWushenshilian"/>
 					</view>
 		    </view>
 
@@ -1348,6 +1363,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.wushenshilian_id = index
 		},
+		changeShili(e) {
+			const index = e.target.value
+			this.configInfo.is_change_shili = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchYouli(e) {
@@ -1422,10 +1441,10 @@ export default {
 				this.$toast('请选择左侧列表中选项')
 			}
 		},
-		changeSwitchWushenshilian(e) {
+		changeSwitchShili(e) {
 			const checked = e.target.value
 			if (!checked) {
-				this.configInfo.wushenshilian_id = 0
+				this.configInfo.is_change_shili = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

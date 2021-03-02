@@ -22,6 +22,7 @@
           <a v-if="wdszSaleChannel==='5'" :href="update.pkgUrl5"><text>点击下载辅助APP</text></a>
           <a v-if="wdszSaleChannel==='7'" :href="update.pkgUrl7"><text>点击下载辅助APP</text></a>
           <a v-if="wdszSaleChannel==='8'" :href="update.pkgUrl8"><text>点击下载辅助APP</text></a>
+          <a v-if="wdszSaleChannel==='31'" :href="update.pkgUrl31"><text>点击下载辅助APP</text></a>
           <!-- <button type="primary" @tap="downloadImage">下载</button> -->
         </view>
 

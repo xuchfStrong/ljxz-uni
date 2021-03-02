@@ -7,7 +7,7 @@
 					选择平台：
 				</view>
 				<view class="uni-list-cell-db">
-					<picker @change="changePlatform" :disabled="false" range-key="text" :value="platformIndex" :range="remoteOptions.platform">
+					<picker @change="changePlatform" :disabled="false" range-key="text" :value="platformIndex" :range="remoteOptions.wdzs">
 						<view class="uni-input">{{platformName}}</view>
 					</picker>
 				</view>
@@ -230,25 +230,13 @@ export default {
 					// } else {
 					// 	this.handleGerServer()
 					// }
-				} else {
-					this.flag.newUserFlag = true
-					const guanfangPlatform = [1, 2, 4]
-					const douyinPlatform = [3, 12]
-					const xuanhuanxiuzhen = [13]
-					if (guanfangPlatform.includes(this.userInfo.loginType)) { // 官方，苹果，斗破乾坤
-						this.handleLoginFirstStep()
-					} else if (douyinPlatform.includes(this.userInfo.loginType)) { // 抖音, 大仙宗
-						this.handleLoginFirstStepDouyin()
-					} else if (xuanhuanxiuzhen.includes(this.userInfo.loginType)) { // 玄幻修真
-						this.handleLoginFirstStepXuanhuanxiuzhen()
-					}else { // 渠道服
+				} else { // 渠道服
 						uni.showToast({
-							title: '登录失败，请使用登陆助手提取账号密码后再登录。',
+							title: '登录失败，请联系管理员获取用户密码。',
 							duration: 2000,
 							icon: 'none'
 						})
 					}
-				}
 			})
 		},
 
@@ -540,7 +528,7 @@ export default {
 				extend2: "",
 				game_appid: "5D2E20708BE1E3EC0",
 				game_id: "107",
-				game_name: "武道神尊(安卓版)",
+				game_name: "武道宗师(安卓版)",
 				password: this.userInfo.passwordPlatForm,
 				phoneType: "vivo v3max a",
 				sdk_version: "1",
@@ -713,16 +701,16 @@ export default {
 			} else {
 				this.platformIndex = 0
 			}
-			this.platformName = this.remoteOptions.platform[this.platformIndex].text
-			this.userInfo.loginType = getValueByIndex(this.remoteOptions.platform, this.platformIndex)
+			this.platformName = this.remoteOptions.wdzs[this.platformIndex].text
+			this.userInfo.loginType = getValueByIndex(this.remoteOptions.wdzs, this.platformIndex)
 			this.showVerifycode = this.userInfo.loginType === 2
 		},
 
 		// 加载后将存储的数据显示出来
 		initSaveData() {
-			this.platformIndex = getIndexByValue(this.remoteOptions.platform, this.userInfo.loginType)
+			this.platformIndex = getIndexByValue(this.remoteOptions.wdzs, this.userInfo.loginType)
 			if (this.platformIndex !== -1) {
-				this.platformName = this.remoteOptions.platform[this.platformIndex].text
+				this.platformName = this.remoteOptions.wdzs[this.platformIndex].text
 			}
 		}
 	}

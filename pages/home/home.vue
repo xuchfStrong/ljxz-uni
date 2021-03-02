@@ -42,7 +42,7 @@
 					<text style="width: 10upx; display: inline-block;"></text>
 					<button type="primary" plain="true" size="mini" @tap="loginSwitch">切换账号</button>
 					<text style="width: 10upx; display: inline-block;"></text>
-					<button type="primary" plain="true" size="mini" @tap="handleGerServer">更新服务器</button>
+					<button type="primary" plain="true" size="mini" @tap="handleGetServerList">更新服务器</button>
 				</view>
 			</view>
 			<view  class="btn-center">
@@ -134,23 +134,23 @@
 				<text>{{ roleInfo.jingzuan }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>灵气：</text>
+				<text>经验：</text>
 				<text>{{ roleInfo.douqi | valueFormatFilter }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>金币：</text>
+				<text>资产：</text>
 				<text>{{ roleInfo.jinbi | valueFormatFilter }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>仙液：</text>
+				<text>能量：</text>
 				<text>{{ roleInfo.huoneng | valueFormatFilter }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>炎帝征途：</text>
+				<text>圣域洞天：</text>
 				<text>{{ roleInfo.zhuzai_level }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>主宰层数：</text>
+				<text>霸主层数：</text>
 				<text>{{ roleInfo.bazhu_cengshu }}</text>
 			</view>
 			<view class="attr-flex-item">
@@ -169,7 +169,7 @@
 		
 		<view class="attr-flex">
 			<view class="attr-flex-item">
-				<text>冥殿来袭：</text>
+				<text>魔族异动：</text>
 				<text>{{ roleInfo.hundianlaixi_times }}</text>
 			</view>
 			<view class="attr-flex-item">
@@ -181,11 +181,11 @@
 				<text>{{ roleInfo.yijijingong_times }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>竞技排行：</text>
+				<text>风云榜排行：</text>
 				<text>{{ roleInfo.doupoqiangbang_times }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>联盟捐献：</text>
+				<text>联盟建设：</text>
 				<text>{{ roleInfo.lianmengjuanxian_times }}</text>
 			</view>
 			<view class="attr-flex-item">
@@ -193,21 +193,21 @@
 				<text>{{ roleInfo.lianmengmijing_times }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>燚火剩余：</text>
+				<text>圣域洞天剩余：</text>
 				<text>{{ roleInfo.yihuo_times }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>燚火购买：</text>
+				<text>圣域洞天购买：</text>
 				<text>{{ roleInfo.yihuo_buy_times }}</text>
 			</view>
 			<view class="attr-flex-item">
-				<text>霸业军令：</text>
+				<text>国战军令：</text>
 				<text>{{ roleInfo.baye_order }}</text>
 			</view>
 		</view>
 
 		<view class="uni-divider">
-			<view class="uni-divider__content">势力信息</view>
+			<view class="uni-divider__content">九州争霸信息</view>
 			<view class="uni-divider__line"></view>
 		</view>
 
@@ -253,23 +253,23 @@
 			    </radio-group>
 		    </view>
 		    <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">升仙灵池</view>
+		        <view class="uni-list-cell-db">升能量池</view>
 		        <switch :checked="!!configInfo.is_shenghuojing" @change="changeSwitchBoolean('is_shenghuojing')"/>
 		    </view>
 		    <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动冥帝(普通版是遇到了才会打一下)</view>
+		        <view class="uni-list-cell-db">自动魔帝(普通版是遇到了才会打一下)</view>
 		        <switch :checked="!!configInfo.is_hundi" @change="changeSwitchBoolean('is_hundi')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动关卡(关闭则增加炎帝次数)</view>
+		        <view class="uni-list-cell-db">自动关卡(关闭则增加千层塔次数)</view>
 		        <switch :checked="!!configInfo.is_guanqia" @change="changeSwitchBoolean('is_guanqia')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动炎帝(关闭则增加关卡次数)</view>
+		        <view class="uni-list-cell-db">自动千层塔(关闭则增加关卡次数)</view>
 		        <switch :checked="!!configInfo.is_yandi" @change="changeSwitchBoolean('is_yandi')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动试炼副本(关闭炎帝和关卡才增加次数)</view>
+		        <view class="uni-list-cell-db">自动试炼副本(关闭千层塔和关卡才增加次数)</view>
 		        <switch :checked="!!configInfo.is_tianmu" @change="changeSwitchBoolean('is_tianmu')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
@@ -277,11 +277,11 @@
 		        <switch :checked="!!configInfo.is_mail" @change="changeSwitchBoolean('is_mail')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-金币</view>
+		        <view class="uni-list-cell-db">试炼副本购买-资产</view>
 		        <switch :checked="!!configInfo.is_buy_tianmu_jinbi" @change="changeSwitchBoolean('is_buy_tianmu_jinbi')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-陨铁</view>
+		        <view class="uni-list-cell-db">试炼副本购买-玄铁</view>
 		        <switch :checked="!!configInfo.is_buy_tianmu_xuantie" @change="changeSwitchBoolean('is_buy_tianmu_xuantie')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
@@ -289,19 +289,19 @@
 		        <switch :checked="!!configInfo.is_buy_tianmu_jinjiedan" @change="changeSwitchBoolean('is_buy_tianmu_jinjiedan')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-转生丹</view>
+		        <view class="uni-list-cell-db">试炼副本购买-破境丹</view>
 		        <switch :checked="!!configInfo.is_buy_tianmu_zhuanshengdan" @change="changeSwitchBoolean('is_buy_tianmu_zhuanshengdan')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-玄晶</view>
+		        <view class="uni-list-cell-db">试炼副本购买-精钢</view>
 		        <switch :checked="!!configInfo.is_buy_tianmu_xuanjing" @change="changeSwitchBoolean('is_buy_tianmu_xuanjing')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动冥殿来袭</view>
+		        <view class="uni-list-cell-db">自动魔族异动</view>
 		        <switch :checked="!!configInfo.is_hundianlaixi" @change="changeSwitchBoolean('is_hundianlaixi')"/>
 		    </view>
         <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动一次一次买燚火次数</view>
+		        <view class="uni-list-cell-db">自动一次一次买圣域洞天次数</view>
 		        <switch :checked="!!configInfo.is_buy_yihuo" @change="changeSwitchBoolean('is_buy_yihuo')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
@@ -321,11 +321,11 @@
 		        <switch :checked="!!configInfo.is_lianmengmijing" @change="changeSwitchBoolean('is_lianmengmijing')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">21:30之后自动竞技排行剩余次数</view>
+		        <view class="uni-list-cell-db">21:30之后自动风云榜排行剩余次数</view>
 		        <switch :checked="!!configInfo.is_doupoqiangbang" @change="changeSwitchBoolean('is_doupoqiangbang')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">21:00后自动刷新使用完燚火次数</view>
+		        <view class="uni-list-cell-db">21:00后自动刷新使用完圣域洞天次数</view>
 		        <switch :checked="!!configInfo.is_refresh_yihuo" @change="changeSwitchBoolean('is_refresh_yihuo')"/>
 		    </view>
 
@@ -395,7 +395,7 @@
 							</view>
 					</view>
 					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动挑战燚火</view>
+						<view class="uni-list-cell-db">自动挑战圣域洞天</view>
 		        <switch :checked="!!configInfo.yihuo_type" @change="changeSwitchYihuo"/>
 					</view>
 		    </view>
@@ -423,7 +423,7 @@
 							</view>
 					</view>
 					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动购买陨铁</view>
+						<view class="uni-list-cell-db">自动购买玄铁</view>
 		        <switch :checked="!!configInfo.buy_yuntie" @change="changeSwitchYuntie"/>
 					</view>
 		    </view>
@@ -451,7 +451,7 @@
 							</view>
 					</view>
 					<view class="flex-item-two">
-						<view class="uni-list-cell-db">武神试炼</view>
+						<view class="uni-list-cell-db">武道宗师</view>
 		        <switch :checked="!!configInfo.wushenshilian_id" @change="changeSwitchWushenshilian"/>
 					</view>
 		    </view>
@@ -466,7 +466,7 @@
 							</view>
 					</view>
 					<view class="flex-item-two">
-						<view class="uni-list-cell-db">武技购买</view>
+						<view class="uni-list-cell-db">战法购买</view>
 		        <switch :checked="!!configInfo.douji_goumai" @change="changeSwitchDouji"/>
 					</view>
 		    </view> -->
@@ -474,7 +474,7 @@
 
 		
 		<view class="uni-divider">
-			<view class="uni-divider__content">武技设置</view>
+			<view class="uni-divider__content">战法设置</view>
 			<view class="uni-divider__line"></view>
 		</view>
 
@@ -553,7 +553,7 @@ import save from '@/utils/save'
 import moment from 'moment'
 import {mapState,mapMutations} from 'vuex'
 import { getValueByIndex, getIndexByValue, getChannel, toast } from '@/utils/index'
-import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel } from '@/api/game'
+import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel, getServerInfoWZS } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
 import options from '@/utils/options.json'
@@ -591,11 +591,11 @@ const configInfoDefault = {
   is_buy_tianmu_zhuanshengdan: 0,
   is_buy_tianmu_xuanjing: 0,
 	is_buy_yihuo: 0,
-	is_refresh_yihuo: 0, // 是否自动刷新燚火
+	is_refresh_yihuo: 0, // 是否自动刷新圣域洞天
   yihuo_type: 0,
 	buy_gongxun_id: 0,
 	buy_yuntie: 0,
-	wushenshilian_id: 0 // 武神试炼ID
+	wushenshilian_id: 0 // 武道宗师ID
 }
 
 const doujiObjDefault = {
@@ -734,7 +734,7 @@ export default {
 			  platform: 1, // 这个platform用在像辅助添加用户的时候
 			  server_id: '',
 			  endTime: '', // 辅助到期时间
-			  loginType: 1 // 官服：1
+			  loginType: 20 // 官服：1
 			},
 			loginInfo: { // 登录过程中需要的数据
 				userId: ''
@@ -928,7 +928,7 @@ export default {
 		// 读取记住的登录信息
 		loadLoginInfo() {
 			uni.setNavigationBarTitle({
-					title: '武道神尊火箭辅助V' + this.$global.wdszVersionName
+					title: '武道宗师火箭辅助V' + this.$global.wdszVersionName
 			});
 			console.log('加载登录信息')
 			this.roleList = save.getRoleList()
@@ -1035,7 +1035,6 @@ export default {
 		handleGerServer() {
 			let wsUrl = ''
 			if (this.userInfo.loginType === 1) {
-				// wsUrl = 'ws://121.37.203.19:36001/'
 				this.handleGetServerList()
 				return
 			} else {
@@ -1139,6 +1138,12 @@ export default {
 			const guanfuServerLoginTypeList = [1,2,3,4,12,13]
 			if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
 				getServerInfo().then(res => {
+					this.serverInfo.last_server_list = res.server.guanfu
+				}).catch(err => {
+					console.log(err)
+				})
+			} else if (this.userInfo.loginType === 20) {
+				getServerInfoWZS().then(res => {
 					this.serverInfo.last_server_list = res.server.guanfu
 				}).catch(err => {
 					console.log(err)

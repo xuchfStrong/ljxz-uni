@@ -33,6 +33,14 @@ export function getServerInfoChannel(params) {
   )
 }
 
+// 获取服务器信息-武道宗师
+export function getServerInfoWZS(params) {
+  return http.get(
+    '/ljxz/server_wdzs.php',
+    {params}
+  )
+}
+
 // 获取角色信息
 export function getRoleInfo(params) {
   return http.get(

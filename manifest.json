@@ -2,8 +2,8 @@
     "name" : "武道神尊火箭辅助",
     "appid" : "__UNI__20BAD31",
     "description" : "武道神尊火箭辅助",
-    "versionName" : "1.1.7",
-    "versionCode" : 117,
+    "versionName" : "1.1.8",
+    "versionCode" : 118,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",

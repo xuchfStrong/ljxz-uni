@@ -298,6 +298,10 @@
 		        <switch :checked="!!configInfo.is_buy_tianmu_xuanjing" @change="changeSwitchBoolean('is_buy_tianmu_xuanjing')"/>
 		    </view>
 				<view class="uni-list-cell uni-list-cell-pd-mini">
+				    <view class="uni-list-cell-db">试炼副本购买-武魂</view>
+				    <switch :checked="!!configInfo.is_buy_tianmu_wuhun" @change="changeSwitchBoolean('is_buy_tianmu_wuhun')"/>
+				</view>
+				<view class="uni-list-cell uni-list-cell-pd-mini">
 		        <view class="uni-list-cell-db">自动冥殿来袭</view>
 		        <switch :checked="!!configInfo.is_hundianlaixi" @change="changeSwitchBoolean('is_hundianlaixi')"/>
 		    </view>
@@ -605,6 +609,7 @@ const configInfoDefault = {
   is_buy_tianmu_jinjiedan: 0,
   is_buy_tianmu_zhuanshengdan: 0,
   is_buy_tianmu_xuanjing: 0,
+	is_buy_tianmu_wuhun: 0,
 	is_buy_yihuo: 0,
 	is_refresh_yihuo: 0, // 是否自动刷新燚火
   yihuo_type: 0,

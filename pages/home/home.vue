@@ -366,6 +366,20 @@
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
+									<picker @change="changeBuyLianmeng" :value="configInfo.buy_lianmengmijing_times" class="background-picker" range-key="text" :range="options.buy_lianmengmijing_times">
+											<view class="uni-input">{{options.buy_lianmengmijing_times[configInfo.buy_lianmengmijing_times].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">自动购买联盟秘境</view>
+		        <switch :checked="!!configInfo.buy_lianmengmijing_times" @change="changeSwitchBuyLianmeng"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
 									<picker @change="changePickerYJKC" :value="configInfo.yiji_kaicai_type" class="background-picker" range-key="text" :range="options.yiji_kaicai_type">
 											<view class="uni-input">{{options.yiji_kaicai_type[configInfo.yiji_kaicai_type].text}}</view>
 									</picker>
@@ -471,7 +485,7 @@
 					</view>
 					<view class="flex-item-two">
 						<view class="uni-list-cell-db">自动切换势力(VIP有效)</view>
-		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchWushenshilian"/>
+		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchShili"/>
 					</view>
 		    </view>
 
@@ -601,6 +615,7 @@ const configInfoDefault = {
 	youlisifang_beishu: 0,
   youlisifang_id: 0,
   lianmengjianshe_type: 0,
+	buy_lianmengmijing_times: 0,
   yiji_kaicai_type: 0,
   yiji_jingong_type: 0,
   moyuleixing: 0,
@@ -1372,6 +1387,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.is_change_shili = index
 		},
+		changeBuyLianmeng(e) {
+			const index = e.target.value
+			this.configInfo.buy_lianmengmijing_times = index
+		},
 
 		// 修改下拉选项后面的开关
 		changeSwitchYouli(e) {
@@ -1446,10 +1465,26 @@ export default {
 				this.$toast('请选择左侧列表中选项')
 			}
 		},
+		changeSwitchWushenshilian(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.wushenshilian_id = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
 		changeSwitchShili(e) {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.is_change_shili = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchBuyLianmeng(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.buy_lianmengmijing_times = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

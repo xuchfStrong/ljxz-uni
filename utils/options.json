@@ -123,5 +123,33 @@
     {"value": 3,"text": "购买3次"},
     {"value": 4,"text": "购买4次"},
     {"value": 5,"text": "购买5次"}
+  ],
+  "is_buy_baye_order_times": [
+    {"value": 0,"text": "关闭购买"},
+    {"value": 1,"text": "购买1次"},
+    {"value": 2,"text": "购买2次"},
+    {"value": 3,"text": "购买3次"},
+    {"value": 4,"text": "购买4次"},
+    {"value": 5,"text": "购买5次"},
+    {"value": 6,"text": "购买6次"},
+    {"value": 7,"text": "购买7次"},
+    {"value": 8,"text": "购买8次"},
+    {"value": 9,"text": "购买9次"},
+    {"value": 10,"text": "购买10次"},
+    {"value": 11,"text": "购买11次"},
+    {"value": 12,"text": "购买12次"},
+    {"value": 13,"text": "购买13次"},
+    {"value": 14,"text": "购买14次"},
+    {"value": 15,"text": "购买15次"},
+    {"value": 16,"text": "购买16次"},
+    {"value": 17,"text": "购买17次"},
+    {"value": 18,"text": "购买18次"},
+    {"value": 19,"text": "购买19次"},
+    {"value": 20,"text": "购买20次"}
+  ],
+  "is_special_baye": [
+    {"value": 0,"text": "关闭增强霸业"},
+    {"value": 1,"text": "打地图一半"},
+    {"value": 2,"text": "打地图另一半"}
   ]
 }

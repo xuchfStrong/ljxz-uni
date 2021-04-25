@@ -464,6 +464,34 @@
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
+									<picker @change="changeBuyBayeOrder" :value="configInfo.is_buy_baye_order_times" class="background-picker" range-key="text" :range="options.is_buy_baye_order_times">
+											<view class="uni-input">{{options.is_buy_baye_order_times[configInfo.is_buy_baye_order_times].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">购买霸业军令次数</view>
+		        <switch :checked="!!configInfo.is_buy_baye_order_times" @change="changeSwitchBayeBuyOrder"/>
+					</view>
+		    </view>
+
+				<view v-if="bayeSpecial" class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changeBuyBayeSpecial" :value="configInfo.is_special_baye" class="background-picker" range-key="text" :range="options.is_special_baye">
+											<view class="uni-input">{{options.is_special_baye[configInfo.is_special_baye].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">增强霸业</view>
+		        <switch :checked="!!configInfo.is_special_baye" @change="changeSwitchBayeSpecial"/>
+					</view>
+		    </view>
+
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
 									<picker @change="changeWushenshilian" :value="configInfo.wushenshilian_id" class="background-picker" range-key="text" :range="options.wushenshilian_id">
 											<view class="uni-input">{{options.wushenshilian_id[configInfo.wushenshilian_id].text}}</view>
 									</picker>
@@ -587,7 +615,7 @@ import moment from 'moment'
 import {mapState,mapMutations} from 'vuex'
 import { getValueByIndex, getIndexByValue, getChannel, toast } from '@/utils/index'
 import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel } from '@/api/game'
-import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions } from '@/api/game'
+import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions, checkBayeSpecial } from '@/api/game'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
 import options from '@/utils/options.json'
 import { jingjieMap, shiliMap, vipMap } from './mapData.js'
@@ -606,6 +634,8 @@ const configInfoDefault = {
 	is_mail: 0,
 	is_liandan: 0,
 	is_baye: 0,
+	is_special_baye: 0,
+	is_buy_baye_order_times: 0,
 	is_hundianlaixi: 1,
 	is_change_shili: 0,
 	is_beat_shili: 0,
@@ -728,6 +758,7 @@ export default {
 			current: 0,
 			statusLoading: false,
 			yunguaji: false,
+			bayeSpecial: false,
 			options:options,
 			configInfo: Object.assign({}, configInfoDefault),
 			doujiObj: Object.assign({}, doujiObjDefault), // 斗技购买相关的配置
@@ -1186,6 +1217,18 @@ export default {
 				})
 			}
 		},
+
+		// 获取角色增强霸业配置
+		handleGetBayeSpecial() {
+			const param = {
+        userid: this.loginInfo.userId,
+				server_id: this.userInfo.server_id,
+				t: new Date().getTime()
+			}
+			checkBayeSpecial(param).then(res => {
+				this.bayeSpecial = res.code === 200
+			})
+		},
 		
 		// 获取挂机状态
     handleGuajiStatus() {
@@ -1224,6 +1267,7 @@ export default {
 				t: new Date().getTime()
 			}
 			this.statusLoading = true
+			this.handleGetBayeSpecial()
       getRoleInfo(param).then(res => { // 查询角色信息
 				const code = res.code
 				this.statusLoading = false
@@ -1379,6 +1423,14 @@ export default {
 			const index = e.target.value
 			this.configInfo.is_baye = index
 		},
+		changeBuyBayeOrder(e) {
+			const index = e.target.value
+			this.configInfo.is_buy_baye_order_times = index
+		},
+		changeBuyBayeSpecial(e) {
+			const index = e.target.value
+			this.configInfo.is_special_baye = index
+		},
 		changeWushenshilian(e) {
 			const index = e.target.value
 			this.configInfo.wushenshilian_id = index
@@ -1461,6 +1513,22 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.is_baye = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchBayeBuyOrder(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.is_buy_baye_order_times = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchBayeSpecial(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.is_special_baye = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

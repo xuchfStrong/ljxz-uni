@@ -100,10 +100,16 @@ export function getUtils(params) {
 }
 
 // 转移时间
-// 修改配置信息
 export function transferTime(data) {
   return httpForm.post(
     '/ljxz/transfer_time.php',
     data
+  )
+}
+
+export function checkBayeSpecial(params) {
+  return http.get(
+    '/ljxz/check_special.php',
+    {params}
   )
 }

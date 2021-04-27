@@ -489,6 +489,20 @@
 					</view>
 		    </view>
 
+				<view v-if="bayeSpecial" class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changeBuyBayeSpecialOption" :value="configInfo.special_baye_option" class="background-picker" range-key="text" :range="options.special_baye_option">
+											<view class="uni-input">{{options.special_baye_option[configInfo.special_baye_option].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">增强霸业专有选项</view>
+		        <switch :checked="!!configInfo.special_baye_option" @change="changeSwitchBayeSpecialOption"/>
+					</view>
+		    </view>
+
 				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
 							<view class="uni-list-cell-db">
@@ -635,6 +649,7 @@ const configInfoDefault = {
 	is_liandan: 0,
 	is_baye: 0,
 	is_special_baye: 0,
+	special_baye_option: 1,
 	is_buy_baye_order_times: 0,
 	is_hundianlaixi: 1,
 	is_change_shili: 0,
@@ -1431,6 +1446,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.is_special_baye = index
 		},
+		changeBuyBayeSpecialOption(e) {
+			const index = e.target.value
+			this.configInfo.special_baye_option = index
+		},
 		changeWushenshilian(e) {
 			const index = e.target.value
 			this.configInfo.wushenshilian_id = index
@@ -1529,6 +1548,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.is_special_baye = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchBayeSpecialOption(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.special_baye_option = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

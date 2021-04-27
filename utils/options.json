@@ -145,11 +145,31 @@
     {"value": 17,"text": "购买17次"},
     {"value": 18,"text": "购买18次"},
     {"value": 19,"text": "购买19次"},
-    {"value": 20,"text": "购买20次"}
+    {"value": 20,"text": "购买20次"},
+    {"value": 21,"text": "购买21次"},
+    {"value": 22,"text": "购买22次"},
+    {"value": 23,"text": "购买23次"},
+    {"value": 24,"text": "购买24次"},
+    {"value": 25,"text": "购买25次"},
+    {"value": 26,"text": "购买26次"},
+    {"value": 27,"text": "购买27次"},
+    {"value": 28,"text": "购买28次"},
+    {"value": 29,"text": "购买29次"},
+    {"value": 30,"text": "购买30次"}
   ],
   "is_special_baye": [
     {"value": 0,"text": "关闭增强霸业"},
     {"value": 1,"text": "打地图一半"},
-    {"value": 2,"text": "打地图另一半"}
+    {"value": 2,"text": "打地图另一半"},
+    {"value": 3,"text": "跟随二生三"},
+    {"value": 4,"text": "跟随专一"}
+  ],
+  "special_baye_option": [
+    {"value": 0,"text": "关闭"},
+    {"value": 1,"text": "只推图"},
+    {"value": 2,"text": "半边地图中推图+挖宝"},
+    {"value": 3,"text": "全图挖宝+推一半地图"},
+    {"value": 4,"text": "跟随二生三"},
+    {"value": 5,"text": "跟随专一"}
   ]
 }

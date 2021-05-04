@@ -170,6 +170,15 @@
     {"value": 2,"text": "半边地图中推图+挖宝"},
     {"value": 3,"text": "全图挖宝+推一半地图"},
     {"value": 4,"text": "跟随二生三"},
-    {"value": 5,"text": "跟随专一"}
+    {"value": 5,"text": "跟随专一"},
+    {"value": 6,"text": "不驻守推图"}
+  ],
+  "buy_shenqi": [
+    {"value": 0,"text": "关闭"},
+    {"value": 1,"text": "只购买黄阶神器不合成"},
+    {"value": 2,"text": "购买+2个合成"},
+    {"value": 3,"text": "购买+3个合成"},
+    {"value": 4,"text": "购买+4个合成"},
+    {"value": 5,"text": "购买+5个合成"}
   ]
 }

@@ -531,6 +531,20 @@
 					</view>
 		    </view>
 
+				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view class="flex-item-two">
+							<view class="uni-list-cell-db">
+									<picker @change="changeShenqi" :value="configInfo.buy_shenqi" class="background-picker" range-key="text" :range="options.buy_shenqi">
+											<view class="uni-input">{{options.buy_shenqi[configInfo.buy_shenqi].text}}</view>
+									</picker>
+							</view>
+					</view>
+					<view class="flex-item-two">
+						<view class="uni-list-cell-db">购买黄阶神器并合成</view>
+		        <switch :checked="!!configInfo.buy_shenqi" @change="changeSwitchShenqi"/>
+					</view>
+		    </view>
+
 
 				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
 					<view class="flex-item-two">
@@ -675,6 +689,7 @@ const configInfoDefault = {
   yihuo_type: 0,
 	buy_gongxun_id: 0,
 	buy_yuntie: 0,
+	buy_shenqi: 0,
 	wushenshilian_id: 0 // 武神试炼ID
 }
 
@@ -1458,6 +1473,10 @@ export default {
 			const index = e.target.value
 			this.configInfo.is_change_shili = index
 		},
+		changeShenqi(e) {
+			const index = e.target.value
+			this.configInfo.buy_shenqi = index
+		},
 		changeBuyLianmeng(e) {
 			const index = e.target.value
 			this.configInfo.buy_lianmengmijing_times = index
@@ -1572,6 +1591,14 @@ export default {
 			const checked = e.target.value
 			if (!checked) {
 				this.configInfo.is_change_shili = 0
+			} else {
+				this.$toast('请选择左侧列表中选项')
+			}
+		},
+		changeSwitchShenqi(e) {
+			const checked = e.target.value
+			if (!checked) {
+				this.configInfo.buy_shenqi = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}

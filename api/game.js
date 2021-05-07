@@ -33,6 +33,14 @@ export function getServerInfoChannel(params) {
   )
 }
 
+// 获取服务器信息-战盟
+export function getServerInfoZhanmeng(params) {
+  return http.get(
+    '/ljxz/server_zhanmeng.php',
+    {params}
+  )
+}
+
 // 获取角色信息
 export function getRoleInfo(params) {
   return http.get(

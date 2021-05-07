@@ -642,7 +642,7 @@ import save from '@/utils/save'
 import moment from 'moment'
 import {mapState,mapMutations} from 'vuex'
 import { getValueByIndex, getIndexByValue, getChannel, toast } from '@/utils/index'
-import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel } from '@/api/game'
+import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel,getServerInfoZhanmeng } from '@/api/game'
 import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions, checkBayeSpecial } from '@/api/game'
 import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
 import options from '@/utils/options.json'
@@ -1235,6 +1235,12 @@ export default {
 			const guanfuServerLoginTypeList = [1,2,3,4,12,13]
 			if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
 				getServerInfo().then(res => {
+					this.serverInfo.last_server_list = res.server.guanfu
+				}).catch(err => {
+					console.log(err)
+				})
+			} else if (this.userInfo.loginType === 30) {
+				getServerInfoZhanmeng().then(res => {
 					this.serverInfo.last_server_list = res.server.guanfu
 				}).catch(err => {
 					console.log(err)

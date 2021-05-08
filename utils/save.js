@@ -42,11 +42,27 @@ const setRoleList = function (roleList) {
   uni.setStorageSync(ROLE_KEY, JSON.stringify(roleList));
 }
 
+const getViewConfigLocal = function () {
+  let ret = '';
+  ret = uni.getStorageSync('viewConfig');
+  if (!ret) {
+    return '';
+  } else {
+    return JSON.parse(ret);
+  }
+}
+
+const setViewConfigLocal = function (viewConfig) {
+  uni.setStorageSync('viewConfig', JSON.stringify(viewConfig));
+}
+
 export default {
   getGameLoginInfo,
   setGameLoginInfo,
   getServerInfo,
   setServerInfo,
   getRoleList,
-  setRoleList
+  setRoleList,
+  getViewConfigLocal,
+  setViewConfigLocal
 }

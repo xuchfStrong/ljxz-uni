@@ -21,19 +21,10 @@
 		          </picker>
 		      </view>
 		  </view>
-			<!-- <view class="list-cell">
-			    <view class="uni-list-cell-left">
-			        所有服务器：
-			    </view>
-			    <view class="uni-list-cell-db">
-		          <picker @change="changeLastServer" :value="lastServerIndex" class="bg-picker-douji" range-key="text" :range="serverInfo.last_server_list">
-		              <view class="uni-input">{{serverName}}</view>
-		          </picker>
-		      </view>
-			</view> -->
 		</view>
+
 		<view v-if="!flag.showServer" class="btn-row">
-		    <button type="primary" @tap="handleLogin">登录</button>
+		  <button type="primary" @tap="handleLogin">登录</button>
 		</view>
 		<view v-else>
 			<view class="btn-center btn-center-margin">
@@ -115,120 +106,18 @@
 				<button :loading="statusLoading" :disabled="statusLoading" type="primary" size="mini" @tap="handleGuajiStatus">获取最新数据</button>
 			</view>
 		</view>
-		
-		<view class="uni-divider">
-			<view class="uni-divider__content">角色信息</view>
-			<view class="uni-divider__line"></view>
-		</view>
-		
-		<view class="attr-flex">
-			<view class="attr-flex-item">
-				<text>境界：</text>
-				<text>{{ roleInfo.role_level | jingjieFilter }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>关卡：</text>
-				<text>{{ roleInfo.guanqia }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>钻石：</text>
-				<text>{{ roleInfo.jingzuan }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>灵气：</text>
-				<text>{{ roleInfo.douqi | valueFormatFilter }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>金币：</text>
-				<text>{{ roleInfo.jinbi | valueFormatFilter }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>仙液：</text>
-				<text>{{ roleInfo.huoneng | valueFormatFilter }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>炎帝征途：</text>
-				<text>{{ roleInfo.zhuzai_level }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>主宰层数：</text>
-				<text>{{ roleInfo.bazhu_cengshu }}</text>
-			</view>
-			<view class="attr-flex-item">
-			</view>
-			<!-- <view>
-				<text>VIP经验：</text>
-				<text>{{ notGetChargeValue ? '未获取到':roleInfo.charge_value }}，</text>
-        <text v-if="!notGetChargeValue">还差{{ vipUpValue }}升级到VIP{{ roleInfo.vip_level + 1 }}</text>
-			</view> -->
-		</view>
-		
-		<view class="uni-divider">
-			<view class="uni-divider__content">活动次数</view>
-			<view class="uni-divider__line"></view>
-		</view>
-		
-		<view class="attr-flex">
-			<view class="attr-flex-item">
-				<text>冥殿来袭：</text>
-				<text>{{ roleInfo.hundianlaixi_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>遗迹开采：</text>
-				<text>{{ roleInfo.yijikaicai_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>遗迹进攻：</text>
-				<text>{{ roleInfo.yijijingong_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>竞技排行：</text>
-				<text>{{ roleInfo.doupoqiangbang_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>联盟捐献：</text>
-				<text>{{ roleInfo.lianmengjuanxian_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>联盟秘境：</text>
-				<text>{{ roleInfo.lianmengmijing_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>燚火剩余：</text>
-				<text>{{ roleInfo.yihuo_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>燚火购买：</text>
-				<text>{{ roleInfo.yihuo_buy_times }}</text>
-			</view>
-			<view class="attr-flex-item">
-				<text>霸业军令：</text>
-				<text>{{ roleInfo.baye_order }}</text>
-			</view>
-		</view>
 
-		<view class="uni-divider">
-			<view class="uni-divider__content">势力信息</view>
-			<view class="uni-divider__line"></view>
-		</view>
-
-		<view class="attr-flex">
-			<view class="attr-flex-item">
-				<text>体力：</text>
-				<text>{{ roleInfo.shili_tili }}</text>
+		<view v-for="(displayInfo, displayIndex) in viewConfig.gameInfoConfig" :key="displayIndex">
+			<view class="uni-divider">
+				<view class="uni-divider__content">{{displayInfo.label}}</view>
+				<view class="uni-divider__line"></view>
 			</view>
-			<view class="attr-flex-item">
-				<text>倍数：</text>
-				<text>{{ roleInfo.shili_beishu }}</text>
+			<view class="attr-flex">
+				<view v-for="(item) in viewConfig[displayInfo.key]" :key="item.key" :class="getAttrClass(item.columnSize)">
+					<text>{{ item.label }}</text>
+					<text>{{ roleInfo[item.key] | valueFormatFilter}}</text>
+				</view>
 			</view>
-			<view class="attr-flex-item">
-				<text>钻石每天：</text>
-				<text>{{ roleInfo.shili_zuanshi }}</text>
-			</view>
-		</view>
-		<view>
-			<text>位置：</text>
-			<text :class="{danger: isNoShili}">{{ roleInfo.shili_weizhi | shiliFilter }}</text>
 		</view>
 		
 		<view class="uni-divider">
@@ -253,314 +142,26 @@
 			      </label>
 			    </radio-group>
 		    </view>
-		    <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">升仙灵池</view>
-		        <switch :checked="!!configInfo.is_shenghuojing" @change="changeSwitchBoolean('is_shenghuojing')"/>
-		    </view>
-		    <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动冥帝(普通版是遇到了才会打一下)</view>
-		        <switch :checked="!!configInfo.is_hundi" @change="changeSwitchBoolean('is_hundi')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动关卡(关闭则增加炎帝次数)</view>
-		        <switch :checked="!!configInfo.is_guanqia" @change="changeSwitchBoolean('is_guanqia')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动炎帝(关闭则增加关卡次数)</view>
-		        <switch :checked="!!configInfo.is_yandi" @change="changeSwitchBoolean('is_yandi')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动试炼副本(关闭炎帝和关卡才增加次数)</view>
-		        <switch :checked="!!configInfo.is_tianmu" @change="changeSwitchBoolean('is_tianmu')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动领邮件</view>
-		        <switch :checked="!!configInfo.is_mail" @change="changeSwitchBoolean('is_mail')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-金币</view>
-		        <switch :checked="!!configInfo.is_buy_tianmu_jinbi" @change="changeSwitchBoolean('is_buy_tianmu_jinbi')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-陨铁</view>
-		        <switch :checked="!!configInfo.is_buy_tianmu_xuantie" @change="changeSwitchBoolean('is_buy_tianmu_xuantie')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-进阶丹</view>
-		        <switch :checked="!!configInfo.is_buy_tianmu_jinjiedan" @change="changeSwitchBoolean('is_buy_tianmu_jinjiedan')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-转生丹</view>
-		        <switch :checked="!!configInfo.is_buy_tianmu_zhuanshengdan" @change="changeSwitchBoolean('is_buy_tianmu_zhuanshengdan')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">试炼副本购买-玄晶</view>
-		        <switch :checked="!!configInfo.is_buy_tianmu_xuanjing" @change="changeSwitchBoolean('is_buy_tianmu_xuanjing')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-				    <view class="uni-list-cell-db">试炼副本购买-武魂</view>
-				    <switch :checked="!!configInfo.is_buy_tianmu_wuhun" @change="changeSwitchBoolean('is_buy_tianmu_wuhun')"/>
-				</view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动冥殿来袭</view>
-		        <switch :checked="!!configInfo.is_hundianlaixi" @change="changeSwitchBoolean('is_hundianlaixi')"/>
-		    </view>
-        <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动一次一次买燚火次数</view>
-		        <switch :checked="!!configInfo.is_buy_yihuo" @change="changeSwitchBoolean('is_buy_yihuo')"/>
-		    </view>
-				<!-- <view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动换高收入势力(VIP有效)</view>
-		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchBoolean('is_change_shili')"/>
-		    </view> -->
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动清理势力外盟人员(VIP有效)</view>
-		        <switch :checked="!!configInfo.is_beat_shili" @change="changeSwitchBoolean('is_beat_shili')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动炼丹</view>
-		        <switch :checked="!!configInfo.is_liandan" @change="changeSwitchBoolean('is_liandan')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">自动联盟秘境</view>
-		        <switch :checked="!!configInfo.is_lianmengmijing" @change="changeSwitchBoolean('is_lianmengmijing')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">21:30之后自动竞技排行剩余次数</view>
-		        <switch :checked="!!configInfo.is_doupoqiangbang" @change="changeSwitchBoolean('is_doupoqiangbang')"/>
-		    </view>
-				<view class="uni-list-cell uni-list-cell-pd-mini">
-		        <view class="uni-list-cell-db">21:00后自动刷新使用完燚火次数</view>
-		        <switch :checked="!!configInfo.is_refresh_yihuo" @change="changeSwitchBoolean('is_refresh_yihuo')"/>
+
+				<view v-for="(item) in viewConfig.switchConfig" :key="item.key" class="uni-list-cell uni-list-cell-pd-mini">
+		        <view class="uni-list-cell-db">{{item.label}}</view>
+		        <switch :checked="!!configInfo[item.key]" @change="changeSwitchBoolean(item.key)"/>
 		    </view>
 
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
+				<view v-for="(item) in viewConfig.pickerSwitchConfig" :key="item.key" class="uni-list-cell-no-border uni-list-cell-pd-mini">
+					<view v-if="checkShow(item.special)" class="flex-item-two">
 							<view class="uni-list-cell-db">
-									<picker @change="changePickerYouli" :value="configInfo.youlisifang_id" class="background-picker" range-key="text" :range="options.youlisifang">
-											<view class="uni-input">{{options.youlisifang[configInfo.youlisifang_id].text}}</view>
+									<picker @change="changePickerConfig($event, item.key)" :value="configInfo[item.key]" class="background-picker" range-key="text" :range="options[item.key]">
+											<view class="uni-input">{{options[item.key][configInfo[item.key]].text}}</view>
 									</picker>
 							</view>
 					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动游历四方</view>
-		        <switch :checked="!!configInfo.youlisifang_id" @change="changeSwitchYouli"/>
+					<view v-if="checkShow(item.special)" class="flex-item-two">
+						<view class="uni-list-cell-db">{{item.label}}</view>
+		        <switch :checked="!!configInfo[item.key]" @change="changePickerSwith($event,item.key)"/>
 					</view>
 		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerLMJS" :value="configInfo.lianmengjianshe_type" class="background-picker" range-key="text" :range="options.lianmengjianshe_type">
-											<view class="uni-input">{{options.lianmengjianshe_type[configInfo.lianmengjianshe_type].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动联盟建设</view>
-		        <switch :checked="!!configInfo.lianmengjianshe_type" @change="changeSwitchXMJS"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeBuyLianmeng" :value="configInfo.buy_lianmengmijing_times" class="background-picker" range-key="text" :range="options.buy_lianmengmijing_times">
-											<view class="uni-input">{{options.buy_lianmengmijing_times[configInfo.buy_lianmengmijing_times].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动购买联盟秘境</view>
-		        <switch :checked="!!configInfo.buy_lianmengmijing_times" @change="changeSwitchBuyLianmeng"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerYJKC" :value="configInfo.yiji_kaicai_type" class="background-picker" range-key="text" :range="options.yiji_kaicai_type">
-											<view class="uni-input">{{options.yiji_kaicai_type[configInfo.yiji_kaicai_type].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动开采遗迹</view>
-		        <switch :checked="!!configInfo.yiji_kaicai_type" @change="changeSwitchYJKC"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerYJQD" :value="configInfo.yiji_jingong_type" class="background-picker" range-key="text" :range="options.yiji_jingong_type">
-											<view class="uni-input">{{yijiJingongText}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动抢夺遗迹</view>
-		        <switch :checked="!!configInfo.yiji_jingong_type" @change="changeSwitchYJQD"/>
-					</view>
-		    </view>
-
-        <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerYihuo" :value="configInfo.yihuo_type" class="background-picker" range-key="text" :range="options.yihuo">
-											<view class="uni-input">{{options.yihuo[configInfo.yihuo_type].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动挑战燚火</view>
-		        <switch :checked="!!configInfo.yihuo_type" @change="changeSwitchYihuo"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerGongxun" :value="configInfo.buy_gongxun_id" class="background-picker" range-key="text" :range="options.buy_gongxun_id">
-											<view class="uni-input">{{options.buy_gongxun_id[configInfo.buy_gongxun_id].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">功勋商店购买</view>
-		        <switch :checked="!!configInfo.buy_gongxun_id" @change="changeSwitchGongxun"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeBuyYuntie" :value="configInfo.buy_yuntie" class="background-picker" range-key="text" :range="options.buy_yuntie">
-											<view class="uni-input">{{options.buy_yuntie[configInfo.buy_yuntie].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动购买陨铁</view>
-		        <switch :checked="!!configInfo.buy_yuntie" @change="changeSwitchYuntie"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeBuyBaye" :value="configInfo.is_baye" class="background-picker" range-key="text" :range="options.is_baye">
-											<view class="uni-input">{{options.is_baye[configInfo.is_baye].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动霸业(VIP有效)</view>
-		        <switch :checked="!!configInfo.is_baye" @change="changeSwitchBaye"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeBuyBayeOrder" :value="configInfo.is_buy_baye_order_times" class="background-picker" range-key="text" :range="options.is_buy_baye_order_times">
-											<view class="uni-input">{{options.is_buy_baye_order_times[configInfo.is_buy_baye_order_times].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">购买霸业军令次数</view>
-		        <switch :checked="!!configInfo.is_buy_baye_order_times" @change="changeSwitchBayeBuyOrder"/>
-					</view>
-		    </view>
-
-				<view v-if="bayeSpecial" class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeBuyBayeSpecial" :value="configInfo.is_special_baye" class="background-picker" range-key="text" :range="options.is_special_baye">
-											<view class="uni-input">{{options.is_special_baye[configInfo.is_special_baye].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">增强霸业</view>
-		        <switch :checked="!!configInfo.is_special_baye" @change="changeSwitchBayeSpecial"/>
-					</view>
-		    </view>
-
-				<view v-if="bayeSpecial" class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeBuyBayeSpecialOption" :value="configInfo.special_baye_option" class="background-picker" range-key="text" :range="options.special_baye_option">
-											<view class="uni-input">{{options.special_baye_option[configInfo.special_baye_option].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">增强霸业专有选项</view>
-		        <switch :checked="!!configInfo.special_baye_option" @change="changeSwitchBayeSpecialOption"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeWushenshilian" :value="configInfo.wushenshilian_id" class="background-picker" range-key="text" :range="options.wushenshilian_id">
-											<view class="uni-input">{{options.wushenshilian_id[configInfo.wushenshilian_id].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">武神试炼</view>
-		        <switch :checked="!!configInfo.wushenshilian_id" @change="changeSwitchWushenshilian"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeShili" :value="configInfo.is_change_shili" class="background-picker" range-key="text" :range="options.is_change_shili">
-											<view class="uni-input">{{options.is_change_shili[configInfo.is_change_shili].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">自动切换势力(VIP有效)</view>
-		        <switch :checked="!!configInfo.is_change_shili" @change="changeSwitchShili"/>
-					</view>
-		    </view>
-
-				<view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changeShenqi" :value="configInfo.buy_shenqi" class="background-picker" range-key="text" :range="options.buy_shenqi">
-											<view class="uni-input">{{options.buy_shenqi[configInfo.buy_shenqi].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">购买黄阶神器并合成</view>
-		        <switch :checked="!!configInfo.buy_shenqi" @change="changeSwitchShenqi"/>
-					</view>
-		    </view>
-
-
-				<!-- <view class="uni-list-cell-no-border uni-list-cell-pd-mini">
-					<view class="flex-item-two">
-							<view class="uni-list-cell-db">
-									<picker @change="changePickerDouji" :value="configInfo.douji_goumai" class="background-picker" range-key="text" :range="options.douji">
-											<view class="uni-input">{{options.douji[configInfo.douji_goumai].text}}</view>
-									</picker>
-							</view>
-					</view>
-					<view class="flex-item-two">
-						<view class="uni-list-cell-db">武技购买</view>
-		        <switch :checked="!!configInfo.douji_goumai" @change="changeSwitchDouji"/>
-					</view>
-		    </view> -->
 		</view>
-
 		
 		<view class="uni-divider">
 			<view class="uni-divider__content">武技设置</view>
@@ -568,71 +169,19 @@
 		</view>
 
 		<view class="douji-wrap">
-			<view class="list-cell flex-item-two">
-		    <view class="douji-list-left">
-		      攻击:
-		    </view>
+			<view v-for="(item) in viewConfig.gongfaConfig" :key="item.key" class="list-cell flex-item-two">
+		    <view class="douji-list-left">{{ item.label }}</view>
 		    <view class="uni-list-cell-db">
-		      <picker @change="changeGongji" :value="doujiIndex.gongji" class="bg-picker-douji"  range-key="text" :range="options.douji">
-		          <view :class="{ active: doujiObj.gongji !== '10' }" class="uni-input">{{options.douji[doujiIndex.gongji].text}}</view>
+		      <picker @change="changeGongfa($event, item.key)" :value="gongfaIndex[item.key]" class="bg-picker-douji"  range-key="text" :range="options.douji">
+		          <view :class="{ active: gongfaIndex[item.key] !== 0 }" class="uni-input">{{options.douji[gongfaIndex[item.key]].text}}</view>
 		      </picker>
 		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="douji-list-left">
-		      生命:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeShengming" :value="doujiIndex.shengming" class="bg-picker-douji"  range-key="text" :range="options.douji">
-		          <view :class="{ active: doujiObj.shengming !== '10' }" class="uni-input">{{options.douji[doujiIndex.shengming].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="douji-list-left">
-		      物防:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeWufang" :value="doujiIndex.wufang" class="bg-picker-douji"  range-key="text" :range="options.douji">
-		          <view :class="{ active: doujiObj.wufang !== '10' }" class="uni-input">{{options.douji[doujiIndex.wufang].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="douji-list-left">
-		      法防:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeFafang" :value="doujiIndex.fafang" class="bg-picker-douji"  range-key="text" :range="options.douji">
-		          <view :class="{ active: doujiObj.fafang !== '10' }" class="uni-input">{{options.douji[doujiIndex.fafang].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="douji-list-left">
-		      稀有:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeXiyou" :value="doujiIndex.xiyou" class="bg-picker-douji"  range-key="text" :range="options.douji">
-		          <view :class="{ active: doujiObj.xiyou !== '10' }" class="uni-input">{{options.douji[doujiIndex.xiyou].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
-			<view class="list-cell flex-item-two">
-		    <view class="douji-list-left">
-		      特殊:
-		    </view>
-		    <view class="uni-list-cell-db">
-		      <picker @change="changeTeshu" :value="doujiIndex.teshu" class="bg-picker-douji"  range-key="text" :range="options.douji">
-		          <view :class="{ active: doujiObj.teshu !== '10' }" class="uni-input">{{options.douji[doujiIndex.teshu].text}}</view>
-		      </picker>
-		    </view>
-		  </view>
+			</view>
 		</view>
 
 		<view class="save-btn">
 			<button type="primary" size="mini" @tap="handleChangeConfigInfo">保存设置</button>
-		</view>	
+		</view>
 	</view>
 </template>
 
@@ -640,102 +189,11 @@
 import CryptoJS from 'crypto-js'
 import save from '@/utils/save'
 import moment from 'moment'
-import {mapState,mapMutations} from 'vuex'
 import { getValueByIndex, getIndexByValue, getChannel, toast } from '@/utils/index'
-import { startGuaji, stopGuaji, getServerInfo, getServerInfoChannel,getServerInfoZhanmeng } from '@/api/game'
-import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils, getRemoteOptions, checkBayeSpecial } from '@/api/game'
-import { handleGetServerConfig, handleGetServerConfigTapTap, handleGetServerConfigOther, handleGetServerConfigWJXL, handleGetServerConfigWJXL2 } from '@/utils/server'
-import options from '@/utils/options.json'
-import { jingjieMap, shiliMap, vipMap } from './mapData.js'
+import { startGuaji, stopGuaji, getServerInfo } from '@/api/game'
+import { getRoleInfo, getConfigInfo, changeConfigInfo, getUtils } from '@/api/game'
 import mInput from '../../components/m-input.vue'
 import pako from 'pako'
-
-const configInfoDefault = {
-	youlisifang_id: 0,
-	is_youlisifang_tiaozan: 0,
-	douji_goumai: 10,
-	is_tianmu: 0,
-	is_yandi: 1,
-  is_shenghuojing: 0,
-	is_hundi: 1,
-	is_guanqia: 1,
-	is_mail: 0,
-	is_liandan: 0,
-	is_baye: 0,
-	is_special_baye: 0,
-	special_baye_option: 1,
-	is_buy_baye_order_times: 0,
-	is_hundianlaixi: 1,
-	is_change_shili: 0,
-	is_beat_shili: 0,
-  is_lianmengmijing: 1,
-	is_doupoqiangbang: 0,
-	lixianbeishu: 0,
-	youlisifang_beishu: 0,
-  youlisifang_id: 0,
-  lianmengjianshe_type: 0,
-	buy_lianmengmijing_times: 0,
-  yiji_kaicai_type: 0,
-  yiji_jingong_type: 0,
-  moyuleixing: 0,
-	is_buy_tianmu_jinbi: 0,
-	is_buy_tianmu_xuantie: 0,
-  is_buy_tianmu_jinjiedan: 0,
-  is_buy_tianmu_zhuanshengdan: 0,
-  is_buy_tianmu_xuanjing: 0,
-	is_buy_tianmu_wuhun: 0,
-	is_buy_yihuo: 0,
-	is_refresh_yihuo: 0, // 是否自动刷新燚火
-  yihuo_type: 0,
-	buy_gongxun_id: 0,
-	buy_yuntie: 0,
-	buy_shenqi: 0,
-	wushenshilian_id: 0 // 武神试炼ID
-}
-
-const doujiObjDefault = {
-  options: '10', // 10表示关闭
-  gongji: '10', // 购买攻击
-  shengming: '10', // 购买生命
-  wufang: '10', // 购买物防
-  fafang: '10', // 购买法防
-  xiyou: '10', // 购买稀有
-  teshu: '10' // 购买特殊
-}
-
-const roleInfoDefault = {
-  userid: '',
-  server_id: '',
-  role_name: '',
-  update_time: '',
-  role_level: '',
-  vip_level: '',
-  zhanli: '',
-  jingzuan: '',
-  guanqia: '',
-  zhuzai_level: '',
-  bazhu_cengshu: '',
-  hundianlaixi_times: '',
-  lilianshiwu: '',
-  yijikaicai_times: '',
-  yijijingong_times: '',
-  doupoqiangbang_times: '',
-  xiandou_times: '',
-  lianmengjuanxian_times: '',
-  lianmengmijing_times: '',
-  moyu_times: '',
-	charge_value: '',
-	douqi: '',
-	huoneng: '',
-	jinbi: '',
-	shili_tili: '',
-	shili_beishu: '',
-	shili_zuanshi: '',
-	shili_tili: '',
-	yihuo_times: '',
-	yihuo_buy_times: '',
-	baye_order: ''
-}
 
 export default {
 	components:{
@@ -749,12 +207,6 @@ export default {
       }
       return statusMap[status]
     },
-    jingjieFilter(jingjie) {
-      return jingjieMap[jingjie]
-    },
-    shiliFilter(shili_weizhi) {
-      return shiliMap[shili_weizhi] || '未获取到位面信息'
-    },
     vipStatus(isVip) {
       const map = {
         0: '普通版',
@@ -764,14 +216,17 @@ export default {
     },
     // 单位换算
     valueFormatFilter(str) {
+			if (isNaN(str)) return str
       const numVal = Number(str)
 			if (isNaN(numVal)) return ''
 			if (numVal < 0) return '未获取到'
       if (numVal > 100000000) {
         return (numVal / 100000000).toFixed(1) + '亿'
-      } else {
+      } else if (numVal > 1000000) {
         return (numVal / 10000).toFixed(1) + '万'
-      }
+      } else {
+				return str
+			}
     }
   },
 	data() {
@@ -783,24 +238,18 @@ export default {
 			lastServerIndex: 0,
 			allServerindex: 0,
 			utils: {},
-			remoteOptions: {},
 			index: 0,
 			current: 0,
 			statusLoading: false,
 			yunguaji: false,
-			bayeSpecial: false,
-			options:options,
-			configInfo: Object.assign({}, configInfoDefault),
-			doujiObj: Object.assign({}, doujiObjDefault), // 斗技购买相关的配置
-			roleInfo: Object.assign({}, roleInfoDefault),
-			doujiIndex: {
-				gongji: 0,
-				shengming: 0,
-				wufang: 0,
-				fafang: 0,
-				xiyou: 0,
-				teshu: 0
-			},
+			bayeSpecial: 0,
+			viewConfig: {},
+			configInfo: {},
+			options: {},
+			gongfaObj: {}, // 功法购买相关的配置
+			roleInfo: {},
+			gongfaIndex: {},
+			gongfaKey: [],
 			flag: {
 			    loginFlag: false,
 			    logoutFlag: false,
@@ -814,16 +263,6 @@ export default {
 				fuzhu_vip: 0,
         isExpired: false
 			},
-			switchInfo: {
-        youlisifang_id: false,
-        lianmengjianshe_type: false,
-        yiji_kaicai_type: false,
-        yiji_jingong_type: false,
-        moyuleixing: false,
-        boss_id1: false,
-        boss_id2: false,
-        douji_goumai: false
-      },
 			userInfo: {
 			  usernamePlatForm: '', // 平台的用户名
 			  passwordPlatForm: '', // 平台的密码
@@ -859,13 +298,6 @@ export default {
 		}
 	},
 	computed: {
-		// serverName() {
-		// 	let res = ''
-		// 	if (this.serverInfo.last_server_list) {
-		// 		res = this.serverInfo.last_server_list[this.lastServerIndex].text
-		// 	}
-		// 	return res
-		// },
 		// 更新时间是否超过2小时
     isPassedTwoHours() {
       const a = moment(new Date())
@@ -873,21 +305,9 @@ export default {
       const duration = a.diff(b)
       return duration > 2 * 3600 * 1000
     },
-    // 计算位面位置是否未占有
-    isNoShili() {
-      return this.roleInfo.shili_weizhi === 0
-    },
 
-    // 是否获取到充值额度
-    notGetChargeValue() {
-      return this.roleInfo.charge_value === -1
-    },
-
-    // 计算差多少金额升级到下级VIP
-    vipUpValue() {
-      const netxtVipLevel = this.roleInfo.vip_level + 1
-      const netxtVipValue = vipMap[netxtVipLevel]
-      return netxtVipValue - this.roleInfo.charge_value
+		showSpecial() {
+			return this.bayeSpecial
 		},
 		
 		// 当前选中的离线倍数index
@@ -902,18 +322,19 @@ export default {
 			return this.youlibeishuList.findIndex(item => {
 				return Number(item.value) === this.configInfo.youlisifang_beishu
 			})
-		},
-
-		yijiJingongText() {
-			return options.yiji_jingong_type[this.configInfo.yiji_jingong_type].text
 		}
 	},
 	onLoad() {
+		this.viewConfig = getApp().globalData.viewConfig
+		this.configInfo = Object.assign({}, getApp().globalData.viewConfig.configInfoDefault)
+		this.roleInfo = Object.assign({}, getApp().globalData.viewConfig.roleInfoDefault)
+		this.gongfaIndex = Object.assign({}, getApp().globalData.viewConfig.gongfaIndex)
+		this.options = getApp().globalData.viewConfig.options
+		this.initGongfaConfig()
 		this.wdszSaleChannel = getChannel()
 		this.loadLoginInfo()
 		this.handleGetServerList()
 		this.handleGetUtils()
-		this.handleGetRemoteOptions()
 	},
 	methods: {
 		handleLogin() {
@@ -944,17 +365,6 @@ export default {
       }).catch(err => {
         console.log(err)
       })
-		},
-		
-		// 获取远程选项
-		handleGetRemoteOptions() {
-			getRemoteOptions()
-			.then(res => {
-				this.remoteOptions = res
-			})
-			.catch(err => {
-				console.log(err)
-			})
 		},
 
 		// 收藏角色到本地
@@ -1019,6 +429,16 @@ export default {
 				duration: 2000,
 				icon: 'none'
 			})
+		},
+
+		// 初始化功法配置
+		initGongfaConfig() {
+			const gongfaConfig = getApp().globalData.viewConfig.gongfaConfig
+			if (gongfaConfig.length > 0) {
+				gongfaConfig.forEach(item => {
+					this.gongfaKey.push(item.key)
+				})
+			}
 		},
 
 		// 读取记住的登录信息
@@ -1129,32 +549,7 @@ export default {
 
 		// 获取服务器
 		handleGerServer() {
-			let wsUrl = ''
-			if (this.userInfo.loginType === 1) {
-				// wsUrl = 'ws://121.37.203.19:36001/'
-				this.handleGetServerList()
-				return
-			} else {
-				wsUrl = 'ws://121.37.253.198:36001/'
-			}
-			this.socketTask = uni.connectSocket({
-				url: wsUrl,
-				success: ()=> {
-					console.log('WebSocket连接成功！')
-				}
-			})
-			this.socketTask.onOpen(() => {
-				this.websocketOnOpen()
-			})
-			this.socketTask.onMessage((res) => {
-				this.websocketonmessage(res.data)
-			})
-			this.socketTask.onClose(() => {
-				console.log('WebSocket被关闭！')
-			})
-			this.socketTask.onError(() => {
-				console.log('WebSocket连接错误！')
-			})
+			this.handleGetServerList()
 		},
 
 		/**
@@ -1232,37 +627,13 @@ export default {
 
 		// 更新服务器列表
     handleGetServerList() {
-			const guanfuServerLoginTypeList = [1,2,3,4,12,13]
-			if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
-				getServerInfo().then(res => {
-					this.serverInfo.last_server_list = res.server.guanfu
-				}).catch(err => {
-					console.log(err)
-				})
-			} else if (this.userInfo.loginType === 30) {
-				getServerInfoZhanmeng().then(res => {
-					this.serverInfo.last_server_list = res.server.guanfu
-				}).catch(err => {
-					console.log(err)
-				})
-			} else {
-				getServerInfoChannel().then(res => {
-					this.serverInfo.last_server_list = res.server.guanfu
-				}).catch(err => {
-					console.log(err)
-				})
+			const params = {
+				login_type: this.userInfo.loginType
 			}
-		},
-
-		// 获取角色增强霸业配置
-		handleGetBayeSpecial() {
-			const param = {
-        userid: this.loginInfo.userId,
-				server_id: this.userInfo.server_id,
-				t: new Date().getTime()
-			}
-			checkBayeSpecial(param).then(res => {
-				this.bayeSpecial = res.code === 200
+			getServerInfo(params).then(res => {
+				this.serverInfo.last_server_list = res.server.guanfu
+			}).catch(err => {
+				console.log(err)
 			})
 		},
 		
@@ -1303,7 +674,6 @@ export default {
 				t: new Date().getTime()
 			}
 			this.statusLoading = true
-			this.handleGetBayeSpecial()
       getRoleInfo(param).then(res => { // 查询角色信息
 				const code = res.code
 				this.statusLoading = false
@@ -1367,9 +737,9 @@ export default {
 						this.configInfo = this.correctConfig(res.data.setting_content)
 						this.fuzuStatus.fuzhu_vip = res.data.fuzhu_vip
 						this.fuzuStatus.on_off = res.data.on_off
+						this.bayeSpecial = res.data.special_baye
 						this.calsIsExpired(res.data.end_time)
 						this.calcdouji_goumai(String(res.data.setting_content.douji_goumai))
-						this.calcdoujiIndex()
             // this.calcdouji_goumai(String(111210101013))
             break
           case 403:
@@ -1394,25 +764,18 @@ export default {
         console.log(err)
       })
     },
-    
-    // 修正获取到的配置信息，如果后台未返回的参数则取默认值
-    correctConfig(configInfoBackend) {
-      const configInfo = Object.assign({}, configInfoDefault)
-      for (let key in configInfo) {
+
+		// 将后台没返回的设置想设置默认值
+		correctConfig(configInfoBackend) {
+			const configInfo = Object.assign({}, this.viewConfig.configInfoDefault)
+      for (const key in configInfo) {
         if (configInfoBackend.hasOwnProperty(key)) {
           configInfo[key] = configInfoBackend[key]
         }
       }
       return configInfo
-    },
-
-		// 根据后台返回的斗技数据计算斗技index
-		calcdoujiIndex() {
-			for (let item in this.doujiIndex) {
-				this.doujiIndex[item] = getIndexByValue(this.options.douji, this.doujiObj[item])
-			}
 		},
-		
+
 		// 修改配置项是0和1的情况
 		changeSwitchBoolean(item) {
 			if (this.configInfo[item]) {
@@ -1423,231 +786,25 @@ export default {
 		},
 
 		// 改变picker选项
-		changePickerYouli(e) {
+		changePickerConfig(e, configKey) {
 			const index = e.target.value
-			this.configInfo.youlisifang_id = index
-		},
-		changePickerLMJS(e) {
-			const index = e.target.value
-			this.configInfo.lianmengjianshe_type = index
-		},
-		changePickerYJKC(e) {
-			const index = e.target.value
-			this.configInfo.yiji_kaicai_type = index
-		},
-		changePickerYJQD(e) {
-			const index = e.target.value
-			this.configInfo.yiji_jingong_type = index
-    },
-    changePickerYihuo(e) {
-			const index = e.target.value
-			this.configInfo.yihuo_type = index
-		},
-		changePickerDouji(e) {
-			const index = e.target.value
-			this.configInfo.douji_goumai = index
-		},
-		changePickerGongxun(e) {
-			const index = e.target.value
-			this.configInfo.buy_gongxun_id = index
-		},
-		changeBuyYuntie(e) {
-			const index = e.target.value
-			this.configInfo.buy_yuntie = index
-		},
-		changeBuyBaye(e) {
-			const index = e.target.value
-			this.configInfo.is_baye = index
-		},
-		changeBuyBayeOrder(e) {
-			const index = e.target.value
-			this.configInfo.is_buy_baye_order_times = index
-		},
-		changeBuyBayeSpecial(e) {
-			const index = e.target.value
-			this.configInfo.is_special_baye = index
-		},
-		changeBuyBayeSpecialOption(e) {
-			const index = e.target.value
-			this.configInfo.special_baye_option = index
-		},
-		changeWushenshilian(e) {
-			const index = e.target.value
-			this.configInfo.wushenshilian_id = index
-		},
-		changeShili(e) {
-			const index = e.target.value
-			this.configInfo.is_change_shili = index
-		},
-		changeShenqi(e) {
-			const index = e.target.value
-			this.configInfo.buy_shenqi = index
-		},
-		changeBuyLianmeng(e) {
-			const index = e.target.value
-			this.configInfo.buy_lianmengmijing_times = index
+			this.configInfo[configKey] = index
 		},
 
 		// 修改下拉选项后面的开关
-		changeSwitchYouli(e) {
+		changePickerSwith(e, configKey) {
 			const checked = e.target.value
 			if (!checked) {
-				this.configInfo.youlisifang_id = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchXMJS(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.lianmengjianshe_type = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchYJKC(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.yiji_kaicai_type = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchYJQD(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.yiji_jingong_type = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-    },
-    changeSwitchYihuo(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.yihuo_type = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchDouji(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.douji_goumai = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchGongxun(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.buy_gongxun_id = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchYuntie(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.buy_yuntie = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBaye(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.is_baye = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBayeBuyOrder(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.is_buy_baye_order_times = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBayeSpecial(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.is_special_baye = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBayeSpecialOption(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.special_baye_option = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchWushenshilian(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.wushenshilian_id = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchShili(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.is_change_shili = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchShenqi(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.buy_shenqi = 0
-			} else {
-				this.$toast('请选择左侧列表中选项')
-			}
-		},
-		changeSwitchBuyLianmeng(e) {
-			const checked = e.target.value
-			if (!checked) {
-				this.configInfo.buy_lianmengmijing_times = 0
+				this.configInfo[configKey] = 0
 			} else {
 				this.$toast('请选择左侧列表中选项')
 			}
 		},
 
-		// 改变斗技相关的picker
-		changeGongji(e) {
+		// 改变功法相关的picker
+		changeGongfa(e, gongfaKey) {
 			const index = e.target.value
-			this.doujiIndex.gongji = index
-			this.doujiObj.gongji = getValueByIndex(options.douji, index)
-		},
-		changeShengming(e) {
-			const index = e.target.value
-			this.doujiIndex.shengming = index
-			this.doujiObj.shengming = getValueByIndex(options.douji, index)
-		},
-		changeWufang(e) {
-			const index = e.target.value
-			this.doujiIndex.wufang = index
-			this.doujiObj.wufang = getValueByIndex(options.douji, index)
-		},
-		changeFafang(e) {
-			const index = e.target.value
-			this.doujiIndex.fafang = index
-			this.doujiObj.fafang = getValueByIndex(options.douji, index)
-		},
-		changeXiyou(e) {
-			const index = e.target.value
-			this.doujiIndex.xiyou = index
-			this.doujiObj.xiyou = getValueByIndex(options.douji, index)
-		},
-		changeTeshu(e) {
-			const index = e.target.value
-			this.doujiIndex.teshu = index
-			this.doujiObj.teshu = getValueByIndex(options.douji, index)
+			this.gongfaIndex[gongfaKey] = index
 		},
 
     /**
@@ -1656,23 +813,21 @@ export default {
      * 两位数字是10-22之间，表示购买不同价格的斗技
      */
     calcdouji_goumai(cfgStr) {
-      this.doujiObj.gongji = cfgStr.slice(0, 2)
-      this.doujiObj.shengming = cfgStr.slice(2, 4)
-      this.doujiObj.wufang = cfgStr.slice(4, 6)
-      this.doujiObj.fafang = cfgStr.slice(6, 8)
-      this.doujiObj.xiyou = cfgStr.slice(8, 10)
-      this.doujiObj.teshu = cfgStr.slice(10, 12)
+      if (isNaN(cfgStr)) cfgStr = "101010101010"
+			this.gongfaKey.forEach((item, index) => {
+				const gf = cfgStr.slice(index * 2, 2 + index * 2)
+				this.gongfaIndex[item] = parseInt(gf) - 10
+			})
     },
 
     // 从购买斗技的对象中生成购买斗技的配置数据发到后端
     gendouji_goumaiCfg() {
-      const gongji = this.doujiObj.gongji
-      const shengming = this.doujiObj.shengming
-      const wufang = this.doujiObj.wufang
-      const fafang = this.doujiObj.fafang
-      const xiyou = this.doujiObj.xiyou
-      const teshu = this.doujiObj.teshu
-      return gongji + shengming + wufang + fafang + xiyou + teshu
+      let gongfaCalc = ''
+			this.gongfaKey.forEach(item => {
+				const gfstr = String(this.gongfaIndex[item] + 10)
+				gongfaCalc = gongfaCalc + gfstr
+			})
+			return gongfaCalc
     },
 
     // 计算辅助到期时间
@@ -1884,6 +1039,24 @@ export default {
 					})
 					break
 			}
+		},
+
+		getAttrClass(columnSize) {
+			if (columnSize === 1) {
+				return 'attr-flex-item-1'
+			} else if (columnSize === 2) {
+				return 'attr-flex-item-2'
+			} else {
+				return 'attr-flex-item-3'
+			}
+		},
+
+		checkShow(special) {
+			if (!special) {
+				return true
+			} else {
+				return this.bayeSpecial
+			}
 		}
 	}
 }
@@ -1929,6 +1102,21 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+}
+.attr-flex-item-3 {
+	width: 33.3%;
+	/* 加入这两个后每个item的宽度就生效了 */
+	min-width: 33.3%;
+	max-width: 33.3%;
+}
+.attr-flex-item-2 {
+	width: 48%;
+	/* 加入这两个后每个item的宽度就生效了 */
+	min-width: 48%;
+	max-width: 48%;
+}
+.attr-flex-item-1 {
+	width: 100%;
 }
 .attr-flex-item {
 	flex: 1;

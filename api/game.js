@@ -17,26 +17,18 @@ export function getUpdate(params) {
   )
 }
 
+// 获取视图配置
+export function getViewConfig(params) {
+  return http.get(
+    '/ljxz/viewConfig.php',
+    {params}
+  )
+}
+
 // 获取服务器信息
 export function getServerInfo(params) {
   return http.get(
-    '/ljxz/server.php',
-    {params}
-  )
-}
-
-// 获取服务器信息-渠道
-export function getServerInfoChannel(params) {
-  return http.get(
-    '/ljxz/server_channel.php',
-    {params}
-  )
-}
-
-// 获取服务器信息-战盟
-export function getServerInfoZhanmeng(params) {
-  return http.get(
-    '/ljxz/server_zhanmeng.php',
+    '/ljxz/server_uni.php',
     {params}
   )
 }
@@ -44,7 +36,7 @@ export function getServerInfoZhanmeng(params) {
 // 获取角色信息
 export function getRoleInfo(params) {
   return http.get(
-    '/ljxz/get_role_info.php',
+    '/ljxz/get_role_info_new.php',
     {params}
   )
 }

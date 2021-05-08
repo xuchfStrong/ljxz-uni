@@ -206,7 +206,6 @@ export default {
 				login_type: this.userInfo.loginType
 			}
 			checkUserStatus(param).then(res => {
-				const guanfuServerLoginTypeList = [1,2,3,4,12,13]
 				if (res.code === 200) {
 					// 获取用户信息
 					this.saveAccountList(this.userInfo.usernamePlatForm, this.userInfo.passwordPlatForm)
@@ -219,17 +218,6 @@ export default {
 						duration: 2000,
 						icon: 'none'
 					})
-					// if (guanfuServerLoginTypeList.includes(this.userInfo.loginType)) {
-					// 	this.saveLoginInfo()
-					// 	this.toMain()
-					// 	uni.showToast({
-					// 		title: '登录成功，请选择服务器后，点击开始挂机。',
-					// 		duration: 2000,
-					// 		icon: 'none'
-					// 	})
-					// } else {
-					// 	this.handleGerServer()
-					// }
 				} else {
 					this.flag.newUserFlag = true
 					const guanfangPlatform = [1, 2, 4]
@@ -249,34 +237,6 @@ export default {
 						})
 					}
 				}
-			})
-		},
-
-		// 获取服务器
-		handleGerServer() {
-			let wsUrl = ''
-			if (this.userInfo.loginType === 1) {
-				wsUrl = 'ws://121.37.203.19:36001/'
-			} else {
-				wsUrl = 'ws://121.37.253.198:36001/'
-			}
-			this.socketTask = uni.connectSocket({
-				url: wsUrl,
-				success: ()=> {
-					console.log('WebSocket连接成功！')
-				}
-			})
-			this.socketTask.onOpen(() => {
-				this.websocketOnOpen()
-			})
-			this.socketTask.onMessage((res) => {
-				this.websocketonmessage(res.data)
-			})
-			this.socketTask.onClose(() => {
-				console.log('WebSocket被关闭！')
-			})
-			this.socketTask.onError(() => {
-				console.log('WebSocket连接错误！')
 			})
 		},
 

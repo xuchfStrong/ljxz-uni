@@ -1,6 +1,13 @@
 <script>
+	import viewConfigFactory from '@/utils/viewConfig.json'
+	import { getViewConfig, getUpdate } from '@/api/game'
+	import save from '@/utils/save'
 	export default {
+		globalData: {  
+        viewConfig: {}
+    },
 		onLaunch: function() {
+			this.checkViewConfig()
 			// #ifdef APP-PLUS  
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() { 
@@ -97,6 +104,35 @@
 			doUpData() {
 				uni.showToast({
 					title:"更新中"
+				})
+			},
+			checkViewConfig() {
+				const viewConfigLocalVersion = save.getViewConfigLocal().version
+				if (viewConfigLocalVersion && viewConfigLocalVersion >= viewConfigFactory.version) {
+					this.$options.globalData.viewConfig = save.getViewConfigLocal()
+				} else {
+					save.setViewConfigLocal(viewConfigFactory)
+					this.$options.globalData.viewConfig = save.getViewConfigLocal()
+				}
+				getUpdate().then(res => {
+					if (res.viewConfigVersion > viewConfigLocalVersion) {
+						uni.showModal({ //提醒用户有功能更新
+							title: "更新提示",  
+							content: "有功能更新，详情见辅助的更新页面。",    
+						})
+						this.handleGetViewConfig()
+					}
+				})
+			},
+			handleGetViewConfig() {
+				getViewConfig().then(res => {
+					if (res.version > this.$options.globalData.viewConfig.version) {
+						this.$options.globalData.viewConfig = res
+						save.setViewConfigLocal(res)
+						// #ifdef APP-PLUS  
+						plus.runtime.restart() // 重启APP让新的配置文件生效
+						// #endif
+					}
 				})
 			}
 		}

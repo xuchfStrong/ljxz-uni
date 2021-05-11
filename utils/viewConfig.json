@@ -321,19 +321,15 @@
     ],
     "is_special_baye": [
       {"value": 0,"text": "关闭增强霸业"},
-      {"value": 1,"text": "打地图一半"},
-      {"value": 2,"text": "打地图另一半"},
-      {"value": 3,"text": "跟随二生三"},
-      {"value": 4,"text": "跟随专一"}
+      {"value": 1,"text": "顺时针一半地图"},
+      {"value": 2,"text": "逆时针一半地图"}
     ],
     "special_baye_option": [
       {"value": 0,"text": "关闭"},
-      {"value": 1,"text": "只推图"},
-      {"value": 2,"text": "半边地图中推图+挖宝"},
-      {"value": 3,"text": "全图挖宝+推一半地图"},
-      {"value": 4,"text": "跟随二生三"},
-      {"value": 5,"text": "跟随专一"},
-      {"value": 6,"text": "不驻守推图"}
+      {"value": 1,"text": "推一半地图+驻守+不挖宝"},
+      {"value": 2,"text": "推一半地图+驻守+半图挖宝"},
+      {"value": 3,"text": "推一半地图+驻守+全图挖宝"},
+      {"value": 4,"text": "推一半地图+不驻守+半图挖宝"}
     ],
     "buy_shenqi": [
       {"value": 0,"text": "关闭"},

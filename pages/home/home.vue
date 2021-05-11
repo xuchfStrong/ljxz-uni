@@ -84,6 +84,10 @@
 			<text>辅助到期时间：</text>
 			<text :class="{danger: fuzuStatus.isExpired}">{{ fuzuStatus.end_time }}</text>
 		</view>
+		<view v-if="bayeSpecial === 1">
+			<text>增强霸业到期时间：</text>
+			<text>{{ fuzuStatus.special_baye_endtime }}</text>
+		</view>
 		<view>
 			<text>数据更新时间：</text>
 			<text :class="{danger: isPassedTwoHours}">{{ roleInfo.update_time }}</text>
@@ -259,6 +263,7 @@ export default {
 			},
 			fuzuStatus: {
         end_time: '',
+				special_baye_endtime: '',
 				on_off: 0,
 				fuzhu_vip: 0,
         isExpired: false
@@ -737,9 +742,11 @@ export default {
 						this.configInfo = this.correctConfig(res.data.setting_content)
 						this.fuzuStatus.fuzhu_vip = res.data.fuzhu_vip
 						this.fuzuStatus.on_off = res.data.on_off
+						this.fuzuStatus.special_baye_endtime = res.data.special_baye_endtime
 						this.bayeSpecial = res.data.special_baye
 						this.calsIsExpired(res.data.end_time)
 						this.calcdouji_goumai(String(res.data.setting_content.douji_goumai))
+						this.changeSpecialBayeOptioon(this.bayeSpecial)
             // this.calcdouji_goumai(String(111210101013))
             break
           case 403:
@@ -1056,6 +1063,17 @@ export default {
 				return true
 			} else {
 				return this.bayeSpecial
+			}
+		},
+
+		changeSpecialBayeOptioon(bayeSpecial) {
+			if (bayeSpecial === 2) {
+				this.options.is_special_baye.push({"value": 3,"text": "跟随二生三"})
+				this.options.is_special_baye.push({"value": 4,"text": "跟随专一"})
+				this.options.is_special_baye.push({"value": 5,"text": "跟随午一"})
+				this.options.special_baye_option.push({"value": 5,"text": "跟随二生三"})
+				this.options.special_baye_option.push({"value": 6,"text": "跟随专一"})
+				this.options.special_baye_option.push({"value": 7,"text": "跟随午一"})
 			}
 		}
 	}

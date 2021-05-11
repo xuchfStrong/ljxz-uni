@@ -1067,7 +1067,7 @@ export default {
 		},
 
 		changeSpecialBayeOptioon(bayeSpecial) {
-			if (bayeSpecial === 2) {
+			if (bayeSpecial === 2 && this.options.is_special_baye.length === 3) {
 				this.options.is_special_baye.push({"value": 3,"text": "跟随二生三"})
 				this.options.is_special_baye.push({"value": 4,"text": "跟随专一"})
 				this.options.is_special_baye.push({"value": 5,"text": "跟随午一"})

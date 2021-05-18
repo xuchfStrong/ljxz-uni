@@ -72,7 +72,10 @@ export default {
 
   methods: {
     handleGetDescription() {
-      getDescription().then(res => {
+      const params = {
+        login_type: 30
+      }
+      getDescription(params).then(res => {
         this.desc = res
       })
     }

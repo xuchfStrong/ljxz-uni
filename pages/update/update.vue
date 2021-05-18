@@ -72,7 +72,10 @@ export default {
 
   methods: {
     handleGetUpdate() {
-      getUpdate().then(res => {
+      const params = {
+				login_type: 30
+			}
+      getUpdate(params).then(res => {
         this.update = res
       }).catch(err => {
         console.log(err)
@@ -105,7 +108,10 @@ export default {
       // #ifdef APP-PLUS  
       const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() {
-          getUpdate().then(data => {
+          const params = {
+            login_type: 30
+          }
+          getUpdate(params).then(data => {
             var wgtUrl = data.test.wgtUrl
             var pkgUrl = data.test.pkgUrl
 			      if (data.test.version > that.$global.wdszVersion && wgtUrl && data.test.updateType === 1) { // 热更新

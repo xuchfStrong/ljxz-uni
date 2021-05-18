@@ -7,7 +7,7 @@
 					选择平台：
 				</view>
 				<view class="uni-list-cell-db">
-					<picker @change="changePlatform" :disabled="false" range-key="text" :value="platformIndex" :range="remoteOptions.platform">
+					<picker @change="changePlatform" :disabled="false" range-key="text" :value="platformIndex" :range="remoteOptions.zhanmeng">
 						<view class="uni-input">{{platformName}}</view>
 					</picker>
 				</view>
@@ -500,7 +500,7 @@ export default {
 				extend2: "",
 				game_appid: "5D2E20708BE1E3EC0",
 				game_id: "107",
-				game_name: "武道神尊(安卓版)",
+				game_name: "战盟(安卓版)",
 				password: this.userInfo.passwordPlatForm,
 				phoneType: "vivo v3max a",
 				sdk_version: "1",
@@ -673,16 +673,16 @@ export default {
 			} else {
 				this.platformIndex = 0
 			}
-			this.platformName = this.remoteOptions.platform[this.platformIndex].text
-			this.userInfo.loginType = getValueByIndex(this.remoteOptions.platform, this.platformIndex)
+			this.platformName = this.remoteOptions.zhanmeng[this.platformIndex].text
+			this.userInfo.loginType = getValueByIndex(this.remoteOptions.zhanmeng, this.platformIndex)
 			this.showVerifycode = this.userInfo.loginType === 2
 		},
 
 		// 加载后将存储的数据显示出来
 		initSaveData() {
-			this.platformIndex = getIndexByValue(this.remoteOptions.platform, this.userInfo.loginType)
+			this.platformIndex = getIndexByValue(this.remoteOptions.zhanmeng, this.userInfo.loginType)
 			if (this.platformIndex !== -1) {
-				this.platformName = this.remoteOptions.platform[this.platformIndex].text
+				this.platformName = this.remoteOptions.zhanmeng[this.platformIndex].text
 			}
 		}
 	}

@@ -11,86 +11,88 @@
 			// #ifdef APP-PLUS  
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() { 
-					const wdszSaleChannel = plus.runtime.channel 
-			    uni.request({  
-			        url: 'http://wdsz2.huojiangame.com:11658/ljxz/update.php',
-			        success: (result) => {  
-			            var data = result.data;
-									var wgtUrl = data.wgtUrl
-									var pkgUrl = ''
-									if (wdszSaleChannel === 'test') {
-										pkgUrl = data.pkgUrl
-									} else if (wdszSaleChannel === '1') {
-										pkgUrl = data.pkgUrl1
-									}  else if (wdszSaleChannel === '2') {
-										pkgUrl = data.pkgUrl2
-									} else if (wdszSaleChannel === '3') {
-										pkgUrl = data.pkgUrl3
-									} else if (wdszSaleChannel === '4') {
-										pkgUrl = data.pkgUrl4
-									} else if (wdszSaleChannel === '5') {
-										pkgUrl = data.pkgUrl5
-									} else if (wdszSaleChannel === '7') {
-										pkgUrl = data.pkgUrl7
-									} else if (wdszSaleChannel === '8') {
-										pkgUrl = data.pkgUrl8
-									} else if (wdszSaleChannel === '31') {
-										pkgUrl = data.pkgUrl31
-									}
-			            if (data.version > that.$global.wdszVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
-											// uni.showModal({
-											//     title: "发现新版本",
-											//     content: "确认下载更新",
-											//     success: (res) => {
-											//         if (res.confirm) {//当用户确定更新，执行更新
-											//             that.doUpData();
-											//         } else if (res.cancel) {
-											//             // console.log('用户点击取消');
-											//         }
-											//     }
-											// })
-			                uni.downloadFile({  
-			                    url: wgtUrl,  
-			                    success: (downloadResult) => {  
-			                        if (downloadResult.statusCode === 200) {  
-			                            plus.runtime.install(downloadResult.tempFilePath, {  
-			                                force: true  
-			                            }, function() {  
-			                                console.log('install success...');  
-																			uni.showToast({
-																				title:"辅助更新成功，即将重启",
-																				duration:1000,
-																				icon:'none'
-																			})
-																			setTimeout(function() {
-																			  plus.runtime.restart();
-																			}, 1100)
-			                            }, function(e) {  
-			                                console.error('install fail...'); 
-																			 uni.showToast({
-																			 	title:"辅助更新失败",
-																				duration:2000,
-																				icon:'none'
-																			 })
-			                            });  
-			                        }
-			                    }  
-			                }); 
-									}
-									if (data.version > that.$global.wdszVersion && pkgUrl && data.updateType === 2 ) { //整包更新
-										uni.showModal({ //提醒用户更新  
-											title: "更新提示",  
-											content: data.note,  
-											success: (res) => {  
-												if (res.confirm) {  
-													plus.runtime.openURL(pkgUrl);  
-												}  
-											}  
-										})  
-									}
-									  
-			        }  
-			    });  
+					const wdszSaleChannel = plus.runtime.channel
+					const params = {
+						login_type: 30
+					}
+					getUpdate(params).then(result => {
+						var data = result;
+						var wgtUrl = ''
+						var pkgUrl = ''
+						wgtUrl = data.wgtUrl
+						if (saleChannel === 'test') {
+							pkgUrl = data.pkgUrl
+						} else if (saleChannel === '1') {
+							pkgUrl = data.pkgUrl1
+						} else if (saleChannel === '2') {
+							pkgUrl = data.pkgUrl2
+						} else if (saleChannel === '3') {
+							pkgUrl = data.pkgUrl3
+						} else if (saleChannel === '4') {
+							pkgUrl = data.pkgUrl4
+						} else if (saleChannel === '5') {
+							pkgUrl = data.pkgUrl5
+						} else if (saleChannel === '6') {
+							pkgUrl = data.pkgUrl6
+						} else if (saleChannel === '7') {
+							pkgUrl = data.pkgUrl7
+						} else if (saleChannel === '8') {
+							pkgUrl = data.pkgUrl8
+						} else if (wdszSaleChannel === '31') {
+							pkgUrl = data.pkgUrl31
+						}
+			      if (data.version > that.$global.wdszVersion && wgtUrl && data.updateType ===1 ) {  // 热更新
+								// uni.showModal({
+								//     title: "发现新版本",
+								//     content: "确认下载更新",
+								//     success: (res) => {
+								//         if (res.confirm) {//当用户确定更新，执行更新
+								//             that.doUpData();
+								//         } else if (res.cancel) {
+								//             // console.log('用户点击取消');
+								//         }
+								//     }
+								// })
+			          uni.downloadFile({  
+			              url: wgtUrl,  
+			              success: (downloadResult) => {  
+			                  if (downloadResult.statusCode === 200) {  
+			                      plus.runtime.install(downloadResult.tempFilePath, {  
+			                          force: true  
+			                      }, function() {  
+			                          console.log('install success...');  
+																uni.showToast({
+																	title:"辅助更新成功，即将重启",
+																	duration:1000,
+																	icon:'none'
+																})
+																setTimeout(function() {
+																  plus.runtime.restart();
+																}, 1100)
+			                      }, function(e) {  
+			                          console.error('install fail...'); 
+																 uni.showToast({
+																 	title:"辅助更新失败",
+																	duration:2000,
+																	icon:'none'
+																 })
+			                      });  
+			                  }
+			              }  
+			          }); 
+						}
+						if (data.version > that.$global.wdszVersion && pkgUrl && data.updateType === 2 ) { //整包更新
+							uni.showModal({ //提醒用户更新  
+								title: "更新提示",  
+								content: data.note,  
+								success: (res) => {  
+									if (res.confirm) {  
+										plus.runtime.openURL(pkgUrl);  
+									}  
+								}  
+							})  
+						}
+					})
 			});  
 			// #endif
 		},
@@ -114,7 +116,10 @@
 					save.setViewConfigLocal(viewConfigFactory)
 					this.$options.globalData.viewConfig = save.getViewConfigLocal()
 				}
-				getUpdate().then(res => {
+				const params = {
+					login_type: 30
+				}
+				getUpdate(params).then(res => {
 					if (res.viewConfigVersion > viewConfigLocalVersion) {
 						uni.showModal({ //提醒用户有功能更新
 							title: "更新提示",  
@@ -125,7 +130,10 @@
 				})
 			},
 			handleGetViewConfig() {
-				getViewConfig().then(res => {
+				const params = {
+					login_type: 30
+				}
+				getViewConfig(params).then(res => {
 					if (res.version > this.$options.globalData.viewConfig.version) {
 						this.$options.globalData.viewConfig = res
 						save.setViewConfigLocal(res)

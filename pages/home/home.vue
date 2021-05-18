@@ -167,8 +167,8 @@
 		    </view>
 		</view>
 		
-		<view class="uni-divider">
-			<view class="uni-divider__content">武技设置</view>
+		<!-- <view class="uni-divider">
+			<view class="uni-divider__content">秘籍设置</view>
 			<view class="uni-divider__line"></view>
 		</view>
 
@@ -181,7 +181,7 @@
 		      </picker>
 		    </view>
 			</view>
-		</view>
+		</view> -->
 
 		<view class="save-btn">
 			<button type="primary" size="mini" @tap="handleChangeConfigInfo">保存设置</button>
@@ -287,7 +287,7 @@ export default {
 			lixianbeishuList: [
 				{value: '0', name: '一倍'},
 				{value: '1', name: '两倍'},
-				{value: '2', name: '五倍'}
+				{value: '2', name: '三倍'}
 			],
 			youlibeishuList: [
 				{value: '0', name: '一倍'},
@@ -360,7 +360,10 @@ export default {
 		},
 
 		handleGetUtils() {
-      getUtils().then(res => {
+			const params = {
+				login_type: 30
+			}
+      getUtils(params).then(res => {
 				this.utils = res
 				if (this.$global.ljxzVersion < res.version) {
 					uni.showTabBarRedDot({
@@ -449,7 +452,7 @@ export default {
 		// 读取记住的登录信息
 		loadLoginInfo() {
 			uni.setNavigationBarTitle({
-					title: '武道神尊火箭辅助V' + this.$global.wdszVersionName
+					title: '战盟火箭辅助V' + this.$global.wdszVersionName
 			});
 			console.log('加载登录信息')
 			this.roleList = save.getRoleList()
@@ -676,6 +679,7 @@ export default {
       const param = {
         userid: this.loginInfo.userId,
 				server_id: this.userInfo.server_id,
+				login_type: this.userInfo.loginType,
 				t: new Date().getTime()
 			}
 			this.statusLoading = true

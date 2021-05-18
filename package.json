@@ -1,7 +1,7 @@
 {
   "name": "ljzx-uni",
   "version": "1.4.0",
-  "description": "武道神尊Helper的uni版本",
+  "description": "战盟Helper的uni版本",
   "author": "xuchangfan",
   "dependencies": {
     "crypto-js": "^3.1.9-1",

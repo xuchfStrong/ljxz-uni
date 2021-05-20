@@ -1,5 +1,5 @@
 {
-  "version": 100,
+  "version": 102,
   "switchConfig": [
     {"label": "升莲花虚影", "key": "is_shenghuojing"},
     {"label": "自动九幽主宰(普通版是遇到了才会打一下)", "key": "is_hundi"},
@@ -18,7 +18,8 @@
     {"label": "自动炼丹", "key": "is_liandan"},
     {"label": "自动战盟秘境", "key": "is_lianmengmijing"},
     {"label": "21:30之后自动竞技排行剩余次数", "key": "is_doupoqiangbang"},
-    {"label": "21:00后自动刷新使用完天材地宝次数", "key": "is_refresh_yihuo"}
+    {"label": "21:00后自动刷新使用完天材地宝次数", "key": "is_refresh_yihuo"},
+    {"label": "自动领取每日任务奖励", "key": "meiri_task"}
   ],
   "pickerSwitchConfig": [
     {"label": "自动游历四方", "key": "youlisifang_id"},
@@ -30,7 +31,9 @@
     {"label": "功勋商店购买", "key": "buy_gongxun_id"},
     {"label": "增强霸业", "key": "is_special_baye", "special": 1},
     {"label": "增强霸业专有选项", "key": "special_baye_option", "special": 1},
-    {"label": "自动切换势力(VIP有效)", "key": "is_change_shili"}
+    {"label": "自动切换势力(VIP有效)", "key": "is_change_shili"},
+    {"label": "黑市购买", "key": "buy_heishi"},
+    {"label": "赏金任务接取", "key": "shangjin_task"}
   ],
   "gameInfoConfig": [
     {"label": "角色信息", "key": "roleInfoConfig"},
@@ -120,7 +123,10 @@
     "buy_gongxun_id": 0,
     "buy_yuntie": 0,
     "buy_shenqi": 0,
-    "wushenshilian_id": 0
+    "wushenshilian_id": 0,
+    "buy_heishi": 0,
+    "shangjin_task": 0,
+    "meiri_task": 0
   },
   "roleInfoDefault": {
     "userid": "",
@@ -216,7 +222,7 @@
       {"value":11,"text":"自动魔域第11关-邪族老祖"}
     ],
     "douji": [
-      {"value":"10","text":"关闭武技购买"},
+      {"value":"10","text":"关闭秘籍购买"},
       {"value":"11","text":"购买1000活泉及以下"},
       {"value":"12","text":"购买2600活泉及以下"},
       {"value":"13","text":"购买6760活泉及以下"},
@@ -332,6 +338,18 @@
       {"value": 3,"text": "购买+3个合成"},
       {"value": 4,"text": "购买+4个合成"},
       {"value": 5,"text": "购买+5个合成"}
+    ],
+    "buy_heishi": [
+      {"value": 0,"text": "关闭"},
+      {"value": 1,"text": "只购买所有银币货物"},
+      {"value": 2,"text": "购买银币货物+招募令"}
+    ],
+    "shangjin_task": [
+      {"value": 0,"text": "关闭"},
+      {"value": 1,"text": "接取绿色及以上"},
+      {"value": 2,"text": "接取蓝色及以上"},
+      {"value": 3,"text": "接取紫色及以上"},
+      {"value": 4,"text": "接取橙色及以上"}
     ]
   }
 }

@@ -1116,40 +1116,21 @@ export default {
 	margin-top: 20upx;
 }
 .attr-flex {
-	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
 }
 .attr-flex-item-3 {
-	width: 33.3%;
-	/* 加入这两个后每个item的宽度就生效了 */
-	min-width: 33.3%;
-	max-width: 33.3%;
+	flex: 0 0 33%;
 }
 .attr-flex-item-2 {
-	width: 48%;
-	/* 加入这两个后每个item的宽度就生效了 */
-	min-width: 48%;
-	max-width: 48%;
+	flex: 0 0 48%;
 }
 .attr-flex-item-1 {
-	width: 100%;
-}
-.attr-flex-item {
 	flex: 1;
-	flex-basis: auto;
-	width: 33.3%;
-	/* 加入这两个后每个item的宽度就生效了 */
-	min-width: 33.3%;
-	max-width: 33.3%;
 }
 .flex-lixian-item {
-	flex: 1;
-	flex-basis: auto;
-	width: 65%;
-	min-width: 65%;
-	max-width: 65%;
+	flex: 0 0 65%;
 }
 .list-cell {
 	display: flex;
@@ -1160,35 +1141,27 @@ export default {
 	align-items: center;
 }
 .content .uni-list-cell-left {
-	width: 25%;
+	flex: 0 0 25%;
 	text-align: right;
 }
 .flex-item-two {
 	display: flex;
-	width: 48%;
-	min-width: 48%;
-	max-width: 48%;
+	flex: 0 0 48%;
 }
 .radio-flex {
 	display: flex;
 }
 .radio-flex-item {
-	flex: 1;
-	flex-basis: auto;
-	width: 32%;
-	/* 加入这两个后每个item的宽度就生效了 */
-	min-width: 32%;
-	max-width: 32%;
+	flex: 0 0 32%;
 }
 .uni-list-no-border {
 	background-color: #FFFFFF;
 	position: relative;
-	width: 100%;
+/* 	width: 100%; */
 	display: flex;
 	flex-direction: column;
 }
 .uni-list-cell-no-border {
-	position: relative;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;

@@ -636,6 +636,8 @@ export default {
 				login_type: this.userInfo.loginType
 			}
 			getServerInfo(params).then(res => {
+				console.log(res)
+				console.log(res.server)
 				this.serverInfo.last_server_list = res.server.guanfu
 			}).catch(err => {
 				console.log(err)

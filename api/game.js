@@ -1,5 +1,6 @@
-import { http, httpForm } from '@/utils/request.js'
+// import { http, httpForm } from '@/utils/request.js'
 // import { httpForm } from '@/utils/requestForm.js'
+import {requestProxy, http, httpForm} from './request.js'
 
 // 获取远端选项信息
 export function getRemoteOptions(params) {

@@ -109,5 +109,13 @@
             "id" : "31",
             "name" : "渠道31"
         }
-    ]
+    ],
+    "h5" : {
+        "router" : {
+            "base" : ""
+        },
+        "devServer" : {
+            "https" : false
+        }
+    }
 }

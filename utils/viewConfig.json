@@ -1,5 +1,5 @@
 {
-  "version": 103,
+  "version": 104,
   "switchConfig": [
     {"label": "升莲花虚影", "key": "is_shenghuojing"},
     {"label": "自动九幽主宰(普通版是遇到了才会打一下)", "key": "is_hundi"},
@@ -10,7 +10,7 @@
     {"label": "试炼副本购买-银币", "key": "is_buy_tianmu_jinbi"},
     {"label": "试炼副本购买-陨铁", "key": "is_buy_tianmu_xuantie"},
     {"label": "试炼副本购买-进阶丹", "key": "is_buy_tianmu_jinjiedan"},
-    {"label": "试炼副本购买-英雄碎片", "key": "is_buy_tianmu_zhuanshengdan"},
+    {"label": "试炼副本购买-升星丹", "key": "is_buy_tianmu_zhuanshengdan"},
     {"label": "试炼副本购买-玄晶", "key": "is_buy_tianmu_xuanjing"},
     {"label": "自动九幽入侵", "key": "is_hundianlaixi"},
     {"label": "自动一次一次买天材地宝次数", "key": "is_buy_yihuo"},
@@ -23,19 +23,20 @@
   ],
   "pickerSwitchConfig": [
     {"label": "自动游历四方", "key": "youlisifang_id"},
+    {"label": "游历四方快速收获", "key": "youlisifang_kuaisu_type"},
     {"label": "自动战盟建设", "key": "lianmengjianshe_type"},
     {"label": "自动购买战盟秘境", "key": "buy_lianmengmijing_times"},
     {"label": "自动开采遗迹", "key": "yiji_kaicai_type"},
     {"label": "自动抢夺遗迹", "key": "yiji_jingong_type"},
     {"label": "自动挑战天材地宝", "key": "yihuo_type"},
-    {"label": "功勋商店购买", "key": "buy_gongxun_id"},
     {"label": "增强霸业", "key": "is_special_baye", "special": 1},
     {"label": "增强霸业专有选项", "key": "special_baye_option", "special": 1},
     {"label": "自动切换势力(VIP有效)", "key": "is_change_shili"},
     {"label": "黑市购买", "key": "buy_heishi"},
     {"label": "赏金任务接取", "key": "shangjin_task"},
 		{"label": "自动霸业(VIP有效)", "key": "is_baye"},
-		{"label": "购买霸业军令次数", "key": "is_buy_baye_order_times"}
+		{"label": "购买霸业军令次数", "key": "is_buy_baye_order_times"},
+    {"label": "远征", "key": "wushenshilian_id"}
   ],
   "gameInfoConfig": [
     {"label": "角色信息", "key": "roleInfoConfig"},
@@ -87,6 +88,7 @@
   },
   "configInfoDefault": {
     "youlisifang_id": 0,
+    "youlisifang_kuaisu_type": 0,
     "is_youlisifang_tiaozan": 0,
     "gongfagoumai":"101010101010",
     "douji_goumai": 10,
@@ -269,7 +271,7 @@
       {"value": 4,"text": "寻宝"}
     ],
     "wushenshilian_id": [
-      {"value": 0,"text": "关闭自动武神试炼"},
+      {"value": 0,"text": "关闭自动远征"},
       {"value": 1,"text": "普通"},
       {"value": 2,"text": "高级"},
       {"value": 3,"text": "超凡"}
@@ -352,6 +354,11 @@
       {"value": 2,"text": "接取蓝色及以上"},
       {"value": 3,"text": "接取紫色及以上"},
       {"value": 4,"text": "接取橙色及以上"}
+    ],
+    "youlisifang_kuaisu_type": [
+      {"value": 0,"text": "关闭"},
+      {"value": 1,"text": "免费次数"},
+      {"value": 2,"text": "全部次数"}
     ]
   }
 }

@@ -167,7 +167,7 @@
 		    </view>
 		</view>
 		
-		<!-- <view class="uni-divider">
+		<view class="uni-divider">
 			<view class="uni-divider__content">秘籍设置</view>
 			<view class="uni-divider__line"></view>
 		</view>
@@ -181,7 +181,7 @@
 		      </picker>
 		    </view>
 			</view>
-		</view> -->
+		</view>
 
 		<view class="save-btn">
 			<button type="primary" size="mini" @tap="handleChangeConfigInfo">保存设置</button>

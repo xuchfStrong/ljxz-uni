@@ -2,8 +2,8 @@
     "name" : "战盟火箭辅助",
     "appid" : "__UNI__20BAD31",
     "description" : "战盟火箭辅助",
-    "versionName" : "1.27",
-    "versionCode" : 127,
+    "versionName" : "1.28",
+    "versionCode" : 128,
     "transformPx" : false,
     "app-plus" : {
         "nvueCompiler" : "uni-app",

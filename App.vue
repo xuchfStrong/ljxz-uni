@@ -11,7 +11,7 @@
 			// #ifdef APP-PLUS  
 			const that = this
 			plus.runtime.getProperty(plus.runtime.appid, function() { 
-					const wdszSaleChannel = plus.runtime.channel
+					const saleChannel = plus.runtime.channel
 					const params = {
 						login_type: 30
 					}
@@ -38,7 +38,7 @@
 							pkgUrl = data.pkgUrl7
 						} else if (saleChannel === '8') {
 							pkgUrl = data.pkgUrl8
-						} else if (wdszSaleChannel === '31') {
+						} else if (saleChannel === '31') {
 							pkgUrl = data.pkgUrl31
 						}
 			      if (data.version > that.$global.wdszVersion && wgtUrl && data.updateType ===1 ) {  // 热更新

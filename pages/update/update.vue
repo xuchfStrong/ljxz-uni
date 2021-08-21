@@ -7,12 +7,7 @@
 				  <text style="width: 10upx; display: inline-block;"></text>
 				  <button type="primary" plain="true" size="mini" @tap="hideButton">收起</button>
         </view>
-        <!-- <view>当前版本为V{{ $global.wdszVersionName }}</view>
-				<view>更新说明：</view>
-        <view class="summary-content">
-          <view v-for="(item, index) in utils.updateDescription" :key="index">{{ item }}</view>
-        </view> -->
-
+        <view>当前版本为V{{ $global.wdszVersionName }}</view>
        <view style="margin-top:10px; color:#1989fa;">
           <a v-if="wdszSaleChannel==='test'" :href="update.pkgUrl"><text>点击下载辅助APP</text></a>
           <a v-if="wdszSaleChannel==='1'" :href="update.pkgUrl1"><text>点击下载辅助APP</text></a>

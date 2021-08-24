@@ -1,5 +1,5 @@
 {
-  "version": 104,
+  "version": 106,
   "switchConfig": [
     {"label": "升仙灵池", "key": "is_shenghuojing"},
     {"label": "自动冥帝(普通版是遇到了才会打一下)", "key": "is_hundi"},
@@ -35,6 +35,7 @@
     {"label": "增强霸业", "key": "is_special_baye", "special": 1},
     {"label": "增强霸业专有选项", "key": "special_baye_option", "special": 1},
     {"label": "霸业指定城市", "key": "baye_assign_city", "special": 1},
+    {"label": "霸业刷中城和帝都", "key": "baye_shuatu_city", "special": 1},
     {"label": "武神试炼", "key": "wushenshilian_id"},
     {"label": "自动切换势力(VIP有效)", "key": "is_change_shili"},
 		{"label": "购买黄阶神器并合成", "key": "buy_shenqi"}
@@ -103,6 +104,7 @@
     "is_special_baye": 0,
     "special_baye_option": 1,
     "baye_assign_city": 0,
+    "baye_shuatu_city": 0,
     "is_buy_baye_order_times": 0,
     "is_hundianlaixi": 1,
     "is_change_shili": 0,
@@ -514,6 +516,16 @@
       {"value":149,"text":"Q15"},
       {"value":150,"text":"Q16"},
       {"value":151,"text":"铁血都城"}
+    ],
+    "baye_shuatu_city": [
+      {"value": 0,"text": "关闭"},
+      {"value": 1,"text": "帝都"},
+      {"value": 2,"text": "西凉"},
+      {"value": 3,"text": "长安"},
+      {"value": 4,"text": "长沙"},
+      {"value": 5,"text": "苍梧"},
+      {"value": 6,"text": "寿春"},
+      {"value": 7,"text": "北海"}
     ]
   }
 }

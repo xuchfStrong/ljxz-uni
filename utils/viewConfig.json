@@ -1,5 +1,5 @@
 {
-  "version": 106,
+  "version": 107,
   "switchConfig": [
     {"label": "升莲花虚影", "key": "is_shenghuojing"},
     {"label": "自动九幽主宰(普通版是遇到了才会打一下)", "key": "is_hundi"},
@@ -17,6 +17,8 @@
     {"label": "自动清理势力外盟人员(VIP有效)", "key": "is_beat_shili"},
     {"label": "自动炼丹", "key": "is_liandan"},
     {"label": "自动炼装备", "key": "is_lianzhuangbei"},
+		{"label": "自动炼功法", "key": "is_liangongfa"},
+		{"label": "自动炼法器", "key": "is_lianfaqi"},
     {"label": "自动战盟秘境", "key": "is_lianmengmijing"},
     {"label": "21:30之后自动竞技排行剩余次数", "key": "is_doupoqiangbang"},
     {"label": "21:00后自动刷新使用完天材地宝次数", "key": "is_refresh_yihuo"},
@@ -101,6 +103,8 @@
     "is_mail": 0,
     "is_liandan": 0,
     "is_lianzhuangbei": 0,
+		"is_liangongfa": 0,
+		"is_lianfaqi": 0,
     "is_baye": 0,
     "is_special_baye": 0,
     "special_baye_option": 1,

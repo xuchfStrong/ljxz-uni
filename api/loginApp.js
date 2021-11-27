@@ -1,4 +1,5 @@
 import { http, httpForm } from '@/utils/request.js'
+// import {requestProxy, http, httpForm} from './request.js'
 
 
 // 新用户登录获取sessionid

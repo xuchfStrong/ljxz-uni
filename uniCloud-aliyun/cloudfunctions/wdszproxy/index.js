@@ -14,14 +14,19 @@ exports.main = async (event, context) => {
 	console.log('event : ', event)
 	const baseURL = 'http://wdsz2.huojiangame.com:11658/'
 	const apiUrl = combineURLs(baseURL, event.url)
-	const res = await uniCloud.httpclient.request(apiUrl, {
-	    method: event.method,
-	    data: event.data,
-			headers: event.header,
-	    contentType: event.contentType || 'json', // 默认指定以application/json发送data内的数据
-	    dataType: 'json' // 指定返回值为json格式，自动进行parse
-	  })
-	// console.log(res.data)
-	//返回数据给客户端
-	return res.data
+	try {
+		const res = await uniCloud.httpclient.request(apiUrl, {
+		    method: event.method,
+		    data: event.data,
+				headers: event.header,
+		    contentType: event.contentType || 'json', // 默认指定以application/json发送data内的数据
+		    dataType: 'json' // 指定返回值为json格式，自动进行parse
+		  })
+		//返回数据给客户端
+		return res.data
+	} catch(err) {
+		return "have error!!"
+		// return err
+	}
+	
 };

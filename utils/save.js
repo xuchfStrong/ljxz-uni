@@ -44,7 +44,7 @@ const setRoleList = function (roleList) {
 
 const getViewConfigLocal = function () {
   let ret = '';
-  ret = uni.getStorageSync('viewConfig');
+  ret = uni.getStorageSync('viewConfigWdsz');
   if (!ret) {
     return '';
   } else {
@@ -53,7 +53,7 @@ const getViewConfigLocal = function () {
 }
 
 const setViewConfigLocal = function (viewConfig) {
-  uni.setStorageSync('viewConfig', JSON.stringify(viewConfig));
+  uni.setStorageSync('viewConfigWdsz', JSON.stringify(viewConfig));
 }
 
 export default {

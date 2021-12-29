@@ -220,7 +220,7 @@ export function getChannel() {
     "12068": "8",
   }
   const port = window.location.port
-  return channelMap[port]
+  return channelMap[port] || "test"
   // #endif
 }
 

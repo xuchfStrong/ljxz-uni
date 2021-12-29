@@ -221,7 +221,7 @@ export function getChannel() {
     "19131": "31",
   }
   const port = window.location.port
-  return channelMap[port]
+  return channelMap[port] || 'test'
   // #endif
 }
 

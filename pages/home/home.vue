@@ -1212,6 +1212,7 @@ export default {
   color: red;
   margin-top: 10upx;
   white-space: pre-line;
+	user-select: text;
 }
 .content-wrap {
 	user-select: text;

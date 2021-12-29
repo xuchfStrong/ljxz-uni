@@ -112,7 +112,7 @@
     ],
     "h5" : {
         "router" : {
-            "base" : "/zhanmeng/"
+            "base" : "/"
         },
         "devServer" : {
             "https" : false

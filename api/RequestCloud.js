@@ -1,6 +1,7 @@
 export default class RequestCloud {
 	config = {
-		contentType: 'json'
+		contentType: 'json',
+		dataType: 'json'
 	}
 	
 	setConfig(f) {
@@ -17,7 +18,8 @@ export default class RequestCloud {
 					"method": options.method,
 					"header": options.header || {},
 					"contentType": options.contentType || this.config.contentType,
-					"data": options.data || {}
+					"data": options.data || {},
+					"dataType": options.dataType || this.config.dataType
 				},
 				success: (e) => {
 					resolve(e.result)
@@ -37,7 +39,8 @@ export default class RequestCloud {
 				"method": options.method,
 				"header": options.header || {},
 				"contentType": options.contentType || this.config.contentType,
-				"data": options.data || {}
+				"data": options.data || {},
+				"dataType": options.dataType || this.config.dataType
 			}
 		}).then(res => {
 			return Promise.resolve(res.result)

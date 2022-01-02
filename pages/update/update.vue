@@ -7,8 +7,8 @@
 				  <text style="width: 10upx; display: inline-block;"></text>
 				  <button type="primary" plain="true" size="mini" @tap="hideButton">收起</button>
         </view>
-        <!-- <view>当前版本为V{{ $global.wdszVersionName }}</view>
-				<view>更新说明：</view>
+        <view>当前版本为V{{ $global.wdszVersionName }}</view>
+<!-- 				<view>更新说明：</view>
         <view class="summary-content">
           <view v-for="(item, index) in utils.updateDescription" :key="index">{{ item }}</view>
         </view> -->

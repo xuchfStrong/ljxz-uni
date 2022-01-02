@@ -1,4 +1,4 @@
-// import { http, httpForm } from '@/utils/request.js'
+// import { http as httpNoProxy, httpForm as httpFormNoProxy } from '@/utils/request.js'
 // import { httpForm } from '@/utils/requestForm.js'
 import {requestProxy, http, httpForm} from './request.js'
 
@@ -9,7 +9,7 @@ export function acclogin(data, header) {
     'http://sdk.xxhd-tech.com:8081/client.php?gameparam=acclogin',
     // 'http://m.huojiangame.com:9080/ljxz/client.php?gameparam=acclogin',
     data,
-    {header}
+    {header, dataType: 'text'}
   )
 }
 
@@ -19,7 +19,7 @@ export function othersdkloginvalid(data, header) {
     'http://sdk.xxhd-tech.com:8081/client.php?gameparam=othersdkloginvalid',
     // 'http://m.huojiangame.com:9080/ljxz/client.php?gameparam=othersdkloginvalid',
     data,
-    {header}
+    {header, dataType: 'text'}
   )
 }
 
@@ -29,7 +29,7 @@ export function regbyphone(data, header) {
     'http://sdk.xxhd-tech.com:8081/client.php?gameparam=regbyphone',
     // 'http://m.huojiangame.com:9080/ljxz/client.php?gameparam=regbyphone',
     data,
-    {header}
+    {header, dataType: 'text'}
   )
 }
 
@@ -47,7 +47,8 @@ export function douyinUserLogin(data) {
   return http.post(
     'http://game.cross2.cn/sdk.php/User/user_login',
     // 'http://m.huojiangame.com:9080/ljxz_douyin/sdk.php/User/user_login',
-    data
+    data,
+		{dataType: 'text'}
   )
 }
 

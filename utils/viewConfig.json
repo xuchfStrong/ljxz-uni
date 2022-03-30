@@ -1,5 +1,5 @@
 {
-  "version": 107,
+  "version": 108,
   "switchConfig": [
     {"label": "升莲花虚影", "key": "is_shenghuojing"},
     {"label": "自动九幽主宰(普通版是遇到了才会打一下)", "key": "is_hundi"},
@@ -22,7 +22,9 @@
     {"label": "自动战盟秘境", "key": "is_lianmengmijing"},
     {"label": "21:30之后自动竞技排行剩余次数", "key": "is_doupoqiangbang"},
     {"label": "21:00后自动刷新使用完天材地宝次数", "key": "is_refresh_yihuo"},
-    {"label": "自动领取每日任务奖励", "key": "meiri_task"}
+    {"label": "自动领取每日任务奖励", "key": "meiri_task"},
+    {"label": "自动快速战斗", "key": "fast_fight"},
+    {"label": "活泉快速收获", "key": "fast_huoquan"}
   ],
   "pickerSwitchConfig": [
     {"label": "自动游历四方", "key": "youlisifang_id"},
@@ -37,6 +39,7 @@
     {"label": "自动切换势力(VIP有效)", "key": "is_change_shili"},
     {"label": "黑市购买", "key": "buy_heishi"},
     {"label": "赏金任务接取", "key": "shangjin_task"},
+    {"label": "赏金任务刷新", "key": "shangjin_fresh"},
 		{"label": "自动霸业(VIP有效)", "key": "is_baye"},
 		{"label": "购买霸业军令次数", "key": "is_buy_baye_order_times"},
     {"label": "远征", "key": "wushenshilian_id"}
@@ -136,7 +139,10 @@
     "wushenshilian_id": 0,
     "buy_heishi": 0,
     "shangjin_task": 0,
-    "meiri_task": 0
+    "meiri_task": 0,
+    "fast_fight": 0,
+    "fast_huoquan": 0,
+    "shangjin_fresh": 0
   },
   "roleInfoDefault": {
     "userid": "",
@@ -360,6 +366,11 @@
       {"value": 2,"text": "接取蓝色及以上"},
       {"value": 3,"text": "接取紫色及以上"},
       {"value": 4,"text": "接取橙色及以上"}
+    ],
+    "shangjin_fresh": [
+      {"value": 0,"text": "关闭"},
+      {"value": 1,"text": "只刷新免费次数"},
+      {"value": 2,"text": "有情报值就刷新"}
     ],
     "youlisifang_kuaisu_type": [
       {"value": 0,"text": "关闭"},
